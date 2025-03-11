@@ -31,7 +31,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body: Image.asset("assets/images/foodtek.png"),
+    body: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/foodtek.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
 
     );
   }

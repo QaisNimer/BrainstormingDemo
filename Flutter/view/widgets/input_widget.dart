@@ -6,14 +6,14 @@ class InputWidget extends StatelessWidget {
   bool obscureText;
   String? errorText;
   String? hintText;
-  Widget prefixIcon;
+  Widget? prefixIcon;
   Widget? suffixIcon;
 
   InputWidget({
     super.key,
     required this.textEditingController,
     required this.obscureText,
-    required this.prefixIcon,
+     this.prefixIcon,
     required this.label,
     this.suffixIcon,
     this.hintText,
@@ -32,7 +32,7 @@ class InputWidget extends StatelessWidget {
         hintText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
-            20,
+            15,
           ),
         ),
         errorText: errorText,
@@ -40,3 +40,6 @@ class InputWidget extends StatelessWidget {
     );
   }
 }
+
+//رمز البلد
+//things of signUp
