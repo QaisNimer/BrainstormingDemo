@@ -4,7 +4,6 @@ import 'package:foodtek/view/screens/intro3_screen.dart';
 import 'package:foodtek/view/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:foodtek/view/screens/intro_screen.dart';
-//import 'package:foodtek/view/screens/home_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -86,8 +85,6 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
-
-                // **النقاط التقدمية**
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 1,
@@ -97,8 +94,6 @@ class _IntroScreenState extends State<IntroScreen> {
                     dotWidth: 8,
                   ),
                 ),
-
-                // **زر السهم**
                 IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green, size: 28),
                   onPressed: () {
