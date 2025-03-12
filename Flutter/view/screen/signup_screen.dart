@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:untitled/controller/login_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/background.jpg"),
                 fit: BoxFit.cover,
@@ -32,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 80),
-                const SizedBox(height:100),
+                const SizedBox(height: 100),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.all(20),
@@ -47,6 +48,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Sign Up',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Already have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginController()),
+                              );
+                            },
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 10),
                       _buildTextField(_nameController, 'Full Name'),
                       _buildEmailField(),
@@ -59,7 +81,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           backgroundColor: Colors.green,
                           minimumSize: const Size(double.infinity, 50),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginController()),
+                          );
+                        },
                         child: const Text(
                           'Register',
                           style: TextStyle(color: Colors.white),
@@ -96,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: TextField(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: 'Email',
           hintText: '@email.com',
           border: OutlineInputBorder(),
@@ -114,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         obscureText: !_isPasswordVisible,
         decoration: InputDecoration(
           labelText: 'Set Password',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           suffixIcon: IconButton(
             icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off),
             onPressed: () {
@@ -136,7 +163,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         readOnly: true,
         decoration: InputDecoration(
           labelText: 'Date of Birth',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           suffixIcon: IconButton(
             icon: const Icon(Icons.calendar_today),
             onPressed: () async {
