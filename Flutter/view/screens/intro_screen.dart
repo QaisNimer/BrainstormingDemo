@@ -87,7 +87,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
 
-                // **النقاط التقدمية**
+                
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 1,
@@ -97,8 +97,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     dotWidth: 8,
                   ),
                 ),
-
-                // **زر السهم**
+                
                 IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green, size: 28),
                   onPressed: () {
