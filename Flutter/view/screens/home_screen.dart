@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/notification_screen.dart';
 import 'package:foodtek/view/widgets/food_card_widget.dart';
 import 'package:foodtek/view/widgets/recommended_card_widget.dart';
 import '../widgets/category_button_widget.dart';
@@ -12,12 +13,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
+  int selectedIndex2 = 0;
   final PageController pageController = PageController();
   int currentPage = 0;
 
   void onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
+    });
+  }
+  void onItemTapped2(int index2) {
+    setState(() {
+      selectedIndex2 = index2;
     });
   }
 
@@ -57,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.black,
                 size: 31,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationScreen()));
+              },
             ),
           ],
         ),
@@ -260,31 +269,31 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: Icon(
                 Icons.home,
-                color: selectedIndex == 0 ? Colors.green : Colors.grey,
+                color: selectedIndex2 == 0 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(0),
+              onPressed: () => onItemTapped2(0),
             ),
             IconButton(
               icon: Icon(
                 Icons.favorite,
-                color: selectedIndex == 1 ? Colors.green : Colors.grey,
+                color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(1),
+              onPressed: () => onItemTapped2(1),
             ),
             SizedBox(width: 40),
             IconButton(
               icon: Icon(
                 Icons.history,
-                color: selectedIndex == 3 ? Colors.green : Colors.grey,
+                color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => onItemTapped2(3),
             ),
             IconButton(
               icon: Icon(
                 Icons.person,
-                color: selectedIndex == 4 ? Colors.green : Colors.grey,
+                color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
+              onPressed: () => onItemTapped2(4),
             ),
           ],
         ),
@@ -292,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
-          onItemTapped(2);
+          onItemTapped2(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
