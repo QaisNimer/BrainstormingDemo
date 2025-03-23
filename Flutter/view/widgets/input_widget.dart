@@ -41,5 +41,3 @@ class InputWidget extends StatelessWidget {
   }
 }
 
-//رمز البلد
-//things of signUp
