@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/intro2_screen.dart';
 import 'package:foodtek/view/screens/intro3_screen.dart';
+import 'package:foodtek/view/screens/intro4_location_screen.dart';
 import 'package:foodtek/view/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:foodtek/view/screens/intro_screen.dart';
@@ -78,7 +79,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => Intro4LocationScreen()),
                     );
                   },
                   child: Text(
@@ -87,7 +88,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
 
-                
+                // **النقاط التقدمية**
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 1,
@@ -97,7 +98,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     dotWidth: 8,
                   ),
                 ),
-                
+
+                // **زر السهم**
                 IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green, size: 28),
                   onPressed: () {

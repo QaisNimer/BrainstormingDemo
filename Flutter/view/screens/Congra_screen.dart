@@ -1,8 +1,27 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/login_screen.dart';
 
-class CongraScreen extends StatelessWidget {
+class CongraScreen extends StatefulWidget {
+  @override
+  State<CongraScreen> createState() => _CongraScreenState();
+}
+
+class _CongraScreenState extends State<CongraScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,22 +68,19 @@ class CongraScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 12),
-                  ),
-                  child: Text(
-                    "Back to Login",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.green,
+                //     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 12),
+                //   ),
+                //   child: Text(
+                //     "Back to Login",
+                //     style: TextStyle(fontSize: 16, color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ),

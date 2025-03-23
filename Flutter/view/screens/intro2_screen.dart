@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/intro3_screen.dart';
+import 'package:foodtek/view/screens/intro4_location_screen.dart';
 import 'package:foodtek/view/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -75,7 +76,7 @@ class _Intro2ScreenState extends State<Intro2Screen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => Intro4LocationScreen()),
                     );
                   },
                   child: Text(

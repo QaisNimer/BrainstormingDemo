@@ -126,15 +126,7 @@ class _Intro4LocationScreenState extends State<Intro4LocationScreen> {
           ),
           const SizedBox(height: 50),
 
-          SmoothPageIndicator(
-            controller: _controller,
-            count: 4,
-            effect: ExpandingDotsEffect(
-              activeDotColor: Colors.green,
-              dotHeight: 8,
-              dotWidth: 8,
-            ),
-          ),
+
         ],
       ),
     );

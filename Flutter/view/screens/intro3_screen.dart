@@ -79,7 +79,7 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => Intro4LocationScreen()),
                     );
                   },
                   child: Text(
