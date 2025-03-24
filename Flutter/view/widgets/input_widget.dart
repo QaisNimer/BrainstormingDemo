@@ -13,7 +13,7 @@ class InputWidget extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.obscureText,
-     this.prefixIcon,
+    this.prefixIcon,
     required this.label,
     this.suffixIcon,
     this.hintText,

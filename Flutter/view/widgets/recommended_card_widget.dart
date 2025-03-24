@@ -25,7 +25,6 @@ class RecommendedCardWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
           decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(5)),
           child: Text(price, style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-
         ),
       ),
     );
