@@ -89,19 +89,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              /// 🍔 Image
               Center(child: Image.asset("assets/images/big_burger.png", height: 220)),
               const SizedBox(height: 20),
-
-              /// 🧀 Title
               const Text(
                 "Cheeseburger Wendy's Burger",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-
-              /// ⭐ Rating
               Row(
                 children: [
                   RatingBar.builder(
@@ -120,7 +114,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ),
               const SizedBox(height: 10),
 
-              /// 💵 Price
+
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -137,14 +131,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ),
               const SizedBox(height: 12),
 
-              /// 📄 Description
+
               const Text(
                 "Nulla occaecat velit laborum exercitation ullamco. Elit labore eu aute elit nostrud culpa velit excepteur deserunt sunt. Velit non est cillum consequat cupidatat ex Lorem laboris labore aliqua ad duis eu laborum.",
                 style: TextStyle(color: Colors.grey),
               ),
               const SizedBox(height: 18),
 
-              /// 🌶️ Spicy and Quantity
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
@@ -157,7 +151,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  /// Spiciness Slider
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +178,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                   const SizedBox(width: 60),
 
-                  /// Quantity Buttons
                   Row(
                     children: [
                       // ➖ Button
@@ -238,7 +230,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// 🛒 Add to Cart Button
+
               Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -263,7 +255,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
       ),
 
-      /// 🔻 Bottom NavBar + FAB
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         shape: const CircularNotchedRectangle(),

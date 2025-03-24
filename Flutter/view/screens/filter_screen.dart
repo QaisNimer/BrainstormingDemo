@@ -78,7 +78,7 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
       ),
       body: Container(
-        color: Colors.white,  // خلفية بيضاء
+        color: Colors.white,  
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
