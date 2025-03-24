@@ -10,7 +10,6 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   late List<TextEditingController> _controllers;
   late List<FocusNode> _focusNodes;
-
   @override
   void initState() {
     super.initState();
@@ -62,7 +61,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   children: [
                     SizedBox(height: 20),
                     Image.asset(
-                      'assets/images/otp.png',
+                      'assets/otp.png',
                       height: 80,
                     ),
                     SizedBox(height: 15),

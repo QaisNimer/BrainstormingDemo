@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/Congra_screen.dart';
-import 'package:foodtek/view/screens/intro_screen.dart';
-//import 'package:provider/provider.dart';
+import 'package:untitled/view/screen/intro_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,32 +25,19 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       },
     );
-
-
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/foodtek.png"),
-          fit: BoxFit.cover,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/foodtek.png"),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
-    //   child: Container(
-    //     decoration: BoxDecoration(
-    //       image: DecorationImage(
-    //         image: AssetImage("assets/images/foodtek.png"),
-    //         fit: BoxFit.cover,
-    //       ),
-    //     ),
-    //   ),
-    //
-    ),
-
 
     );
-
   }
 }

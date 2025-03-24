@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/controller/login_controller.dart';
-import 'package:foodtek/view/screens/forgot_password_page.dart';
-import 'package:foodtek/view/screens/home_screen.dart';
-import 'package:foodtek/view/screens/intro_screen.dart';
-import 'package:foodtek/view/screens/rest_password_screen.dart';
-import 'package:foodtek/view/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
-
-import '../widgets/input_widget.dart';
+import 'package:untitled/controller/login_controller.dart';
+import 'package:untitled/view/screen/home_sceen.dart';
+import 'package:untitled/view/screen/reset_password_screen.dart';
+import 'package:untitled/view/screen/signup_screen.dart';
+import 'package:untitled/view/widgets/input_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,9 +13,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController passTextEditingController =
-      TextEditingController();
+  TextEditingController();
   bool RememberMe = false;
 
   @override
@@ -90,9 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         label: "Email",
                         hintText: "Loisbakit@gmail.com",
                         errorText:
-                            loginController.showErrorEmail
-                                ? "Enter a valid Email"
-                                : null,
+                        loginController.showErrorEmail
+                            ? "Enter a valid Email"
+                            : null,
                       );
                     },
                   ),

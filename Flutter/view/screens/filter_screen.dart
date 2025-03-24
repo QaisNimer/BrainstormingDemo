@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:untitled/view/screen/favourites_screen.dart';
+import 'package:untitled/view/screen/home_sceen.dart';
 import 'notification_screen.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -65,11 +66,7 @@ class _FilterScreenState extends State<FilterScreen> {
             IconButton(onPressed: () {}, icon: Icon(Icons.arrow_drop_down)),
             Spacer(),
             IconButton(
-              icon: Icon(
-                Icons.notifications_none,
-                color: Colors.black,
-                size: 31,
-              ),
+              icon: Icon(Icons.notifications_none, color: Colors.black, size: 31),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -80,162 +77,144 @@ class _FilterScreenState extends State<FilterScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Filter",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 6),
-            Text(
-              "Price range",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Row(
+      body: Container(
+        color: Colors.white,  // خلفية بيضاء
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Min",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                Text("Filter", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                SizedBox(height: 6),
+                Text("Price range", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Min",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Max",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Max",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(height: 5),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("\$0", style: TextStyle(color: Colors.grey)),
-                Text("\$10", style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-            RangeSlider(
-              values: RangeValues(minPrice, maxPrice),
-              min: 0,
-              max: 100,
-              activeColor: Colors.green,
-              onChanged: (RangeValues values) {
-                setState(() {
-                  minPrice = values.start;
-                  maxPrice = values.end;
-                });
-              },
-            ),
-
-            Text(
-              "Discount",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Min",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("\$0", style: TextStyle(color: Colors.grey)),
+                    Text("\$10", style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+                RangeSlider(
+                  values: RangeValues(minPrice, maxPrice),
+                  min: 0,
+                  max: 100,
+                  activeColor: Colors.green,
+                  onChanged: (RangeValues values) {
+                    setState(() {
+                      minPrice = values.start;
+                      maxPrice = values.end;
+                    });
+                  },
+                ),
+                Text("Discount", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Min",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(width: 20),
-
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Max",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Max",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-
-            //  SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("\$0", style: TextStyle(color: Colors.grey)),
-                Text("50%", style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-            Slider(
-              value: minDiscount,
-              min: 0,
-              max: 50,
-              activeColor: Colors.green,
-              onChanged: (value) {
-                setState(() {
-                  minDiscount = value;
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Category",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Wrap(
-              spacing: 10,
-              children:
-                  categories.map((category) {
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("\$0", style: TextStyle(color: Colors.grey)),
+                    Text("50%", style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+                Slider(
+                  value: minDiscount,
+                  min: 0,
+                  max: 50,
+                  activeColor: Colors.green,
+                  onChanged: (value) {
+                    setState(() {
+                      minDiscount = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                Text("Category", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Wrap(
+                  spacing: 10,
+                  children: categories.map((category) {
                     return ChoiceChip(
                       label: Text(category),
                       selected: selectedCategory == category,
                       selectedColor: Colors.green,
                       backgroundColor: Colors.grey.withOpacity(0.2),
                       labelStyle: TextStyle(
-                        color:
-                            selectedCategory == category
-                                ? Colors.white
-                                : Colors.black,
+                        color: selectedCategory == category ? Colors.white : Colors.black,
                       ),
                       shape: RoundedRectangleBorder(
                         side: BorderSide.none,
@@ -249,28 +228,19 @@ class _FilterScreenState extends State<FilterScreen> {
                       },
                     );
                   }).toList(),
-            ),
-
-            SizedBox(height: 10),
-            Text(
-              "Location",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              spacing: 8,
-              children:
-                  [1, 5, 10].map((km) {
+                ),
+                SizedBox(height: 10),
+                Text("Location", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Wrap(
+                  spacing: 8,
+                  children: [1, 5, 10].map((km) {
                     return ChoiceChip(
                       label: Text("$km KM"),
                       selected: selectedLocation == km,
                       selectedColor: Colors.green,
                       backgroundColor: Colors.grey.withOpacity(0.2),
                       labelStyle: TextStyle(
-                        color:
-                            selectedLocation == km
-                                ? Colors.white
-                                : Colors.black,
+                        color: selectedLocation == km ? Colors.white : Colors.black,
                       ),
                       shape: RoundedRectangleBorder(
                         side: BorderSide.none,
@@ -284,25 +254,19 @@ class _FilterScreenState extends State<FilterScreen> {
                       },
                     );
                   }).toList(),
-            ),
-
-            SizedBox(height: 10),
-            Text(
-              "Dish",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Wrap(
-              spacing: 20,
-              children:
-                  dishes.map((dish) {
+                ),
+                SizedBox(height: 10),
+                Text("Dish", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Wrap(
+                  spacing: 20,
+                  children: dishes.map((dish) {
                     return ChoiceChip(
                       label: Text(dish),
                       selected: selectedDish == dish,
                       selectedColor: Colors.green,
                       backgroundColor: Colors.grey.withOpacity(0.2),
                       labelStyle: TextStyle(
-                        color:
-                            selectedDish == dish ? Colors.white : Colors.black,
+                        color: selectedDish == dish ? Colors.white : Colors.black,
                       ),
                       shape: RoundedRectangleBorder(
                         side: BorderSide.none,
@@ -316,8 +280,10 @@ class _FilterScreenState extends State<FilterScreen> {
                       },
                     );
                   }).toList(),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -328,43 +294,39 @@ class _FilterScreenState extends State<FilterScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(
-                Icons.home,
-                color: selectedIndex2 == 0 ? Colors.green : Colors.grey,
-              ),
-              onPressed: () => onItemTapped2(0),
+              icon: Icon(Icons.home, color: selectedIndex2 == 0 ? Colors.green : Colors.grey),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
             ),
             IconButton(
-              icon: Icon(
-                Icons.favorite,
-                color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
-              ),
-              onPressed: () => onItemTapped2(1),
+              icon: Icon(Icons.favorite, color: selectedIndex2 == 1 ? Colors.green : Colors.grey),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavoritesScreen()),
+                );
+              },
             ),
             SizedBox(width: 40),
             IconButton(
-              icon: Icon(
-                Icons.history,
-                color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
-              ),
+              icon: Icon(Icons.history, color: selectedIndex2 == 3 ? Colors.green : Colors.grey),
               onPressed: () => onItemTapped2(3),
             ),
             IconButton(
-              icon: Icon(
-                Icons.person,
-                color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
-              ),
+              icon: Icon(Icons.person, color: selectedIndex2 == 4 ? Colors.green : Colors.grey),
               onPressed: () => onItemTapped2(4),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        onPressed: () => onItemTapped2(2),
         backgroundColor: Colors.green,
-        onPressed: () {
-          onItemTapped2(2);
-        },
-        child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+        child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
