@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/notification_screen.dart';
+import 'package:foodtek/view/screens/order_details_screen.dart';
 import 'package:foodtek/view/widgets/food_card_widget.dart';
 import 'package:foodtek/view/widgets/recommended_card_widget.dart';
 import '../widgets/category_button_widget.dart';
+import 'filter_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       selectedIndex = index;
     });
   }
+
   void onItemTapped2(int index2) {
     setState(() {
       selectedIndex2 = index2;
@@ -65,7 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 31,
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>NotificationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen()),
+                );
               },
             ),
           ],
@@ -84,8 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     hintText: "Search menu, restaurant or etc",
                     prefixIcon: Icon(Icons.search),
                     suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.filter_list),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilterScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.tune),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -111,7 +124,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       icon: Icons.lunch_dining_sharp,
                       isSelected: selectedIndex == 1,
-                      onPressed: () => onItemTapped(1),
+                      onPressed:
+                          () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OrderDetailsScreen(),
+                              ),
+                            ),
+
+                            onItemTapped(1),
+                          },
                     ),
                     CategoryButtonWidget(
                       title: "Pizza",
@@ -144,13 +167,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   children: List.generate(
                     5,
-                        (index) => Image.asset(
+                    (index) => Image.asset(
                       "assets/images/offer.pizza.png",
                       fit: BoxFit.fill,
                     ),
-
                   ),
-
                 ),
               ),
               SizedBox(height: 10),
@@ -158,15 +179,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
                   5,
-                      (index) => Container(
+                  (index) => Container(
                     margin: EdgeInsets.symmetric(horizontal: 4),
                     width: 8,
                     height: 8,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: currentPage == index
-                          ? Colors.green
-                          : Colors.grey[300],
+                      color:
+                          currentPage == index
+                              ? Colors.green
+                              : Colors.grey[300],
                     ),
                   ),
                 ),
@@ -178,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 5),
               SizedBox(
-                height: screenHeight * 0.5 / 2,
+                height: screenHeight * 0.55 / 2,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -188,14 +210,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       price: "20.00",
                       imagePath: "assets/images/burger1.png",
                       rating: 3.8,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsScreen(),
+                          ),
+                        );
+                      },
                     ),
                     FoodCardWidget(
                       title: "Cheese burger",
                       description:
-                      "100 gr meat + onion + tomato + Lettuce cheese",
+                          "100 gr meat + onion + tomato + Lettuce cheese",
                       price: "15.00",
                       imagePath: "assets/images/burger2.png",
                       rating: 4.5,
+                      onPressed: () {},
                     ),
                     FoodCardWidget(
                       title: "Chicken burger",
@@ -203,6 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       price: "20.00",
                       imagePath: "assets/images/burger1.png",
                       rating: 3.8,
+                      onPressed: () {},
                     ),
                     FoodCardWidget(
                       title: "cheese burger",
@@ -210,6 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       price: "20.00",
                       imagePath: "assets/images/burger2.png",
                       rating: 3.8,
+                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -271,14 +304,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.home,
                 color: selectedIndex2 == 0 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(0),
+              onPressed: () => {onItemTapped2(0)},
             ),
             IconButton(
               icon: Icon(
                 Icons.favorite,
                 color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(1),
+              onPressed: () => {onItemTapped2(1)},
             ),
             SizedBox(width: 40),
             IconButton(
@@ -286,14 +319,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.history,
                 color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(3),
+              onPressed: () => {onItemTapped2(3)},
             ),
             IconButton(
               icon: Icon(
                 Icons.person,
                 color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(4),
+              onPressed: () => {onItemTapped2(4)},
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/filter_screen.dart';
 import 'package:foodtek/view/screens/home_screen.dart';
 import '../../model/notification_model.dart';
 import '../widgets/category_button_widget.dart';
@@ -117,8 +118,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 hintText: "Search menu, restaurant or etc",
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.filter_list),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
+                  },
+                  icon: const Icon(Icons.tune),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),

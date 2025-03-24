@@ -6,6 +6,7 @@ class FoodCardWidget extends StatelessWidget {
   final String price;
   final String imagePath;
   final double rating;
+  final VoidCallback onPressed;
 
   const FoodCardWidget({
     required this.title,
@@ -13,6 +14,7 @@ class FoodCardWidget extends StatelessWidget {
     required this.price,
     required this.imagePath,
     required this.rating,
+    required this.onPressed,
     super.key,
   });
 
@@ -47,10 +49,13 @@ class FoodCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("\$$price", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green)),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-                child: Icon(Icons.add, color: Colors.white),
+              GestureDetector(
+                onTap: onPressed,
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle),
+                  child: Icon(Icons.add, color: Colors.white),
+                ),
               ),
             ],
           ),
