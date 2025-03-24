@@ -1,2 +1,2 @@
 # BrainstormingDemo
-Demo version for developers 
+Demo version for developers & QA
