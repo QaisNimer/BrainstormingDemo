@@ -193,7 +193,7 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
 
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
-        shape: const CircularNotchedRectangle(),
+        shape:  CircularNotchedRectangle(),
         notchMargin: 8.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -206,7 +206,7 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  MaterialPageRoute(builder: (context) =>  HomeScreen()),
                 );
                 onItemTapped(0);
               },
@@ -220,19 +220,21 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const FavoritesScreen(),
+                    builder: (context) =>  FavoritesScreen(),
                   ),
                 );
                 onItemTapped(1);
               },
             ),
-            const SizedBox(width: 40),
+             SizedBox(width: 40),
             IconButton(
               icon: Icon(
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+                onItemTapped(3)},
             ),
             IconButton(
               icon: Icon(

@@ -230,7 +230,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped(3)},
             ),
             IconButton(
               icon: Icon(

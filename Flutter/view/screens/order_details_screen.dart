@@ -4,6 +4,7 @@ import 'package:foodtek/view/screens/delete_cart_screen.dart';
 
 import 'favorites_screen.dart';
 import 'filter_screen.dart';
+import 'history_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
 
@@ -316,7 +317,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 Icons.history,
                 color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(3),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped2(3)},
             ),
             IconButton(
               icon: Icon(

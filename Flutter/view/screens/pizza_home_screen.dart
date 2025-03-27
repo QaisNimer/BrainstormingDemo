@@ -6,6 +6,7 @@ import '../widgets/category_button_widget.dart';
 import '../widgets/food_cart2_widget.dart';
 import 'favorites_screen.dart';
 
+import 'history_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
 
@@ -225,7 +226,11 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped(3)},
             ),
             IconButton(
               icon: Icon(

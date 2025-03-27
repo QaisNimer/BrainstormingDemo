@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'favorites_screen.dart';
+import 'history_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
 
@@ -314,7 +315,11 @@ class _FilterScreenState extends State<FilterScreen> {
             SizedBox(width: 40),
             IconButton(
               icon: Icon(Icons.history, color: selectedIndex2 == 3 ? Colors.green : Colors.grey),
-              onPressed: () => onItemTapped2(3),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped2(3)},
             ),
             IconButton(
               icon: Icon(Icons.person, color: selectedIndex2 == 4 ? Colors.green : Colors.grey),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/food_cart2_widget.dart';
+import 'history_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
 
@@ -170,7 +171,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Icons.history,
                 color: Colors.grey,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen()));
+
+              },
             ),
             IconButton(
               icon: Icon(
