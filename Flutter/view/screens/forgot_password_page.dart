@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/Congra_screen.dart';
+import 'package:foodtek/view/screens/login_screen.dart';
+import 'package:foodtek/view/screens/rest_password_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled/view/screen/congra_screen.dart';
-import 'package:untitled/view/screen/login_screen.dart';
 
 import '../../controller/login_controller.dart';
+import 'home_screen.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -12,9 +14,9 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController newPassTextEditingController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController confirmPassTextEditingController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +146,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     onPressed: () {
                       loginController.checkPassword(
                         password:
-                        newPassTextEditingController
-                            .text, //put in login controller
+                            newPassTextEditingController
+                                .text, //put in login controller
                       );
                       Navigator.push(
                         context,

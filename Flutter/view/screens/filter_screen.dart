@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/view/screen/favourites_screen.dart';
-import 'package:untitled/view/screen/home_sceen.dart';
+import 'favorites_screen.dart';
+import 'home_screen.dart';
 import 'notification_screen.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -78,7 +78,7 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
       ),
       body: Container(
-        color: Colors.white,  
+        color: Colors.white,
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

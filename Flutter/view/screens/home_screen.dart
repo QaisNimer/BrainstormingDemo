@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/favorites_screen.dart';
 import 'package:foodtek/view/screens/notification_screen.dart';
 import 'package:foodtek/view/screens/order_details_screen.dart';
+import 'package:foodtek/view/screens/pizza_home_screen.dart';
 import 'package:foodtek/view/widgets/food_card_widget.dart';
 import 'package:foodtek/view/widgets/recommended_card_widget.dart';
 import '../widgets/category_button_widget.dart';
@@ -140,7 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: "Pizza",
                       icon: Icons.local_pizza,
                       isSelected: selectedIndex == 2,
-                      onPressed: () => onItemTapped(2),
+                      onPressed: () =>
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PizzaScreen())),
+                        onItemTapped(2)},
                     ),
                     CategoryButtonWidget(
                       title: "Sandwich",
@@ -311,7 +316,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.favorite,
                 color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {onItemTapped2(1)},
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoritesScreen())),
+
+                onItemTapped2(1)},
             ),
             SizedBox(width: 40),
             IconButton(

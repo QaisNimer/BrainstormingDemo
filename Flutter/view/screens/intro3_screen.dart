@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/intro3_screen.dart';
+import 'package:foodtek/view/screens/intro4_location_screen.dart';
+import 'package:foodtek/view/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:untitled/view/screen/intro4_location_screen.dart';
-import 'package:untitled/view/screen/login_screen.dart';
 
 
 
@@ -41,6 +41,8 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                   ),
                   SizedBox(height: 70),
+
+
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -60,15 +62,19 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
+
                 ],
               ),
             ),
           ),
+
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -81,6 +87,8 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
+
+
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 3,
@@ -90,6 +98,8 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                     dotWidth: 8,
                   ),
                 ),
+
+
                 IconButton(
                   icon: Icon(Icons.arrow_forward, color: Colors.green, size: 28),
                   onPressed: () {

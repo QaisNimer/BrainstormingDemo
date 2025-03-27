@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'package:foodtek/view/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:untitled/view/screen/login_screen.dart';
 
 class Intro4LocationScreen extends StatefulWidget {
 
@@ -28,6 +29,7 @@ class _Intro4LocationScreenState extends State<Intro4LocationScreen> {
     );
 
   }
+
   @override
   Widget build(BuildContext context) {
     PageController _controller = PageController();
@@ -70,8 +72,10 @@ class _Intro4LocationScreenState extends State<Intro4LocationScreen> {
           const SizedBox(height: 60),
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
+
             child: Column(
               children: [
+
                 ElevatedButton(
                   onPressed: () => _enableLocation(context),
                   style: ElevatedButton.styleFrom(
@@ -90,7 +94,9 @@ class _Intro4LocationScreenState extends State<Intro4LocationScreen> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
+
                 OutlinedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -119,15 +125,8 @@ class _Intro4LocationScreenState extends State<Intro4LocationScreen> {
             ),
           ),
           const SizedBox(height: 50),
-          SmoothPageIndicator(
-            controller: _controller,
-            count: 4,
-            effect: ExpandingDotsEffect(
-              activeDotColor: Colors.green,
-              dotHeight: 8,
-              dotWidth: 8,
-            ),
-          ),
+
+
         ],
       ),
     );

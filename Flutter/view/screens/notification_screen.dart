@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/view/screen/home_sceen.dart';
+import 'package:foodtek/view/screens/filter_screen.dart';
+import 'package:foodtek/view/screens/home_screen.dart';
 import '../../model/notification_model.dart';
 import '../widgets/category_button_widget.dart';
 
@@ -30,35 +31,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
     NotificationModel(
       title: "Delayed Order:",
       message:
-      "We're sorry! Your order is running late. New ETA: 10:30 PM.Thanks for your patience!",
+          "We're sorry! Your order is running late. New ETA: 10:30 PM.Thanks for your patience!",
       time: "Last Wednesday at 9:42 AM",
       unread: true,
     ),
     NotificationModel(
       title: "Promotional Offer:",
       message:
-      "Craving something delicious? 🍕 Get 20% off on your next order.Use code YUMMY20",
+          "Craving something delicious? 🍕 Get 20% off on your next order.Use code YUMMY20",
       time: "Last Wednesday at 9:42 AM",
       unread: false,
     ),
     NotificationModel(
       title: "Out for Delivery:",
       message:
-      "Your order is on the way! 🚗 Estimated arrival: 15 mins.Stay hungry!",
+          "Your order is on the way! 🚗 Estimated arrival: 15 mins.Stay hungry!",
       time: "Last Wednesday at 9:42 AM",
       unread: false,
     ),
     NotificationModel(
       title: "Order Confirmation:",
       message:
-      "Your order has been placed! 🍕 We're preparing it now. Track your order live!",
+          "Your order has been placed! 🍕 We're preparing it now. Track your order live!",
       time: "Last Wednesday at 9:42 AM",
       unread: false,
     ),
     NotificationModel(
       title: "Delivered:",
       message:
-      "Enjoy your meal! 🍕 Your order has been delivered.Rate your experience! ",
+          "Enjoy your meal! 🍕 Your order has been delivered.Rate your experience! ",
       time: "Last Wednesday at 9:42 AM",
       unread: false,
     ),
@@ -117,8 +118,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 hintText: "Search menu, restaurant or etc",
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.filter_list),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
+                  },
+                  icon: const Icon(Icons.tune),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -162,9 +165,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight:
-                          selectedTab == 0
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                              selectedTab == 0
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                           color: selectedTab == 0 ? Colors.green : Colors.black,
                         ),
                       ),
@@ -182,9 +185,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight:
-                          selectedTab == 1
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                              selectedTab == 1
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                           color: selectedTab == 1 ? Colors.green : Colors.black,
                         ),
                       ),
@@ -202,9 +205,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight:
-                          selectedTab == 2
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                              selectedTab == 2
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                           color: selectedTab == 2 ? Colors.green : Colors.black,
                         ),
                       ),
@@ -215,7 +218,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredNotifications.length,

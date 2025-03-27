@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/filter_screen.dart';
-import 'package:foodtek/view/screens/order_details_screen.dart';
 
-import '../widgets/category_button_widget.dart';
 import '../widgets/food_cart2_widget.dart';
-import 'favorites_screen.dart';
-
 import 'home_screen.dart';
 import 'notification_screen.dart';
 
-class PizzaScreen extends StatefulWidget {
-  const PizzaScreen({super.key});
+
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
 
   @override
-  State<PizzaScreen> createState() => _PizzaScreenState();
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
-class _PizzaScreenState extends State<PizzaScreen> {
-  int selectedIndex = 0;
-  final int selectedCategoryIndex = 2;
-  bool isFavoriteSelected = false;
-
-  void onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
+class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -83,9 +69,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 hintText: "Search pizza, restaurant or etc",
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
-                  },
+                  onPressed: () {},
                   icon: Icon(Icons.tune),
                 ),
                 border: OutlineInputBorder(
@@ -96,46 +80,13 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 filled: true,
               ),
             ),
-            SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  CategoryButtonWidget(
-                    title: "All",
-                    isSelected: false,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: "Burger",
-                    icon: Icons.lunch_dining_sharp,
-                    isSelected: false,
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderDetailsScreen()));
-
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: "Pizza",
-                    icon: Icons.local_pizza,
-                    isSelected: true,
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PizzaScreen()));
-
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: "Sandwich",
-                    icon: Icons.fastfood,
-                    isSelected: false,
-                    onPressed: () {},
-                  ),
-                ],
+            SizedBox(height: 10),
+            Text(
+              "Favorites",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
             SizedBox(height: 10),
@@ -148,11 +99,11 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 children: [
                   FoodCard2Widget(
                     title: "Pepperoni Pizza",
-                    description:
-                        "Pepperoni pizza, Margarita Pizza, Italian cuisine",
+                    description: "Pepperoni pizza, Margarita Pizza, Italian cuisine",
                     price: "29.00",
                     imagePath: "assets/images/pizza (1).png",
                     rating: 4.5,
+                    isRed: true,
                   ),
                   FoodCard2Widget(
                     title: "Pizza Cheese",
@@ -160,22 +111,23 @@ class _PizzaScreenState extends State<PizzaScreen> {
                     price: "23.00",
                     imagePath: "assets/images/pizza1.png",
                     rating: 4.3,
+                    isRed: true,
                   ),
                   FoodCard2Widget(
                     title: "Peppy Paneer",
-                    description:
-                        "Chunky paneer with crisp capsicum & red pepper",
+                    description: "Chunky paneer with crisp capsicum & red pepper",
                     price: "13.00",
                     imagePath: "assets/images/pizza2.png",
                     rating: 4.2,
+                    isRed: true,
                   ),
                   FoodCard2Widget(
-                    title: "Mexican Green ",
-                    description:
-                        "Crunchy onions, crisp capsicum, juicy tomatoes",
+                    title: "Mexican Green Wave",
+                    description: "Crunchy onions, crisp capsicum, juicy tomatoes",
                     price: "23.00",
                     imagePath: "assets/images/pizza3.png",
                     rating: 4.7,
+                    isRed: true,
                   ),
                 ],
               ),
@@ -193,55 +145,46 @@ class _PizzaScreenState extends State<PizzaScreen> {
             IconButton(
               icon: Icon(
                 Icons.home,
-                color: selectedIndex == 0 ? Colors.green : Colors.grey,
+                color: Colors.grey,
               ),
-              onPressed: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen())),
-
-                onItemTapped(0)},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
             ),
             IconButton(
               icon: Icon(
                 Icons.favorite,
-                color: isFavoriteSelected ? Colors.green : Colors.grey,
+                color: Colors.green,
               ),
               onPressed: () {
-                setState(() {
-                  isFavoriteSelected = true;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FavoritesScreen()),
-                ).then((_) {
-                  setState(() {
-                    isFavoriteSelected = false;
-                  });
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoritesScreen()));
+
               },
             ),
             SizedBox(width: 40),
             IconButton(
               icon: Icon(
                 Icons.history,
-                color: selectedIndex == 3 ? Colors.green : Colors.grey,
+                color: Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () {},
             ),
             IconButton(
               icon: Icon(
                 Icons.person,
-                color: selectedIndex == 4 ? Colors.green : Colors.grey,
+                color: Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
+              onPressed: () {},
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
-        onPressed: () {
-          onItemTapped(2);
-        },
+        onPressed: () {},
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

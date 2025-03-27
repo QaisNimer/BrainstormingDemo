@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:untitled/view/screen/favourites_screen.dart';
+
+import 'favorites_screen.dart';
 
 class RemoveFavouritePage extends StatelessWidget {
   @override

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/intro2_screen.dart';
+import 'package:foodtek/view/screens/intro4_location_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:untitled/view/screen/intro2_screen.dart';
-import 'package:untitled/view/screen/intro4_location_screen.dart';
-import 'package:untitled/view/screen/login_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -37,8 +36,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     " Enjoy A Fast And Smooth Food Delivery At Your Doorstep",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-
                   ),
+
                   SizedBox(height: 70),
                   TextButton(
                     onPressed: () {
@@ -49,7 +48,10 @@ class _IntroScreenState extends State<IntroScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      padding: EdgeInsets.symmetric(horizontal: 120, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 120,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
@@ -63,6 +65,7 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Row(
@@ -72,7 +75,9 @@ class _IntroScreenState extends State<IntroScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Intro4LocationScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => Intro4LocationScreen(),
+                      ),
                     );
                   },
                   child: Text(
@@ -80,6 +85,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
+
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 1,
@@ -90,7 +96,11 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward, color: Colors.green, size: 28),
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.green,
+                    size: 28,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
