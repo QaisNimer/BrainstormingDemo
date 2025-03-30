@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart'; // تأكد من إضافة هذه الحزمة إلى pubspec.yaml
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 
+import 'client_location_screen.dart';
 import 'favorites_screen.dart';
 import 'filter_screen.dart';
 import 'history_screen.dart';
@@ -35,7 +36,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,6 +343,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
         backgroundColor: Colors.green,
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped2(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),

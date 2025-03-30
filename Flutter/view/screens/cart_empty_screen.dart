@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/view/screen/favourites_screen.dart';
-import 'package:untitled/view/screen/history_empty_screen.dart';
-import 'package:untitled/view/screen/notification_screen.dart';
+import 'package:foodtek/view/screens/delete_cart_screen.dart';
+import 'package:foodtek/view/screens/history_screen.dart';
+
+
+import 'client_location_screen.dart';
+import 'favorites_screen.dart';
+import 'history_empty_screen.dart';
+import 'home_screen.dart';
+import 'notification_screen.dart';
 
 class CartEmptyScreen extends StatefulWidget {
   const CartEmptyScreen({super.key});
@@ -37,7 +43,12 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +173,11 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                 Icons.home,
                 color: selectedIndex == 0 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(0),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen())),
+
+                onItemTapped(0),}
             ),
             IconButton(
               icon: Icon(
@@ -189,7 +204,11 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped(3)},
             ),
             IconButton(
               icon: Icon(
@@ -204,6 +223,8 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),

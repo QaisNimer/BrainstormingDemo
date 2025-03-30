@@ -19,8 +19,6 @@ class CartTotalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final total = subtotal + delivery - discount;
 
-    debugPrint('Calculating Total: $subtotal + $delivery - $discount = $total');
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       padding: EdgeInsets.all(20),
@@ -48,7 +46,6 @@ class CartTotalWidget extends StatelessWidget {
             label: "Discount",
             value: "\$${discount.toStringAsFixed(2)}",
           ),
-         // SizedBox(height: 1),
           Container(
             padding: EdgeInsets.all(8),
             child: DetailCartRow(

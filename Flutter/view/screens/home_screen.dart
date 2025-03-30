@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/client_location_screen.dart';
+import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/favorites_screen.dart';
+import 'package:foodtek/view/screens/history_screen.dart';
 import 'package:foodtek/view/screens/notification_screen.dart';
 import 'package:foodtek/view/screens/order_details_screen.dart';
 import 'package:foodtek/view/screens/pizza_home_screen.dart';
@@ -45,7 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,10 +150,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: "Pizza",
                       icon: Icons.local_pizza,
                       isSelected: selectedIndex == 2,
-                      onPressed: () =>
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PizzaScreen())),
-                        onItemTapped(2)},
+                      onPressed:
+                          () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PizzaScreen(),
+                              ),
+                            ),
+                            onItemTapped(2),
+                          },
                     ),
                     CategoryButtonWidget(
                       title: "Sandwich",
@@ -316,11 +330,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.favorite,
                 color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FavoritesScreen(),
+                      ),
+                    ),
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoritesScreen())),
-
-                onItemTapped2(1)},
+                    onItemTapped2(1),
+                  },
             ),
             SizedBox(width: 40),
             IconButton(
@@ -328,7 +348,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.history,
                 color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {onItemTapped2(3)},
+              onPressed: () => {
+
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+
+                onItemTapped2(3)},
             ),
             IconButton(
               icon: Icon(
@@ -343,6 +368,9 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
+
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped2(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),

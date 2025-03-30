@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/view/screen/cart_empty_screen.dart';
-import 'package:untitled/view/screen/favourites_screen.dart';
-import 'package:untitled/view/screen/notification_screen.dart';
+import 'package:foodtek/view/screens/history_screen.dart';
+
+
+import 'cart_empty_screen.dart';
+import 'delete_cart_screen.dart';
+import 'favorites_screen.dart';
+import 'home_screen.dart';
+import 'notification_screen.dart';
 
 class HistoryEmptyScreen extends StatefulWidget {
   const HistoryEmptyScreen({super.key});
@@ -162,7 +167,11 @@ class _HistoryEmptyScreenState extends State<HistoryEmptyScreen> {
                 Icons.home,
                 color: selectedIndex == 0 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(0),
+              onPressed: () => {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen())),
+
+                onItemTapped(0)},
             ),
             IconButton(
               icon: Icon(
@@ -189,7 +198,10 @@ class _HistoryEmptyScreenState extends State<HistoryEmptyScreen> {
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(3),
+              onPressed: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+
+                onItemTapped(3)},
             ),
             IconButton(
               icon: Icon(
@@ -204,6 +216,9 @@ class _HistoryEmptyScreenState extends State<HistoryEmptyScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
+
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/cart_empty_screen.dart';
+import 'package:foodtek/view/screens/check_out_screen.dart';
+import 'package:foodtek/view/screens/filter_screen.dart';
 import 'package:foodtek/view/screens/history_screen.dart';
 import 'package:foodtek/view/widgets/cart_total_widget.dart';
 import 'package:foodtek/view/widgets/cart_item_widget.dart';
+import 'client_location_screen.dart';
 import 'favorites_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
@@ -38,7 +42,12 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +179,10 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
                     subtitle: "Hot Cool Spot",
                     price: 15,
                     image: "assets/images/shawarma.png",
-                    onDelete: () {},
+                    onDelete: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CartEmptyScreen()));
+
+                    },
                   ),
                 ],
               ),
@@ -183,7 +195,7 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
                 delivery: 10,
                 discount: 10,
                 onOrderPressed: () {
-                  //   Navigator.push(context, MaterialPageRoute(builder: (context) => ()));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOutScreen()));
                 },
               ),
             ],
@@ -249,6 +261,8 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped(2);
         },
         child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),

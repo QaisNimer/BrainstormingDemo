@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/food_cart2_widget.dart';
+import 'client_location_screen.dart';
+import 'delete_cart_screen.dart';
 import 'history_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
@@ -26,7 +28,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +68,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -188,7 +195,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
+        },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

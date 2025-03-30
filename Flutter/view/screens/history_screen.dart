@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/widgets/history_widget.dart';
 
+import 'client_location_screen.dart';
 import 'favorites_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
@@ -38,8 +39,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
-            SizedBox(width: 5),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),            SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -248,6 +253,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+
           onItemTapped(2);
         },
         child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),

@@ -3,6 +3,7 @@ import 'package:foodtek/view/screens/filter_screen.dart';
 import 'package:foodtek/view/screens/home_screen.dart';
 import '../../model/notification_model.dart';
 import '../widgets/category_button_widget.dart';
+import 'client_location_screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -81,7 +82,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
         elevation: 0,
         title: Row(
           children: [
-            const Icon(Icons.location_on, color: Colors.green, size: 31),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),
             const SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

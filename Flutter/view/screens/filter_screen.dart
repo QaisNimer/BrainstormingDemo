@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'client_location_screen.dart';
+import 'delete_cart_screen.dart';
 import 'favorites_screen.dart';
 import 'history_screen.dart';
 import 'home_screen.dart';
@@ -48,8 +50,12 @@ class _FilterScreenState extends State<FilterScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.location_on, color: Colors.green, size: 31),
-            SizedBox(width: 5),
+            IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+              },
+              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+            ),            SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -329,7 +335,10 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => onItemTapped2(2),
+        onPressed: () => {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen())),
+
+          onItemTapped2(2),},
         backgroundColor: Colors.green,
         child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
