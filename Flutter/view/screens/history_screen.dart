@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import 'package:foodtek/view/widgets/history_widget.dart';
 
 import 'client_location_screen.dart';
@@ -41,10 +42,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientLocationScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.location_on, color: Colors.green, size: 31),
-            ),            SizedBox(width: 5),
+            ),
+            SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,10 +93,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: () => {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen())),
+                    onPressed:
+                        () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DeleteCartScreen(),
+                            ),
+                          ),
 
-                      onTabChanged(0)},
+                          onTabChanged(0),
+                        },
                     child: Column(
                       children: [
                         Text(
@@ -184,7 +198,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     children: [
                       TextButton(
                         onPressed: () {},
-                        child: Text("Load More..", style: TextStyle(fontSize: 18,color: Colors.green)),
+                        child: Text(
+                          "Load More..",
+                          style: TextStyle(fontSize: 18, color: Colors.green),
+                        ),
                       ),
                     ],
                   ),
@@ -235,17 +252,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Icons.history,
                 color: selectedIndex == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoryScreen()),
+                    ),
 
-                onItemTapped(3)},
+                    onItemTapped(3),
+                  },
             ),
             IconButton(
               icon: Icon(
                 Icons.person,
                 color: selectedIndex == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    ),
+
+                    onItemTapped(4),
+                  },
             ),
           ],
         ),
@@ -253,7 +283,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+          );
 
           onItemTapped(2);
         },

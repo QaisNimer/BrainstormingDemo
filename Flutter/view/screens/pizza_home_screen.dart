@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/filter_screen.dart';
 import 'package:foodtek/view/screens/order_details_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 
 import '../widgets/category_button_widget.dart';
 import '../widgets/food_cart2_widget.dart';
@@ -244,8 +245,17 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 Icons.person,
                 color: selectedIndex == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
-            ),
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped(4),
+              },            ),
           ],
         ),
       ),

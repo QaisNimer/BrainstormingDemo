@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/check_out_done_screen.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/history_screen.dart';
 import 'package:foodtek/view/screens/home_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 
 
 import '../widgets/credit_card_widget.dart';
@@ -158,7 +160,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () {
-                //  Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>CheckOutDoneScreen()));
 
                 },
                 icon: const Icon(Icons.lock, color: Colors.white),
@@ -201,7 +203,17 @@ class _AddCardScreenState extends State<AddCardScreen> {
             ),
             IconButton(
               icon: Icon(Icons.person, color: selectedIndex == 4 ? Colors.green : Colors.grey),
-              onPressed: () => onItemTapped(4),
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped(4),
+              },
             ),
           ],
         ),

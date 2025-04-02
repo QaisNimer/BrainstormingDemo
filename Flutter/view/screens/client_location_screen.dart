@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/home_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -105,7 +106,7 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                   Row(
                     children: [
                       Icon(Icons.location_on, color: Colors.green),
                       SizedBox(width: 8),
@@ -209,7 +210,17 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 Icons.person,
                 color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(4),
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped2(4),
+              },
             ),
           ],
         ),

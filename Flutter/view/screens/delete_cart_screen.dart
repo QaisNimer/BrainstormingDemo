@@ -3,6 +3,7 @@ import 'package:foodtek/view/screens/cart_empty_screen.dart';
 import 'package:foodtek/view/screens/check_out_screen.dart';
 import 'package:foodtek/view/screens/filter_screen.dart';
 import 'package:foodtek/view/screens/history_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import 'package:foodtek/view/widgets/cart_total_widget.dart';
 import 'package:foodtek/view/widgets/cart_item_widget.dart';
 import 'client_location_screen.dart';
@@ -253,7 +254,17 @@ class _DeleteCartScreenState extends State<DeleteCartScreen> {
                 Icons.person,
                 color: selectedIndex == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped(4),
+              },
             ),
           ],
         ),

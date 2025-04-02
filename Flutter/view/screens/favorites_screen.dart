@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 
 import '../widgets/food_cart2_widget.dart';
 import 'client_location_screen.dart';
@@ -188,7 +189,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Icons.person,
                 color: Colors.grey,
               ),
-              onPressed: () {},
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+              },
             ),
           ],
         ),

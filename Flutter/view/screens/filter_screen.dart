@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import 'client_location_screen.dart';
 import 'delete_cart_screen.dart';
 import 'favorites_screen.dart';
@@ -52,10 +53,16 @@ class _FilterScreenState extends State<FilterScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientLocationScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.location_on, color: Colors.green, size: 31),
-            ),            SizedBox(width: 5),
+            ),
+            SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -73,7 +80,11 @@ class _FilterScreenState extends State<FilterScreen> {
             IconButton(onPressed: () {}, icon: Icon(Icons.arrow_drop_down)),
             Spacer(),
             IconButton(
-              icon: Icon(Icons.notifications_none, color: Colors.black, size: 31),
+              icon: Icon(
+                Icons.notifications_none,
+                color: Colors.black,
+                size: 31,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -92,9 +103,15 @@ class _FilterScreenState extends State<FilterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Filter", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(
+                  "Filter",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: 6),
-                Text("Price range", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  "Price range",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: 10),
                 Row(
                   children: [
@@ -102,14 +119,18 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: "Min",
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -119,14 +140,18 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: "Max",
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -153,7 +178,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     });
                   },
                 ),
-                Text("Discount", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  "Discount",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 SizedBox(height: 5),
                 Row(
                   children: [
@@ -161,14 +189,18 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: "Min",
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -178,14 +210,18 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: "Max",
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -211,82 +247,103 @@ class _FilterScreenState extends State<FilterScreen> {
                   },
                 ),
                 SizedBox(height: 10),
-                Text("Category", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  "Category",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Wrap(
                   spacing: 10,
-                  children: categories.map((category) {
-                    return ChoiceChip(
-                      label: Text(category),
-                      selected: selectedCategory == category,
-                      selectedColor: Colors.green,
-                      backgroundColor: Colors.grey.withOpacity(0.2),
-                      labelStyle: TextStyle(
-                        color: selectedCategory == category ? Colors.white : Colors.black,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      showCheckmark: false,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedCategory = category;
-                        });
-                      },
-                    );
-                  }).toList(),
+                  children:
+                      categories.map((category) {
+                        return ChoiceChip(
+                          label: Text(category),
+                          selected: selectedCategory == category,
+                          selectedColor: Colors.green,
+                          backgroundColor: Colors.grey.withOpacity(0.2),
+                          labelStyle: TextStyle(
+                            color:
+                                selectedCategory == category
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          showCheckmark: false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedCategory = category;
+                            });
+                          },
+                        );
+                      }).toList(),
                 ),
                 SizedBox(height: 10),
-                Text("Location", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  "Location",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Wrap(
                   spacing: 8,
-                  children: [1, 5, 10].map((km) {
-                    return ChoiceChip(
-                      label: Text("$km KM"),
-                      selected: selectedLocation == km,
-                      selectedColor: Colors.green,
-                      backgroundColor: Colors.grey.withOpacity(0.2),
-                      labelStyle: TextStyle(
-                        color: selectedLocation == km ? Colors.white : Colors.black,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      showCheckmark: false,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedLocation = km;
-                        });
-                      },
-                    );
-                  }).toList(),
+                  children:
+                      [1, 5, 10].map((km) {
+                        return ChoiceChip(
+                          label: Text("$km KM"),
+                          selected: selectedLocation == km,
+                          selectedColor: Colors.green,
+                          backgroundColor: Colors.grey.withOpacity(0.2),
+                          labelStyle: TextStyle(
+                            color:
+                                selectedLocation == km
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          showCheckmark: false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedLocation = km;
+                            });
+                          },
+                        );
+                      }).toList(),
                 ),
                 SizedBox(height: 10),
-                Text("Dish", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(
+                  "Dish",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 Wrap(
                   spacing: 20,
-                  children: dishes.map((dish) {
-                    return ChoiceChip(
-                      label: Text(dish),
-                      selected: selectedDish == dish,
-                      selectedColor: Colors.green,
-                      backgroundColor: Colors.grey.withOpacity(0.2),
-                      labelStyle: TextStyle(
-                        color: selectedDish == dish ? Colors.white : Colors.black,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      showCheckmark: false,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedDish = dish;
-                        });
-                      },
-                    );
-                  }).toList(),
+                  children:
+                      dishes.map((dish) {
+                        return ChoiceChip(
+                          label: Text(dish),
+                          selected: selectedDish == dish,
+                          selectedColor: Colors.green,
+                          backgroundColor: Colors.grey.withOpacity(0.2),
+                          labelStyle: TextStyle(
+                            color:
+                                selectedDish == dish
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          showCheckmark: false,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedDish = dish;
+                            });
+                          },
+                        );
+                      }).toList(),
                 ),
               ],
             ),
@@ -301,7 +358,10 @@ class _FilterScreenState extends State<FilterScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.home, color: selectedIndex2 == 0 ? Colors.green : Colors.grey),
+              icon: Icon(
+                Icons.home,
+                color: selectedIndex2 == 0 ? Colors.green : Colors.grey,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -310,7 +370,10 @@ class _FilterScreenState extends State<FilterScreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.favorite, color: selectedIndex2 == 1 ? Colors.green : Colors.grey),
+              icon: Icon(
+                Icons.favorite,
+                color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -320,25 +383,48 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
             SizedBox(width: 40),
             IconButton(
-              icon: Icon(Icons.history, color: selectedIndex2 == 3 ? Colors.green : Colors.grey),
-              onPressed: () => {
+              icon: Icon(
+                Icons.history,
+                color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
+              ),
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoryScreen()),
+                    ),
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
-
-                onItemTapped2(3)},
+                    onItemTapped2(3),
+                  },
             ),
             IconButton(
-              icon: Icon(Icons.person, color: selectedIndex2 == 4 ? Colors.green : Colors.grey),
-              onPressed: () => onItemTapped2(4),
+              icon: Icon(
+                Icons.person,
+                color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
+              ),
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    ),
+
+                    onItemTapped2(4),
+                  },
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen())),
+        onPressed:
+            () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+              ),
 
-          onItemTapped2(2),},
+              onItemTapped2(2),
+            },
         backgroundColor: Colors.green,
         child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),

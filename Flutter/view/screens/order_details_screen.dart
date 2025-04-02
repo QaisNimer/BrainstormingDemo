@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart'; // تأكد من إضافة هذه الحزمة إلى pubspec.yaml
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 
 import 'client_location_screen.dart';
 import 'favorites_screen.dart';
@@ -38,7 +39,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientLocationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientLocationScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.location_on, color: Colors.green, size: 31),
             ),
@@ -76,19 +82,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
               decoration: InputDecoration(
                 hintText: "Search menu, restaurant or etc",
-                prefixIcon:  Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
                 suffixIcon: IconButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FilterScreen()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FilterScreen()),
+                    );
                   },
-                  icon:  Icon(Icons.tune),
+                  icon: Icon(Icons.tune),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -98,9 +107,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 filled: true,
               ),
             ),
-             SizedBox(height: 15),
+            SizedBox(height: 15),
             Container(child: Image.asset("assets/images/big_burger.png")),
-             SizedBox(height: 17),
+            SizedBox(height: 17),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -110,7 +119,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ],
             ),
-             SizedBox(height: 6),
+            SizedBox(height: 6),
             Row(
               children: [
                 RatingBar.builder(
@@ -199,7 +208,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Mild", style: TextStyle(color: Colors.green)),
+                              Text(
+                                "Mild",
+                                style: TextStyle(color: Colors.green),
+                              ),
                               Text("Hot", style: TextStyle(color: Colors.red)),
                             ],
                           ),
@@ -218,7 +230,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
-                            icon: Icon(Icons.remove, size: 18, color: Colors.green),
+                            icon: Icon(
+                              Icons.remove,
+                              size: 18,
+                              color: Colors.green,
+                            ),
                             onPressed: () {
                               setState(() {
                                 if (quantity > 1) quantity--;
@@ -242,7 +258,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
-                            icon: Icon(Icons.add, size: 18, color: Colors.white),
+                            icon: Icon(
+                              Icons.add,
+                              size: 18,
+                              color: Colors.white,
+                            ),
                             onPressed: () {
                               setState(() {
                                 quantity++;
@@ -300,22 +320,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 Icons.home,
                 color: selectedIndex2 == 0 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    ),
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen())),
-
-                onItemTapped2(0)},
+                    onItemTapped2(0),
+                  },
             ),
             IconButton(
               icon: Icon(
                 Icons.favorite,
                 color: selectedIndex2 == 1 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FavoritesScreen(),
+                      ),
+                    ),
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoritesScreen())),
-
-                onItemTapped2(1)},
+                    onItemTapped2(1),
+                  },
             ),
             SizedBox(width: 40),
             IconButton(
@@ -323,33 +353,48 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 Icons.history,
                 color: selectedIndex2 == 3 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoryScreen()),
+                    ),
 
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoryScreen())),
-
-                onItemTapped2(3)},
+                    onItemTapped2(3),
+                  },
             ),
             IconButton(
               icon: Icon(
                 Icons.person,
                 color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped2(4),
+              onPressed:
+                  () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    ),
+
+                    onItemTapped2(4),
+                  },
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-
         backgroundColor: Colors.green,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteCartScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+          );
 
           onItemTapped2(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }

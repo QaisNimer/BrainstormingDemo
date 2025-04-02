@@ -6,6 +6,7 @@ import 'package:foodtek/view/screens/history_screen.dart';
 import 'package:foodtek/view/screens/notification_screen.dart';
 import 'package:foodtek/view/screens/order_details_screen.dart';
 import 'package:foodtek/view/screens/pizza_home_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import 'package:foodtek/view/widgets/food_card_widget.dart';
 import 'package:foodtek/view/widgets/recommended_card_widget.dart';
 import '../widgets/category_button_widget.dart';
@@ -360,7 +361,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.person,
                 color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {onItemTapped2(4)},
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped2(4),
+              },
             ),
           ],
         ),

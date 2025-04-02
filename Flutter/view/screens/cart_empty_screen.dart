@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/history_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 
 
 import 'client_location_screen.dart';
@@ -215,7 +216,17 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                 Icons.person,
                 color: selectedIndex == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => onItemTapped(4),
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped(4),
+              },
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:foodtek/view/screens/add_card_screen.dart';
 import 'package:foodtek/view/screens/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/history_screen.dart';
 import 'package:foodtek/view/screens/home_screen.dart';
+import 'package:foodtek/view/screens/profile_screen.dart';
 import '../widgets/cart_total_widget.dart';
 import 'favorites_screen.dart';
 import 'notification_screen.dart';
@@ -378,7 +379,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 Icons.person,
                 color: selectedIndex2 == 4 ? Colors.green : Colors.grey,
               ),
-              onPressed: () => {onItemTapped2(4)},
+              onPressed:
+                  () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+
+                onItemTapped2(4),
+              },
             ),
           ],
         ),
