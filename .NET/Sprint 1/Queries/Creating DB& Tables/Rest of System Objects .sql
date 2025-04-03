@@ -127,3 +127,26 @@ CREATE TABLE ReportedIssues (
     Status NVARCHAR(50),
     AdminResponse NVARCHAR(500),
     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID));
+
+
+CREATE TABLE Roles (
+    RoleID INT IDENTITY(1,1) PRIMARY KEY,
+    RoleNameEN NVARCHAR(100) NOT NULL,
+    RoleNameAR NVARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Permissions (
+    PermissionID INT IDENTITY(1,1) PRIMARY KEY,
+    PermissionName NVARCHAR(100) NOT NULL,
+    PermissionDescription NVARCHAR(255)
+);
+
+
+CREATE TABLE RolePermissions (
+    RoleID INT NOT NULL,
+    PermissionID INT NOT NULL,
+    PRIMARY KEY (RoleID, PermissionID),
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID),
+    FOREIGN KEY (PermissionID) REFERENCES Permissions(PermissionID)
+);
