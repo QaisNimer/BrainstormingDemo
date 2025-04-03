@@ -45,3 +45,25 @@ VALUES
 INSERT INTO Notifications (ReceiverID, Title, Message, NotificationTypeID)
 VALUES
 (3, 'Order Dispatched', 'Your order has been dispatched and is on the way.', 1); -- Assuming 1=Order Notification Type
+
+
+-- Insert Roles
+INSERT INTO Roles (RoleNameEN, RoleNameAR) VALUES
+('SuperAdmin', N'مشرف عام'),
+('Admin', N'مشرف'),
+('Employee', N'موظف');
+
+-- Insert Sample Permissions
+INSERT INTO Permissions (PermissionName, PermissionDescription) VALUES
+('ManageAdmins', 'Create, update, and delete admin users'),
+('ManageItems', 'Create, update, and disable items'),
+('ManageOrders', 'Update order status and track orders'),
+('ViewReports', 'Access to various system reports'),
+('ManageClients', 'Enable/disable clients and view their orders'),
+('ManageDiscounts', 'Create and manage discounts and offers');
+
+-- Assign Permissions to Roles (e.g., Admin has all)
+INSERT INTO RolePermissions (RoleID, PermissionID) VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), -- SuperAdmin: All
+(2, 2), (2, 3), (2, 5), (2, 6),                 -- Admin: Some
+(3, 2);                                         -- Employee: Only manage items
