@@ -1,0 +1,6 @@
+@FoodtekAPI_HostAddress = http://localhost:5217
+
+GET {{FoodtekAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
