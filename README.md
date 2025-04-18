@@ -1,6 +1,6 @@
-# Flutter Project – Team Setup Guide (English + Arabic)
+# Flutter Project – Team Setup Guide
 
-## ENGLISH
+
 
 Welcome to the organized Flutter branch! This guide will help each team member connect their local project to GitHub **without losing any local work**, and contribute properly using individual branches.
 
@@ -29,7 +29,7 @@ git init
 
 #### 3. Add the GitHub remote repository:
 ```bash
-git remote add origin https://github.com/widadamjad/Brainstorming.git
+git remote add origin https://github.com/QaisNimer/BrainstormingDemo.git
 ```
 
 #### 4. Fetch all branches from the remote:
@@ -81,72 +81,4 @@ git pull origin duha-branch
 
 ---
 
-## ARABIC
 
-### تعليمات ربط المشروع المحلي مع GitHub بدون ما يضيع الشغل
-
----
-
-### ملاحظات عامة:
-- **ممنوع أي حدا يرفع شغله على `main` أو `clean_flutter_project`.**
-- كل واحد يشتغل بفرع خاص فيه.
-- الدمج بيصير بعد مراجعة Pull Request.
-
----
-
-### الخطوات:
-
-#### ١. افتح التيرمنال داخل مجلد مشروعك.
-
-#### ٢. تأكد إذا المشروع مربوط بـ git:
-```bash
-git status
-```
-
-لو مش مربوط:
-```bash
-git init
-```
-
-#### ٣. اربط المشروع مع مستودع GitHub:
-```bash
-git remote add origin https://github.com/widadamjad/Brainstorming.git
-```
-
-#### ٤. اسحب كل الفروع من GitHub:
-```bash
-git fetch origin
-```
-
-#### ٥. اعمل فرع خاص فيك:
-
-**Duha:**
-```bash
-git checkout -b duha-branch
-```
-
-**Alaa:**
-```bash
-git checkout -b alaa-branch
-```
-
-#### ٦. اعمل commit للشغل:
-```bash
-git add .
-git commit -m "رفع شغلي المحلي"
-```
-
-#### ٧. ارفع الفرع على GitHub:
-```bash
-git push origin duha-branch
-```
-
-أو:
-
-```bash
-git push origin alaa-branch
-```
-
----
-
-### بعدين كل واحد يشتغل بفرعه، ولما يخلص يفتح Pull Request للفرع الأساسي `rand-branch`.
