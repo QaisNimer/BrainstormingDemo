@@ -7,7 +7,7 @@ import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
 import 'package:foodtek/view/screens/section_6/detail_profile_screen.dart';
 import '../../../controller/lang_controller.dart';
-import '../../../core/theme_provider.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../section_3/favorites_screen.dart';
 

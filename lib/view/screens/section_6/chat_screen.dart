@@ -9,7 +9,7 @@ import 'package:foodtek/view/screens/section_4/history_screen.dart';
 import 'package:foodtek/view/screens/section_6/profile_screen.dart';
 import 'package:foodtek/view/screens/section_6/track_location_screen.dart';
 
-import '../../../core/theme_provider.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 
 class ChatScreen extends StatefulWidget {

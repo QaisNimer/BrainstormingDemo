@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:foodtek/core/theme_provider.dart';
-import 'package:foodtek/core/app_theme.dart';
+import 'package:foodtek/core/theme/theme_provider.dart';
+import 'package:foodtek/core/theme/app_theme.dart';
 import 'package:foodtek/view/screens/section_4/cart_empty_screen.dart';
 import 'package:foodtek/view/screens/section_5/check_out_screen.dart';
 import 'package:foodtek/view/screens/section_3/filter_screen.dart';
