@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_1/intro2_screen.dart';
-import 'package:foodtek/view/screens/section_1/intro4_location_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../controller/lang_controller.dart';
+import 'intro2_screen.dart';
+import 'intro4_location_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -15,7 +13,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +32,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   Image.asset("assets/images/Order_food.png", height: 300),
                   SizedBox(height: 20),
                   Text(
-                    AppLocalizations.of(
-                      context,
-                    )!.welcome_to_salah,
+                    AppLocalizations.of(context)!.welcome_to_salah,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,

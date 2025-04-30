@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/lang_controller.dart';
+import '../section_2/login_screen.dart';
+import '../section_3/home_screen.dart';
 
 class Intro4LocationScreen extends StatefulWidget {
   const Intro4LocationScreen({super.key});

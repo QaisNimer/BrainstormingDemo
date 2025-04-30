@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:foodtek/view/screens/section_4/history_empty_screen.dart';
-import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foodtek/view/screens/section_6/profile_screen.dart';
-import 'package:foodtek/view/screens/section_3/favorites_screen.dart';
-import 'package:foodtek/view/screens/section_3/notification_screen.dart';
-import 'package:foodtek/view/screens/section_5/client_location_screen.dart';
+import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
+import 'package:foodtek/view/screens/section_4/history_empty_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
+import '../section_3/favorites_screen.dart';
+import '../section_3/notification_screen.dart';
+import '../section_5/client_location_screen.dart';
+import '../section_6/profile_screen.dart';
 import 'history_screen.dart';
 
 class CartEmptyScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -47,7 +49,12 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ClientLocationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientLocationScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.location_on, color: Colors.green, size: 31),
             ),
@@ -55,21 +62,37 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppLocalizations.of(context)!.current_location, style: TextStyle(fontSize: 15)),
                 Text(
-                  "Jl. Soekarno Hatta 15A..",
+                  AppLocalizations.of(context)!.current_location,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Colors.black,
+                    color: isDarkMode ? Colors.white : Colors.black,
                   ),
+                ),
+                Consumer<LocationController>(
+                  builder: (context, locationController, child) {
+                    return Text(
+                      locationController.address.isNotEmpty
+                          ? locationController.address
+                          : AppLocalizations.of(context)!.set_location,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
             IconButton(onPressed: () {}, icon: Icon(Icons.arrow_drop_down)),
             Spacer(),
             IconButton(
-              icon: Icon(Icons.notifications_none, color: Colors.black, size: 31),
+              icon: Icon(
+                Icons.notifications_none,
+                color: Colors.black,
+                size: 31,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -91,11 +114,17 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                   onTap: () => onTabTapped(0),
                   child: Column(
                     children: [
-                      Text(AppLocalizations.of(context)!.cart,
-                          style: TextStyle(
-                              color: selectedTabIndex == 0 ? Colors.green : Colors.grey,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold)),
+                      Text(
+                        AppLocalizations.of(context)!.cart,
+                        style: TextStyle(
+                          color:
+                              selectedTabIndex == 0
+                                  ? Colors.green
+                                  : Colors.grey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       if (selectedTabIndex == 0)
                         Container(
                           margin: EdgeInsets.only(top: 4),
@@ -110,16 +139,24 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HistoryEmptyScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => HistoryEmptyScreen(),
+                      ),
                     );
                   },
                   child: Column(
                     children: [
-                      Text(AppLocalizations.of(context)!.history,
-                          style: TextStyle(
-                              color: selectedTabIndex == 1 ? Colors.green : Colors.grey,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold)),
+                      Text(
+                        AppLocalizations.of(context)!.history,
+                        style: TextStyle(
+                          color:
+                              selectedTabIndex == 1
+                                  ? Colors.green
+                                  : Colors.grey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       if (selectedTabIndex == 1)
                         Container(
                           margin: EdgeInsets.only(top: 4),
@@ -137,26 +174,19 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/cart_empty.png',
-                  height: 250,
-                ),
+                Image.asset('assets/images/cart_empty.png', height: 250),
                 SizedBox(height: 20),
                 Text(
                   AppLocalizations.of(context)!.cart_empty,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  AppLocalizations.of(context)!.you_don_t_have_order_any_foods_before,
+                  AppLocalizations.of(
+                    context,
+                  )!.you_don_t_have_order_any_foods_before,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(fontSize: 17, color: Colors.grey),
                 ),
               ],
             ),
@@ -222,7 +252,10 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DeleteCartScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+          );
           onItemTapped(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),

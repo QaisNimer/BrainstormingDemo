@@ -22,7 +22,7 @@ class CartTotalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final total = subtotal + delivery - discount;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final textColor = isDark ? Colors.white : Colors.white;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -82,7 +82,7 @@ class CartTotalWidget extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? Colors.green[400] : Colors.white,
-                foregroundColor: isDark ? Colors.black : Colors.green,
+                foregroundColor: isDark ? Colors.white : Colors.green,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

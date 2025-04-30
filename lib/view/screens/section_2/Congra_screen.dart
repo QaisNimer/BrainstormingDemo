@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'login_screen.dart';
 
 class CongraScreen extends StatefulWidget {
+  const CongraScreen({super.key});
+
   @override
   State<CongraScreen> createState() => _CongraScreenState();
 }
@@ -14,7 +17,6 @@ class _CongraScreenState extends State<CongraScreen> {
   @override
   void initState() {
     super.initState();
-
 
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
@@ -39,9 +41,7 @@ class _CongraScreenState extends State<CongraScreen> {
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.black.withOpacity(0.2),
-              ),
+              child: Container(color: Colors.black.withOpacity(0.2)),
             ),
           ),
 

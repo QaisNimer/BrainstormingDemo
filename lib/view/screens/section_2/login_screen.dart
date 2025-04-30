@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/controller/login_controller.dart';
-import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:foodtek/view/screens/section_2/rest_password_screen.dart';
 import 'package:foodtek/view/screens/section_2/signup_screen.dart';
+import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../widgets/input_widget.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailTextEditingController = TextEditingController();
-  final TextEditingController passTextEditingController = TextEditingController();
+  final TextEditingController emailTextEditingController =
+      TextEditingController();
+  final TextEditingController passTextEditingController =
+      TextEditingController();
   bool rememberMe = false;
 
   @override
@@ -53,7 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginController = Provider.of<LoginController>(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenSize = MediaQuery.of(context).size;
-    final topPadding = 99.0; // You can adjust this value to change the top margin
+    final topPadding =
+        140.0; // You can adjust this value to change the top margin
 
     return Scaffold(
       body: Container(
@@ -75,9 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             child: Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 500,
-                ),
+                constraints: BoxConstraints(maxWidth: 500),
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -103,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      // const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -111,8 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             AppLocalizations.of(context)!.dont_have_an_account,
                             style: TextStyle(
                               fontFamily: 'Inter',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
                               color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
@@ -120,7 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignUpScreen()),
+                                MaterialPageRoute(
+                                  builder: (context) => SignUpScreen(),
+                                ),
                               );
                             },
                             child: Text(
@@ -128,25 +133,30 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                 color: Colors.green,
                                 fontFamily: 'Inter',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 15),
-                      Consumer<LoginController>(builder: (context, loginController, child) {
-                        return InputWidget(
-                          obscureText: false,
-                          textEditingController: emailTextEditingController,
-                          label: AppLocalizations.of(context)!.email,
-                          hintText: "Loisbakit@gmail.com",
-                          errorText: loginController.showErrorEmail
-                              ? AppLocalizations.of(context)!.enter_a_valid_email
-                              : null,
-                        );
-                      }),
+                      Consumer<LoginController>(
+                        builder: (context, loginController, child) {
+                          return InputWidget(
+                            obscureText: false,
+                            textEditingController: emailTextEditingController,
+                            label: AppLocalizations.of(context)!.email,
+                            hintText: "Loisbakit@gmail.com",
+                            errorText:
+                                loginController.showErrorEmail
+                                    ? AppLocalizations.of(
+                                      context,
+                                    )!.enter_a_valid_email
+                                    : null,
+                          );
+                        },
+                      ),
                       const SizedBox(height: 15),
                       TextFormField(
                         controller: passTextEditingController,
@@ -242,7 +252,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -264,15 +276,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 12),
                       Text(
                         AppLocalizations.of(context)!.or,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.g_mobiledata_rounded, color: Colors.red),
+                        icon: Icon(
+                          Icons.g_mobiledata_rounded,
+                          color: Colors.red,
+                        ),
                         label: Text(
                           AppLocalizations.of(context)!.continue_with_google,
                           style: TextStyle(
@@ -280,7 +292,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor:
+                              isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -298,7 +311,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor:
+                              isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -316,7 +330,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor:
+                              isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -334,4 +349,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

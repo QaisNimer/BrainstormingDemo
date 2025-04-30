@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:provider/provider.dart';
+
+import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
-import '../section_3/home_screen.dart';
 import '../section_3/favorites_screen.dart';
 import '../section_4/delete_cart_screen.dart';
-import '../section_4/history_screen.dart';
 import '../section_6/profile_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../section_6/track_location_screen.dart';
 
 class ClientLocationScreen extends StatefulWidget {
@@ -80,7 +81,7 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                   BitmapDescriptor.hueAzure,
                 ),
-                infoWindow: InfoWindow(title: "You are here 🧍"),
+                infoWindow: const InfoWindow(title: "You are here 🧍"),
               ),
             },
             zoomControlsEnabled: false,
@@ -93,12 +94,16 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
               children: [
                 IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.arrow_back, color: isDarkMode ? Colors.white : Colors.black),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 Expanded(
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.find_your_location,
+                      hintText:
+                          AppLocalizations.of(context)!.find_your_location,
                       prefixIcon: const Icon(Icons.search, color: Colors.green),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -106,7 +111,9 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                       ),
                       fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                       filled: true,
-                      hintStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+                      hintStyle: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
                     ),
                   ),
                 ),
@@ -135,32 +142,38 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: Colors.green),
-                      SizedBox(width: 8),
+                      const Icon(Icons.location_on, color: Colors.green),
+                      const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)!.your_location,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: isDarkMode ? Colors.white : Colors.black),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
                   Text(
                     addressText,
-                    style: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54),
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white70 : Colors.black54,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => HomeScreen(
-                            userLocation: selectedLocation,
-                            addressText: addressText,
-                          ),
-                        ),
+                      final locationController =
+                          Provider.of<LocationController>(
+                            context,
+                            listen: false,
+                          );
+                      locationController.setLocation(
+                        selectedLocation,
+                        addressText,
                       );
+
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -169,9 +182,9 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                       ),
                       minimumSize: const Size(double.infinity, 45),
                     ),
-                    child:  Text(
+                    child: Text(
                       AppLocalizations.of(context)!.set_location,
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -200,7 +213,12 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 label: AppLocalizations.of(context)!.favorite,
                 isSelected: selectedIndex2 == 1,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritesScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoritesScreen(),
+                    ),
+                  );
                   onItemTapped2(1);
                 },
               ),
@@ -210,7 +228,12 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 label: AppLocalizations.of(context)!.track,
                 isSelected: selectedIndex2 == 3,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TrackLocationScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrackLocationScreen(),
+                    ),
+                  );
                   onItemTapped2(3);
                 },
               ),
@@ -219,7 +242,12 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 label: AppLocalizations.of(context)!.profile,
                 isSelected: selectedIndex2 == 4,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfileScreen(),
+                    ),
+                  );
                   onItemTapped2(4);
                 },
               ),
@@ -232,7 +260,7 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+            MaterialPageRoute(builder: (context) => const DeleteCartScreen()),
           );
           onItemTapped2(2);
         },

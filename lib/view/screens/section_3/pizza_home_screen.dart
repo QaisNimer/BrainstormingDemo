@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_3/filter_screen.dart';
-import 'package:foodtek/view/screens/section_3/order_details_screen.dart';
-import 'package:foodtek/view/screens/section_6/profile_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../../widgets/category_button_widget.dart';
 import '../../widgets/foods/food_cart2_widget.dart';
-import '../section_5/client_location_screen.dart';
 import '../section_4/delete_cart_screen.dart';
-import 'favorites_screen.dart';
-
 import '../section_4/history_screen.dart';
+import '../section_5/client_location_screen.dart';
+import '../section_6/profile_screen.dart';
+import 'favorites_screen.dart';
+import 'filter_screen.dart';
 import 'home_screen.dart';
 import 'notification_screen.dart';
+import 'order_details_screen.dart';
 
 class PizzaScreen extends StatefulWidget {
   const PizzaScreen({super.key});
@@ -39,6 +41,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
     final isDark = theme.brightness == Brightness.dark;
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
+    final locationController = Provider.of<LocationController>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -51,7 +54,12 @@ class _PizzaScreenState extends State<PizzaScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ClientLocationScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientLocationScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.location_on, color: Colors.green, size: 31),
             ),
@@ -60,13 +68,15 @@ class _PizzaScreenState extends State<PizzaScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-              AppLocalizations.of(
-              context,
-            )!.current_location,
-                  style: TextStyle(fontSize: 15, color: theme.textTheme.bodyMedium!.color),
+                  AppLocalizations.of(context)!.current_location,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: theme.textTheme.bodyMedium!.color,
+                  ),
                 ),
+                // عرض العنوان من LocationController
                 Text(
-                  "Jl. Soekarno Hatta 15A..",
+                  locationController.address, // العنوان من LocationController
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -81,7 +91,11 @@ class _PizzaScreenState extends State<PizzaScreen> {
             ),
             Spacer(),
             IconButton(
-              icon: Icon(Icons.notifications_none, color: theme.iconTheme.color, size: 31),
+              icon: Icon(
+                Icons.notifications_none,
+                color: theme.iconTheme.color,
+                size: 31,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -93,20 +107,24 @@ class _PizzaScreenState extends State<PizzaScreen> {
         ),
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(
-                  context,
-                )!.search_menu_restaurant_or_etc,
-                hintStyle: TextStyle(color: isDark ? Colors.white60 : Colors.black45),
+                hintText:
+                    AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
+                hintStyle: TextStyle(
+                  color: isDark ? Colors.white60 : Colors.black45,
+                ),
                 prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
                 suffixIcon: IconButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FilterScreen()),
+                    );
                   },
                   icon: Icon(Icons.tune, color: theme.iconTheme.color),
                 ),
@@ -124,26 +142,35 @@ class _PizzaScreenState extends State<PizzaScreen> {
               child: Row(
                 children: [
                   CategoryButtonWidget(
-                    title:  AppLocalizations.of(
-                      context,
-                    )!.all,
+                    title: AppLocalizations.of(context)!.all,
                     isSelected: false,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
                     },
                   ),
                   CategoryButtonWidget(
                     title: '🍔 ${AppLocalizations.of(context)!.burger}',
                     isSelected: false,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetailsScreen()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderDetailsScreen(),
+                        ),
+                      );
                     },
                   ),
                   CategoryButtonWidget(
                     title: '🍕  ${AppLocalizations.of(context)!.pizza}',
                     isSelected: true,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PizzaScreen()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PizzaScreen()),
+                      );
                     },
                   ),
                   CategoryButtonWidget(
@@ -165,9 +192,9 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.pepperoni_pizza,
                     description:
-                    AppLocalizations.of(
-                      context,
-                    )!.pepperoni_pizza_margarita_pizza_margherita_italian_cuisine_tomato,
+                        AppLocalizations.of(
+                          context,
+                        )!.pepperoni_pizza_margarita_pizza_margherita_italian_cuisine_tomato,
                     price: "29.00",
                     imagePath: "assets/images/pizza (1).png",
                     rating: 4.5,
@@ -175,9 +202,9 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.pizza_cheese,
                     description:
-                    AppLocalizations.of(
-                      context,
-                    )!.food_pizza_dish_cuisine_junk_food_fast_food_flatbread_ingredient,
+                        AppLocalizations.of(
+                          context,
+                        )!.food_pizza_dish_cuisine_junk_food_fast_food_flatbread_ingredient,
                     price: "23.00",
                     imagePath: "assets/images/pizza1.png",
                     rating: 4.3,
@@ -185,19 +212,16 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.peppy_paneer,
                     description:
-                    AppLocalizations.of(
-                      context,
-                    )!.chunky_paneer_with_crisp_capsicum_and_spicy_red_pepper,
+                        AppLocalizations.of(
+                          context,
+                        )!.chunky_paneer_with_crisp_capsicum_and_spicy_red_pepper,
                     price: "13.00",
                     imagePath: "assets/images/pizza2.png",
                     rating: 4.2,
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.mexican_green_wave,
-                    description:
-                    AppLocalizations.of(
-                      context,
-                    )!.a_pizza_loaded,
+                    description: AppLocalizations.of(context)!.a_pizza_loaded,
                     price: "23.00",
                     imagePath: "assets/images/pizza3.png",
                     rating: 4.7,
@@ -220,25 +244,25 @@ class _PizzaScreenState extends State<PizzaScreen> {
               BottomNavItemWidget(
                 icon: Icons.home,
                 label: AppLocalizations.of(context)!.home,
-                isSelected: selectedIndex == 1,
+                isSelected: selectedIndex == 0,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomeScreen()),
                   );
-                  onItemTapped(1);
+                  onItemTapped(0);
                 },
               ),
               BottomNavItemWidget(
                 icon: Icons.favorite,
                 label: AppLocalizations.of(context)!.favorite,
-                isSelected: selectedIndex == 0,
+                isSelected: selectedIndex == 1,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FavoritesScreen()),
                   );
-                  onItemTapped(0);
+                  onItemTapped(1);
                 },
               ),
               const SizedBox(width: 40), // space for FAB

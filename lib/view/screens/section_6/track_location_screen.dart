@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_6/chat_screen.dart';
-import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
-import 'package:foodtek/view/screens/section_3/home_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/view/screens/section_6/profile_screen.dart';
 import 'package:foodtek/view/widgets/deliverys/delivery_progress_indicator_widget.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:foodtek/view/screens/section_3/favorites_screen.dart';
-import 'package:foodtek/view/screens/section_4/history_screen.dart';
+
 import '../../../controller/track_location_controller.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
+import '../section_3/favorites_screen.dart';
+import '../section_3/home_screen.dart';
+import '../section_4/delete_cart_screen.dart';
+import 'chat_screen.dart';
 
 class TrackLocationScreen extends StatefulWidget {
   const TrackLocationScreen({super.key});
@@ -73,9 +72,10 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey[800]
-                    : Colors.white,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey[800]
+                        : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
               ),
@@ -108,15 +108,17 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
                 Expanded(
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.find_your_location,
+                      hintText:
+                          AppLocalizations.of(context)!.find_your_location,
                       prefixIcon: const Icon(Icons.search, color: Colors.green),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
                       ),
-                      fillColor: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[700]
-                          : Colors.white,
+                      fillColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[700]
+                              : Colors.white,
                       filled: true,
                     ),
                   ),
@@ -128,11 +130,12 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              height: MediaQuery.of(context).size.height * 0.34,
+              height: MediaQuery.of(context).size.height * 0.37,
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey[800]
-                    : Colors.white,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey[800]
+                        : Colors.white,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
@@ -160,17 +163,17 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           AppLocalizations.of(context)!.all_detail,
-                          style: TextStyle(
-                              fontSize: 16, color: Colors.green),
+                          style: TextStyle(fontSize: 16, color: Colors.green),
                         ),
                       ),
                     ],
@@ -258,9 +261,10 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey[850]
-            : Colors.white,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[850]
+                : Colors.white,
         shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
         child: SizedBox(
@@ -279,7 +283,12 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
                 label: AppLocalizations.of(context)!.favorite,
                 isSelected: selectedIndex2 == 1,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritesScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoritesScreen(),
+                    ),
+                  );
                   onItemTapped2(1);
                 },
               ),
@@ -289,7 +298,12 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
                 label: AppLocalizations.of(context)!.track,
                 isSelected: selectedIndex2 == 0,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TrackLocationScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrackLocationScreen(),
+                    ),
+                  );
                   onItemTapped2(0);
                 },
               ),
@@ -298,7 +312,12 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
                 label: AppLocalizations.of(context)!.profile,
                 isSelected: selectedIndex2 == 4,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfileScreen(),
+                    ),
+                  );
                   onItemTapped2(4);
                 },
               ),
@@ -318,7 +337,7 @@ class _TrackLocationScreenState extends State<TrackLocationScreen> {
         child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
       floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterDocked,
+          FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }

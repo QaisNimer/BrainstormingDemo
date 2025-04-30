@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
-import 'package:foodtek/view/screens/section_4/history_screen.dart';
-import 'package:foodtek/view/screens/section_3/home_screen.dart';
-import 'package:foodtek/view/screens/section_6/profile_screen.dart';
-import 'package:foodtek/view/screens/section_6/track_location_screen.dart';
-import 'package:foodtek/view/screens/section_5/track_order_screen.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foodtek/view/screens/section_5/track_order_screen.dart';
 
 import '../../widgets/bottom_nav_Item_widget.dart';
+
 import '../section_3/favorites_screen.dart';
 import '../section_3/notification_screen.dart';
+import '../section_4/delete_cart_screen.dart';
+import '../section_6/profile_screen.dart';
+import '../section_6/track_location_screen.dart';
 
 class CheckOutDoneScreen extends StatefulWidget {
+  const CheckOutDoneScreen({super.key});
+
   @override
   _CheckOutDoneScreenState createState() => _CheckOutDoneScreenState();
 }
@@ -28,10 +30,15 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Checking the theme mode
+    final isDarkMode =
+        Theme.of(context).brightness ==
+        Brightness.dark; // Checking the theme mode
 
     return Scaffold(
-      backgroundColor: isDarkMode ? Colors.black : Colors.white, // Change background based on theme
+      backgroundColor:
+          isDarkMode
+              ? Colors.black
+              : Colors.white, // Change background based on theme
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120),
         child: AppBar(
@@ -40,7 +47,11 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
-              icon: Icon(Icons.notifications_none, color: isDarkMode ? Colors.white : Colors.black, size: 31),
+              icon: Icon(
+                Icons.notifications_none,
+                color: isDarkMode ? Colors.white : Colors.black,
+                size: 31,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -67,10 +78,7 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/Congra.png',
-              height: 250,
-            ),
+            Image.asset('assets/images/Congra.png', height: 250),
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context)!.your_order_done_successfully,
@@ -82,7 +90,9 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              AppLocalizations.of(context)!.you_will_get_your_order_within_12min_thanks_for_using_our_services,
+              AppLocalizations.of(
+                context,
+              )!.you_will_get_your_order_within_12min_thanks_for_using_our_services,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -101,7 +111,10 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TrackOrderScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TrackOrderScreen()),
+                  );
                 },
                 child: Text(
                   AppLocalizations.of(context)!.track_your_order,
@@ -132,7 +145,10 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
                 label: AppLocalizations.of(context)!.favorite,
                 isSelected: selectedIndex == 1,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FavoritesScreen()),
+                  );
                   onItemTapped(1);
                 },
               ),
@@ -142,7 +158,12 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
                 label: AppLocalizations.of(context)!.track,
                 isSelected: selectedIndex == 3,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TrackLocationScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TrackLocationScreen(),
+                    ),
+                  );
                   onItemTapped(3);
                 },
               ),
@@ -151,7 +172,10 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
                 label: AppLocalizations.of(context)!.profile,
                 isSelected: selectedIndex == 4,
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
                   onItemTapped(4);
                 },
               ),
@@ -162,7 +186,10 @@ class _CheckOutDoneScreenState extends State<CheckOutDoneScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DeleteCartScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+          );
           onItemTapped(2);
         },
         child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
