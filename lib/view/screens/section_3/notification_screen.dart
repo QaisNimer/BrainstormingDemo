@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foodtek/controller/location_controller.dart';
 import 'package:foodtek/view/screens/section_3/filter_screen.dart';
 import 'package:foodtek/view/screens/section_3/home_screen.dart';
+import 'package:provider/provider.dart';
+
 import '../../../model/notification_model.dart';
 import '../section_5/client_location_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -36,31 +39,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
     notifications = [
       NotificationModel(
         title: AppLocalizations.of(context)!.delayed_order,
-        message: AppLocalizations.of(context)!.we_re_sorry_your_order_is_running_late_new_eta_10_30_PM_thanks_for_your_patience,
+        message:
+            AppLocalizations.of(
+              context,
+            )!.we_re_sorry_your_order_is_running_late_new_eta_10_30_PM_thanks_for_your_patience,
         time: AppLocalizations.of(context)!.last_wednesday_at_9_42_am,
         unread: true,
       ),
       NotificationModel(
         title: AppLocalizations.of(context)!.promotional_offer,
-        message: "🍕 ${AppLocalizations.of(context)!.craving_something_delicious_get_20_off_on_your_next_order_use_code_yummy20}",
+        message:
+            "🍕 ${AppLocalizations.of(context)!.craving_something_delicious_get_20_off_on_your_next_order_use_code_yummy20}",
         time: AppLocalizations.of(context)!.last_wednesday_at_9_42_am,
         unread: false,
       ),
       NotificationModel(
         title: AppLocalizations.of(context)!.out_for_delivery,
-        message: "🚗 ${AppLocalizations.of(context)!.your_order_is_on_the_way_estimated_arrival_15_mins_stay_hungry}",
+        message:
+            "🚗 ${AppLocalizations.of(context)!.your_order_is_on_the_way_estimated_arrival_15_mins_stay_hungry}",
         time: AppLocalizations.of(context)!.last_wednesday_at_9_42_am,
         unread: false,
       ),
       NotificationModel(
         title: AppLocalizations.of(context)!.order_confirmation,
-        message: "🍕 ${AppLocalizations.of(context)!.your_order_has_been_placed_we_re_preparing_it_now_track_your_order_live}",
+        message:
+            "🍕 ${AppLocalizations.of(context)!.your_order_has_been_placed_we_re_preparing_it_now_track_your_order_live}",
         time: AppLocalizations.of(context)!.last_wednesday_at_9_42_am,
         unread: false,
       ),
       NotificationModel(
         title: AppLocalizations.of(context)!.delivered,
-        message: "🍕 ${AppLocalizations.of(context)!.enjoy_your_meal_your_order_has_been_delivered_rate_your_experience}",
+        message:
+            "🍕 ${AppLocalizations.of(context)!.enjoy_your_meal_your_order_has_been_delivered_rate_your_experience}",
         time: AppLocalizations.of(context)!.last_wednesday_at_9_42_am,
         unread: false,
       ),
@@ -70,6 +80,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final location = Provider.of<LocationController>(context).address;
 
     List<NotificationModel> filteredNotifications = notifications;
     if (selectedTab == 1) {
@@ -101,10 +112,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Current location", style: TextStyle(fontSize: 15)),
-                const Text(
-                  "Jl. Soekarno Hatta 15A..",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                Text(
+                  AppLocalizations.of(context)!.current_location,
+                  style: const TextStyle(fontSize: 15),
+                ),
+                Text(
+                  location.isNotEmpty
+                      ? location
+                      : AppLocalizations.of(context)!.set_location,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
               ],
             ),
@@ -165,8 +184,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 const Center(
                   child: Text("Notifications", style: TextStyle(fontSize: 29)),
                 ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
               ],
             ),
             const SizedBox(height: 10),
@@ -191,7 +209,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       borderRadius: BorderRadius.circular(4),
                       boxShadow: [
                         BoxShadow(
-                          color: isDarkMode ? Colors.grey.withOpacity(0.4) : Colors.grey.withOpacity(0.2),
+                          color:
+                              isDarkMode
+                                  ? Colors.grey.withOpacity(0.4)
+                                  : Colors.grey.withOpacity(0.2),
                           spreadRadius: 1,
                           blurRadius: 5,
                         ),
@@ -219,14 +240,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  color: isDarkMode ? Colors.white : Colors.black,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 notification.message,
                                 style: TextStyle(
-                                  color: isDarkMode ? Colors.white70 : Colors.black87,
+                                  color:
+                                      isDarkMode
+                                          ? Colors.white70
+                                          : Colors.black87,
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -263,8 +288,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               color: isSelected ? Colors.green : Colors.black,
             ),
           ),
-          if (isSelected)
-            Container(height: 2, width: 30, color: Colors.green),
+          if (isSelected) Container(height: 2, width: 30, color: Colors.green),
         ],
       ),
     );

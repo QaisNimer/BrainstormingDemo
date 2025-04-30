@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_1/intro3_screen.dart';
-import 'package:foodtek/view/screens/section_1/intro4_location_screen.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import 'intro4_location_screen.dart';
 
 class Intro3Screen extends StatefulWidget {
   const Intro3Screen({super.key});
@@ -13,7 +12,7 @@ class Intro3Screen extends StatefulWidget {
 }
 
 class _Intro3ScreenState extends State<Intro3Screen> {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +40,9 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    AppLocalizations.of(context)!
-                        .order_your_favorite_food_with_in_the_plam_of_your_handand_the_zone_of_your_comfort,
+                    AppLocalizations.of(
+                      context,
+                    )!.order_your_favorite_food_with_in_the_plam_of_your_handand_the_zone_of_your_comfort,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -55,13 +55,16 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Intro4LocationScreen()),
+                          builder: (context) => Intro4LocationScreen(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 120, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 120,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
@@ -85,7 +88,8 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Intro4LocationScreen()),
+                        builder: (context) => Intro4LocationScreen(),
+                      ),
                     );
                   },
                   child: Text(
@@ -106,13 +110,17 @@ class _Intro3ScreenState extends State<Intro3Screen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward,
-                      color: Colors.green, size: 28),
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.green,
+                    size: 28,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Intro4LocationScreen()),
+                        builder: (context) => Intro4LocationScreen(),
+                      ),
                     );
                   },
                 ),

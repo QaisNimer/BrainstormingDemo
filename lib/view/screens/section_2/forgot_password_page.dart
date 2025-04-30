@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_2/Congra_screen.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controller/lang_controller.dart';
 import '../../../controller/login_controller.dart';
+import 'Congra_screen.dart';
+import 'login_screen.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController newPassTextEditingController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController confirmPassTextEditingController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +41,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               width: MediaQuery.of(context).size.width * 0.80,
               height: MediaQuery.of(context).size.height * 0.51,
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.grey[900]
-                    : Colors.white,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey[900]
+                        : Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -72,9 +74,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                     ],
@@ -83,8 +86,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Row(
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.want_to_try_with_my_current_password,
-                        style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black54),
+                        AppLocalizations.of(
+                          context,
+                        )!.want_to_try_with_my_current_password,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white70
+                                  : Colors.black54,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -113,7 +124,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     decoration: InputDecoration(
                       filled: true,
                       label: Text(AppLocalizations.of(context)!.new_password),
-                      fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.white,
+                      fillColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[850]
+                              : Colors.white,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
@@ -126,8 +140,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     obscureText: loginController.obscureTextPassword,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.white,
-                      labelText: AppLocalizations.of(context)!.confirm_new_password,
+                      fillColor:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[850]
+                              : Colors.white,
+                      labelText:
+                          AppLocalizations.of(context)!.confirm_new_password,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
@@ -138,8 +156,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   TextButton(
                     onPressed: () {
                       loginController.checkPassword(
-                        password:
-                        newPassTextEditingController.text,
+                        password: newPassTextEditingController.text,
                       );
                       Navigator.push(
                         context,
@@ -165,7 +182,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),

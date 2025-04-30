@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/view/screens/section_6/track_location_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
-import 'package:foodtek/view/screens/section_3/home_screen.dart';
-import 'package:foodtek/view/screens/section_4/delete_cart_screen.dart';
-import 'package:foodtek/view/screens/section_6/detail_profile_screen.dart';
+
 import '../../../controller/lang_controller.dart';
 import '../../../core/theme_provider.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
+import '../section_2/login_screen.dart';
 import '../section_3/favorites_screen.dart';
+import '../section_3/home_screen.dart';
+import '../section_4/delete_cart_screen.dart';
+import 'detail_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -40,10 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Icons.arrow_back,
             color: Theme.of(context).iconTheme.color,
           ),
-          onPressed: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()),
-          ),
+          onPressed:
+              () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomeScreen()),
+              ),
         ),
         title: Text(
           AppLocalizations.of(context)!.profile,
@@ -91,9 +93,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: isDarkMode
-                          ? Colors.black.withOpacity(.5)
-                          : Colors.grey.withOpacity(.3),
+                      color:
+                          isDarkMode
+                              ? Colors.black.withOpacity(.5)
+                              : Colors.grey.withOpacity(.3),
                       spreadRadius: 2,
                       blurRadius: 7,
                       offset: const Offset(0, 3),
@@ -116,10 +119,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _tile(
                       icon: Icons.person_outline,
                       text: AppLocalizations.of(context)!.personal_information,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => DetailProfileScreen()),
-                      ),
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DetailProfileScreen(),
+                            ),
+                          ),
                       width: width,
                     ),
                     _tile(
@@ -129,10 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onPressed: () {
                           String currentLang =
                               Localizations.localeOf(context).languageCode;
-                          String newLang =
-                          currentLang == 'ar'
-                              ? 'en'
-                              : 'ar';
+                          String newLang = currentLang == 'ar' ? 'en' : 'ar';
 
                           Provider.of<LangController>(
                             context,
@@ -140,13 +143,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ).changeLang(langCode: newLang);
                         },
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all(Colors.green),
+                          foregroundColor: WidgetStateProperty.all(
+                            Colors.green,
+                          ),
                         ),
                         child: const Text(
                           'عربية',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       width: width,
@@ -155,8 +158,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: Icons.dark_mode,
                       text: AppLocalizations.of(context)!.dark_mode,
                       value: Provider.of<ThemeProvider>(context).isDarkMode,
-                      onChanged: (value) => Provider.of<ThemeProvider>(context, listen: false)
-                          .toggleTheme(value),
+                      onChanged:
+                          (value) => Provider.of<ThemeProvider>(
+                            context,
+                            listen: false,
+                          ).toggleTheme(value),
                       width: width,
                     ),
                     _tile(
@@ -183,9 +189,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: isDarkMode
-                          ? Colors.black.withOpacity(.5)
-                          : Colors.grey.withOpacity(.3),
+                      color:
+                          isDarkMode
+                              ? Colors.black.withOpacity(.5)
+                              : Colors.grey.withOpacity(.3),
                       spreadRadius: 2,
                       blurRadius: 7,
                       offset: const Offset(0, 3),
@@ -212,9 +219,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     _switchTile(
                       icon: Icons.notifications_none,
-                      text: AppLocalizations.of(context)!.promotional_notifications,
+                      text:
+                          AppLocalizations.of(
+                            context,
+                          )!.promotional_notifications,
                       value: promotionalNotifications,
-                      onChanged: (v) => setState(() => promotionalNotifications = v),
+                      onChanged:
+                          (v) => setState(() => promotionalNotifications = v),
                       width: width,
                     ),
                   ],
@@ -231,9 +242,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: isDarkMode
-                          ? Colors.black.withOpacity(.5)
-                          : Colors.grey.withOpacity(.3),
+                      color:
+                          isDarkMode
+                              ? Colors.black.withOpacity(.5)
+                              : Colors.grey.withOpacity(.3),
                       spreadRadius: 2,
                       blurRadius: 7,
                       offset: const Offset(0, 3),
@@ -262,10 +274,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: AppLocalizations.of(context)!.log_out,
                       iconColor: Colors.red,
                       textColor: Colors.red,
-                      onTap: () => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => LoginScreen()),
-                      ),
+                      onTap:
+                          () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => LoginScreen()),
+                          ),
                       width: width,
                     ),
                   ],
@@ -278,10 +291,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       bottomNavigationBar: _buildBottomBar(width),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const DeleteCartScreen()),
-        ),
+        onPressed:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const DeleteCartScreen()),
+            ),
         child: Icon(
           Icons.shopping_cart,
           color: Colors.white,
@@ -352,9 +366,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       leading: Icon(
         icon,
         size: width * .06,
-        color: iconColor ?? (Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
-            : Theme.of(context).iconTheme.color),
+        color:
+            iconColor ??
+            (Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Theme.of(context).iconTheme.color),
       ),
       title: Text(
         text,
@@ -381,9 +397,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       leading: Icon(
         icon,
         size: width * .06,
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
-            : Theme.of(context).iconTheme.color,
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Theme.of(context).iconTheme.color,
       ),
       title: Text(
         text,
@@ -399,8 +416,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           value: value,
           onChanged: onChanged,
           activeColor: Colors.green,
-          trackColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          trackColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return Colors.green.withOpacity(0.5);
             }
             return null;

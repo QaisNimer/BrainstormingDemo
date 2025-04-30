@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foodtek/view/screens/section_2/login_screen.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+
 import '../../widgets/signup_widgets.dart';
+import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -48,10 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-
-                    AppLocalizations.of(
-                    context,
-                  )!.sign_up,
+                        AppLocalizations.of(context)!.sign_up,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -62,24 +62,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-
-                          AppLocalizations.of(
-                          context,
-                          )!.already_have_an_account,
-                            style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                            AppLocalizations.of(
+                              context,
+                            )!.already_have_an_account,
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => LoginScreen()),
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
                               );
                             },
-                            child:  Text(
-
-    AppLocalizations.of(
-    context,
-    )!.login,
+                            child: Text(
+                              AppLocalizations.of(context)!.login,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green,
@@ -91,26 +91,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: 10),
                       CustomTextField(
                         controller: _nameController,
-                        labelText:
-                        AppLocalizations.of(
-                          context,
-                        )!.full_name,
+                        labelText: AppLocalizations.of(context)!.full_name,
                       ),
                       CustomTextField(
                         controller: _emailController,
-                        labelText:
-                        AppLocalizations.of(
-                          context,
-                        )!.email,
+                        labelText: AppLocalizations.of(context)!.email,
                         keyboardType: TextInputType.emailAddress,
                         suffixIcon: const Icon(Icons.email),
                       ),
                       CustomTextField(
                         controller: _dateController,
-                        labelText:
-                        AppLocalizations.of(
-                          context,
-                        )!.birth_of_date,
+                        labelText: AppLocalizations.of(context)!.birth_of_date,
                         readOnly: true,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.calendar_today),
@@ -123,8 +114,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                             if (pickedDate != null) {
                               setState(() {
-                                _dateController.text =
-                                    DateFormat('dd/MM/yyyy').format(pickedDate);
+                                _dateController.text = DateFormat(
+                                  'dd/MM/yyyy',
+                                ).format(pickedDate);
                               });
                             }
                           },
@@ -134,14 +126,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       PhoneInputField(controller: _phoneController),
                       CustomTextField(
                         controller: _passwordController,
-                        labelText:
-                        AppLocalizations.of(
-                          context,
-                        )!.set_password,
+                        labelText: AppLocalizations.of(context)!.set_password,
                         isPassword: !_isPasswordVisible,
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: isDark ? Colors.white : null,
                           ),
                           onPressed: () {
@@ -160,14 +151,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
                           );
                         },
-                        child:  Text(
-
-                            AppLocalizations.of(
-                              context,
-                            )!.register,
+                        child: Text(
+                          AppLocalizations.of(context)!.register,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
