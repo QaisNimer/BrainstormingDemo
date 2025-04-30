@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foodtek/core/app_theme.dart';
 import 'package:foodtek/core/app_theme.dart';
 import 'package:foodtek/core/theme_provider.dart';
 import 'package:foodtek/view/widgets/carts/cart_item_widget.dart';
 import 'package:foodtek/view/widgets/carts/cart_total_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';

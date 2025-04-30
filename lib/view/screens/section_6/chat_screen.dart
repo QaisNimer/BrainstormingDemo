@@ -31,6 +31,40 @@ class _ChatScreenState extends State<ChatScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.isDarkMode;
 
+    final List<Map<String, String>> messages = [
+      {
+        "text": AppLocalizations.of(context)!.hello_chatgpt_how_are_you_today,
+        "sender": "user",
+      },
+      {
+        "text": AppLocalizations.of(context)!.hello_i_m_fine_how_can_i_help_you,
+        "sender": "bot",
+      },
+      {
+        "text":
+            AppLocalizations.of(context)!.what_is_the_best_programming_language,
+        "sender": "user",
+      },
+      {
+        "text":
+            AppLocalizations.of(
+              context,
+            )!.there_are_many_programming_languages_in_the_market,
+        "sender": "bot",
+      },
+      {
+        "text": AppLocalizations.of(context)!.so_explain_to_me_more,
+        "sender": "user",
+      },
+      {
+        "text":
+            AppLocalizations.of(
+              context,
+            )!.there_are_many_programming_languages_in_the_market,
+        "sender": "bot",
+      },
+    ];
+
     return Scaffold(
       backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.white,
       appBar: AppBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/view/screens/section_6/profile_screen.dart';
 import 'package:foodtek/view/widgets/deliverys/delivery_progress_indicator_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
