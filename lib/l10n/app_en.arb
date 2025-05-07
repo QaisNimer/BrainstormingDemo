@@ -45,6 +45,19 @@
   "view_all": "View All",
   "recommend": "Recommended",
   "home": "Home",
+  "classic_american_hotdog": "Classic American Hot Dog",
+  "classic_american_hotdog_desc": "1 beef hot dog, 1 sesame seed hot dog bun, Ketchup, Mustard.",
+
+  "chicago_style_hotdog": "Chicago-Style Hot Dog",
+  "chicago_style_hotdog_desc": "1 all-beef hot dog, 1 poppy seed bun, Yellow mustard, Chopped white onions, Sweet pickle relish, Tomato slices, Pickled sport peppers, Kosher dill pickle spear, Celery salt.",
+
+  "chili_cheese_dog": "Chili Cheese Dog",
+  "chili_cheese_dog_desc": "1 beef hot dog, 1 hot dog bun, 1/4 cup prepared chili, 2 tablespoons shredded cheddar cheese, Chopped onions (optional).",
+
+  "bacon_wrapped_hotdog": "Bacon-Wrapped Hot Dog",
+  "bacon_wrapped_hotdog_desc": "1 beef hot dog, 2 slices of bacon, 1 hot dog bun, Sautéed onions, Sliced jalapeños",
+
+
   "profile": "Profile",
   "history": "History",
   "favorite": "Favorite",
