@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/controller/favorites_controller.dart';
+import 'package:foodtek/view/screens/section_1/splash_screen.dart';
 import 'package:foodtek/view/screens/section_3/pizza_home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:foodtek/controller/profile_controller.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
 
-          home: PizzaScreen(),
+          home: SplashScreen(),
         );
       },
     );
