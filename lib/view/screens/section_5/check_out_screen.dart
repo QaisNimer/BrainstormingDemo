@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/theme_provider.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../../widgets/carts/cart_total_widget.dart';
 import '../section_3/notification_screen.dart';

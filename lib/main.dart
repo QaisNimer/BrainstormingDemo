@@ -11,8 +11,8 @@ import 'package:foodtek/controller/track_location_controller.dart';
 import 'package:foodtek/controller/login_controller.dart';
 import 'package:foodtek/controller/lang_controller.dart';
 import 'controller/location_controller.dart';
-import 'core/app_theme.dart';
-import 'core/theme_provider.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
