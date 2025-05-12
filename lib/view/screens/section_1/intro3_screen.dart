@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:foodtek/view/screens/section_1/intro3_screen.dart';
+import 'package:foodtek/view/screens/section_1/intro4_location_screen.dart';
+import 'package:foodtek/view/screens/section_2/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'intro4_location_screen.dart';
 
 class Intro3Screen extends StatefulWidget {
   const Intro3Screen({super.key});

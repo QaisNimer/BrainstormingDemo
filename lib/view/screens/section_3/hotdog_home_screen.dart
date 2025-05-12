@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foodtek/view/screens/section_3/burger_home_screen.dart';
+import 'package:foodtek/view/screens/section_3/pizza_home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../../widgets/category_button_widget.dart';
+import '../../widgets/foods/food_card_widget.dart';
 import '../../widgets/foods/food_cart2_widget.dart';
 import '../section_4/delete_cart_screen.dart';
 import '../section_4/history_screen.dart';
 import '../section_5/client_location_screen.dart';
 import '../section_6/profile_screen.dart';
+import 'burger_home_screen.dart';
 import 'favorites_screen.dart';
 import 'filter_screen.dart';
 import 'home_screen.dart';
-import 'hotdog_home_screen.dart';
 import 'notification_screen.dart';
 import 'order_details_screen.dart';
 
-class PizzaScreen extends StatefulWidget {
-  const PizzaScreen({super.key});
+class HotdogHomeScreen extends StatefulWidget {
+  const HotdogHomeScreen({super.key});
 
   @override
-  State<PizzaScreen> createState() => _PizzaScreenState();
+  State<HotdogHomeScreen> createState() => _HotdogHomeScreenState();
 }
 
-class _PizzaScreenState extends State<PizzaScreen> {
+class _HotdogHomeScreenState extends State<HotdogHomeScreen> {
   int selectedIndex = 0;
   final int selectedCategoryIndex = 2;
   bool isFavoriteSelected = false;
@@ -116,7 +117,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
             TextFormField(
               decoration: InputDecoration(
                 hintText:
-                    AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
+                AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
                 hintStyle: TextStyle(
                   color: isDark ? Colors.white60 : Colors.black45,
                 ),
@@ -167,7 +168,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   ),
                   CategoryButtonWidget(
                     title: '🍕  ${AppLocalizations.of(context)!.pizza}',
-                    isSelected: true,
+                    isSelected: false,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -177,7 +178,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   ),
                   CategoryButtonWidget(
                     title: '🌭 ${AppLocalizations.of(context)!.sandwich}',
-                    isSelected: false,
+                    isSelected: true,
                     onPressed: () {
 
                       Navigator.push(
@@ -200,41 +201,47 @@ class _PizzaScreenState extends State<PizzaScreen> {
                 childAspectRatio: screenWidth / (screenWidth * 1.3),
                 children: [
                   FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.pepperoni_pizza,
+                    title: AppLocalizations.of(context)!.classic_american_hotdog,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.pepperoni_pizza_margarita_pizza_margherita_italian_cuisine_tomato,
-                    price: "29.00",
-                    imagePath: "assets/images/pizza (1).png",
+                    AppLocalizations.of(context)!.classic_american_hotdog_desc,
+                    price: "20.00",
+                    imagePath: "assets/images/hotdog1.jpeg",
+                    rating: 3.8,
+                    //                 onPressed: () {
+                    //                   Navigator.push(
+                    //                     context,
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) => OrderDetailsScreen(),
+                    // ),
+                    //                   );
+                    //                 },
+                  ),
+                  FoodCard2Widget(
+                    title: AppLocalizations.of(context)!.chicago_style_hotdog,
+                    description:
+                    AppLocalizations.of(context)!.chicago_style_hotdog_desc,
+                    price: "15.00",
+                    imagePath: "assets/images/hotdog2.jpeg",
                     rating: 4.5,
+                    // onPressed: () {},
                   ),
                   FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.pizza_cheese,
+                    title: AppLocalizations.of(context)!.chili_cheese_dog,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.food_pizza_dish_cuisine_junk_food_fast_food_flatbread_ingredient,
-                    price: "23.00",
-                    imagePath: "assets/images/pizza1.png",
-                    rating: 4.3,
+                    AppLocalizations.of(context)!.chili_cheese_dog_desc,
+                    price: "20.00",
+                    imagePath: "assets/images/hotdog3.jpeg",
+                    rating: 3.8,
+                    // onPressed: () {},
                   ),
                   FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.peppy_paneer,
+                    title: AppLocalizations.of(context)!.bacon_wrapped_hotdog,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.chunky_paneer_with_crisp_capsicum_and_spicy_red_pepper,
-                    price: "13.00",
-                    imagePath: "assets/images/pizza2.png",
-                    rating: 4.2,
-                  ),
-                  FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.mexican_green_wave,
-                    description: AppLocalizations.of(context)!.a_pizza_loaded,
-                    price: "23.00",
-                    imagePath: "assets/images/pizza3.png",
-                    rating: 4.7,
+                    AppLocalizations.of(context)!.bacon_wrapped_hotdog_desc,
+                    price: "20.00",
+                    imagePath: "assets/images/hotdog4.jpeg",
+                    rating: 3.8,
+                    // onPressed: () {},
                   ),
                 ],
               ),

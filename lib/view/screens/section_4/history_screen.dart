@@ -4,8 +4,8 @@ import 'package:foodtek/view/widgets/history_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/location_controller.dart';
-import '../../../core/app_theme.dart';
-import '../../../core/theme_provider.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../section_3/favorites_screen.dart';
 import '../section_3/home_screen.dart';
