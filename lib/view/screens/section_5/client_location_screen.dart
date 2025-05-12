@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../section_3/favorites_screen.dart';
+import '../section_3/home_screen.dart';
 import '../section_4/delete_cart_screen.dart';
 import '../section_6/profile_screen.dart';
 import '../section_6/track_location_screen.dart';
@@ -206,8 +207,13 @@ class _ClientLocationScreenState extends State<ClientLocationScreen> {
                 icon: Icons.home,
                 label: AppLocalizations.of(context)!.home,
                 isSelected: selectedIndex2 == 0,
-                onTap: () => onItemTapped2(0),
-              ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                  onItemTapped2(0);
+                },              ),
               BottomNavItemWidget(
                 icon: Icons.favorite,
                 label: AppLocalizations.of(context)!.favorite,
