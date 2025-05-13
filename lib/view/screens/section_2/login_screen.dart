@@ -7,6 +7,8 @@ import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../model/sign_model.dart';
+import '../../../service/auth/authentication_service.dart';
 import '../../widgets/input_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,10 +19,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailTextEditingController =
-      TextEditingController();
-  final TextEditingController passTextEditingController =
-      TextEditingController();
+  final TextEditingController emailTextEditingController = TextEditingController();
+  final TextEditingController passTextEditingController = TextEditingController();
   bool rememberMe = false;
 
   @override
@@ -56,9 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final loginController = Provider.of<LoginController>(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final screenSize = MediaQuery.of(context).size;
-    final topPadding =
-        140.0; // You can adjust this value to change the top margin
+    final topPadding = 140.0;
 
     return Scaffold(
       body: Container(
@@ -72,12 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(
-              top: topPadding,
-              left: 20,
-              right: 20,
-              bottom: 12,
-            ),
+            padding: EdgeInsets.only(top: topPadding, left: 20, right: 20, bottom: 12),
             child: Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
@@ -106,14 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
-                      // const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             AppLocalizations.of(context)!.dont_have_an_account,
                             style: TextStyle(
-                              fontFamily: 'Inter',
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
                               color: isDark ? Colors.white : Colors.black,
@@ -123,18 +114,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignUpScreen(),
-                                ),
+                                MaterialPageRoute(builder: (context) => SignUpScreen()),
                               );
                             },
                             child: Text(
                               AppLocalizations.of(context)!.sign_up,
                               style: TextStyle(
                                 color: Colors.green,
-                                fontFamily: 'Inter',
                                 fontSize: 15,
-                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
@@ -148,12 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             textEditingController: emailTextEditingController,
                             label: AppLocalizations.of(context)!.email,
                             hintText: "Loisbakit@gmail.com",
-                            errorText:
-                                loginController.showErrorEmail
-                                    ? AppLocalizations.of(
-                                      context,
-                                    )!.enter_a_valid_email
-                                    : null,
+                            errorText: loginController.showErrorEmail
+                                ? AppLocalizations.of(context)!.enter_a_valid_email
+                                : null,
                           );
                         },
                       ),
@@ -220,9 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => ResetPasswordScreen(),
-                                ),
+                                MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
                               );
                             },
                             child: Text(
@@ -238,24 +220,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () async {
-                          loginController.checkEmail(
+                          loginController.checkEmail(email: emailTextEditingController.text);
+                          loginController.checkPassword(password: passTextEditingController.text);
+
+                          Sign_Model signModel = Sign_Model(
                             email: emailTextEditingController.text,
-                          );
-                          loginController.checkPassword(
                             password: passTextEditingController.text,
                           );
 
-                          await _saveCredentials(
-                            emailTextEditingController.text,
-                            "user_id_123",
-                          );
+                          final authService = AuthService();
+                          bool success = await authService.login(signModel);
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
+                          if (success) {
+                            await _saveCredentials(emailTextEditingController.text, "user_id_123");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeScreen()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Login failed. Please check your credentials.")),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
@@ -274,45 +260,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        AppLocalizations.of(context)!.or,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
+                      Text(AppLocalizations.of(context)!.or, style: TextStyle(color: Colors.grey)),
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        icon: Icon(
-                          Icons.g_mobiledata_rounded,
-                          color: Colors.red,
-                        ),
+                        icon: Icon(Icons.g_mobiledata_rounded, color: Colors.red),
                         label: Text(
                           AppLocalizations.of(context)!.continue_with_google,
-                          style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
+                          style: TextStyle(color: isDark ? Colors.white : Colors.black),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                       SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.facebook, color: Colors.blue),
                         label: Text(
                           AppLocalizations.of(context)!.continue_with_facebook,
-                          style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
+                          style: TextStyle(color: isDark ? Colors.white : Colors.black),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -325,13 +299,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Icon(Icons.apple, color: Colors.black),
                         label: Text(
                           AppLocalizations.of(context)!.continue_with_apple,
-                          style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
+                          style: TextStyle(color: isDark ? Colors.white : Colors.black),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isDark ? Colors.grey[850] : Colors.white,
+                          backgroundColor: isDark ? Colors.grey[850] : Colors.white,
                           minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
