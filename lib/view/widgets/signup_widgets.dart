@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
@@ -50,18 +51,14 @@ class PhoneInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: IntlPhoneField(
         controller: controller,
-        decoration:  InputDecoration(
-          labelText:  AppLocalizations.of(
-            context,
-          )!.phone_number,
+        decoration: InputDecoration(
+          labelText: AppLocalizations.of(context)!.phone_number,
           border: OutlineInputBorder(),
         ),
-        initialCountryCode:  AppLocalizations.of(
-          context,
-        )!.jo,
+        initialCountryCode: 'JO',
         onChanged: (phone) {
           print(phone.completeNumber);
         },

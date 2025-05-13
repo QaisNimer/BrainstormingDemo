@@ -1,11 +1,25 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import '../../../controller/favorites_controller.dart';
 import 'favorites_screen.dart';
 
 class RemoveFavouritePage extends StatelessWidget {
+  final String title;
+  final int itemId;
+
+  const RemoveFavouritePage({
+    Key? key,
+    required this.title,
+    required this.itemId
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final favoritesController = Provider.of<FavoritesController>(context, listen: false);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -49,13 +63,53 @@ class RemoveFavouritePage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FavoritesScreen(),
-                            ),
+                        onPressed: () async {
+                          // Show loading indicator
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
                           );
+
+                          try {
+                            // Call API to remove from favorites
+                            await favoritesController.remove(title, itemId);
+
+                            // Close loading dialog
+                            Navigator.pop(context);
+
+                            // Navigate back to favorites screen
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FavoritesScreen(),
+                              ),
+                            );
+                          } catch (e) {
+                            // Close loading dialog
+                            Navigator.pop(context);
+
+                            // Show error dialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Error'),
+                                  content: Text('Failed to remove from favorites. Please try again.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
                         child: Text(
                           AppLocalizations.of(context)!.yes,

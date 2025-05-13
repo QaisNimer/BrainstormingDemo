@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/favorites_controller.dart';
+import '../../../model/favorite_model/favorite_model.dart';
+import '../../screens/section_3/remove_favourite_screen.dart';
 
 class FoodCard2Widget extends StatefulWidget {
   final String title;
@@ -11,6 +13,7 @@ class FoodCard2Widget extends StatefulWidget {
   final String imagePath;
   final double rating;
   final bool isRed;
+  final int? itemId; // Added itemId parameter
 
   const FoodCard2Widget({
     super.key,
@@ -20,6 +23,7 @@ class FoodCard2Widget extends StatefulWidget {
     required this.imagePath,
     required this.rating,
     this.isRed = false,
+    this.itemId,
   });
 
   @override
@@ -79,70 +83,21 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () async {
-                        if (widget.isRed) {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder:
-                                (context) => Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0,
-                                      horizontal: 20,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!.are_you_sure_you_want_to_remove_it_from_favorites,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 24),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: 45,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.green,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                            ),
-                                            onPressed:
-                                                () => Navigator.pop(
-                                                  context,
-                                                  true,
-                                                ),
-                                            child: Text(
-                                              AppLocalizations.of(context)!.yes,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                          );
+                        // Get the item ID from the widget or from the controller
+                        int itemId = widget.itemId ??
+                            favoritesController.getItemIdByTitle(widget.title);
 
-                          if (confirm == true) {
-                            favoritesController.remove(widget.title);
-                            setState(() {
-                              isFavorited = false;
-                            });
-                          }
+                        if (widget.isRed) {
+                          // Navigate to confirmation page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RemoveFavouritePage(
+                                title: widget.title,
+                                itemId: itemId,
+                              ),
+                            ),
+                          );
                         } else {
                           setState(() {
                             isFavorited = !isFavorited;
@@ -157,9 +112,11 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                           );
 
                           if (isFavorited) {
-                            favoritesController.add(item);
+                            // Call add with itemId
+                            await favoritesController.add(item, itemId);
                           } else {
-                            favoritesController.remove(widget.title);
+                            // Call remove with itemId
+                            await favoritesController.remove(widget.title, itemId);
                           }
                         }
                       },
@@ -177,9 +134,9 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color:
-                              (widget.isRed || isFavorited)
-                                  ? Colors.red
-                                  : Colors.green,
+                          (widget.isRed || isFavorited)
+                              ? Colors.red
+                              : Colors.green,
                           size: 20,
                         ),
                       ),

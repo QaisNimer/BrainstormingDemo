@@ -24,6 +24,15 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   int selectedIndex3 = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    // Load favorites when the screen initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FavoritesController>(context, listen: false).loadFavorites();
+    });
+  }
+
   void onItemTapped3(int index3) {
     setState(() {
       selectedIndex3 = index3;
@@ -34,9 +43,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    final favoritesController = Provider.of<FavoritesController>(context);
-    final favorites = favoritesController.favorites;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -121,7 +127,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             TextFormField(
               decoration: InputDecoration(
                 hintText:
-                    AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
+                AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
                 prefixIcon: Icon(
                   Icons.search,
                   color: isDarkMode ? Colors.white : Colors.black,
@@ -157,34 +163,75 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ),
             SizedBox(height: 10),
             Expanded(
-              child:
-                  favorites.isEmpty
-                      ? Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.no_favorites_yet,
-                          style: TextStyle(
-                            color: isDarkMode ? Colors.white70 : Colors.black54,
-                            fontSize: 16,
+              child: Consumer<FavoritesController>(
+                builder: (context, favoritesController, child) {
+                  if (favoritesController.isLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (favoritesController.error.isNotEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Error loading favorites',
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.black54,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      )
-                      : GridView.count(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: screenWidth / (screenWidth * 1.3),
-                        children:
-                            favorites.map((item) {
-                              return FoodCard2Widget(
-                                title: item.title,
-                                description: item.description,
-                                price: item.price,
-                                imagePath: item.imagePath,
-                                rating: item.rating,
-                                isRed: true,
-                              );
-                            }).toList(),
+                          SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              favoritesController.loadFavorites();
+                            },
+                            child: Text('Retry'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                          ),
+                        ],
                       ),
+                    );
+                  }
+
+                  final favorites = favoritesController.favorites;
+
+                  if (favorites.isEmpty) {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.no_favorites_yet,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white70 : Colors.black54,
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: screenWidth / (screenWidth * 1.3),
+                    children: favorites.map((item) {
+                      // Get the itemId from the controller
+                      int itemId = favoritesController.getItemIdByTitle(item.title);
+
+                      return FoodCard2Widget(
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        imagePath: item.imagePath,
+                        rating: item.rating,
+                        isRed: true,
+                        itemId: itemId,
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
             ),
           ],
         ),
