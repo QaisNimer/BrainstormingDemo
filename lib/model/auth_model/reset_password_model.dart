@@ -5,7 +5,12 @@ class ResetPasswordModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'email': email,
+      'email': email.trim(),
     };
+  }
+
+  @override
+  String toString() {
+    return 'ResetPasswordModel(email: $email)';
   }
 }

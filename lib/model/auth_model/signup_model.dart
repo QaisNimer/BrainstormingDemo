@@ -25,13 +25,13 @@ class SignUpModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email?.trim();
-    data['password'] = this.password?.trim();
-    data['phonenum'] = this.phonenum?.trim();
-    data['firstname'] = this.firstname?.trim();
-    data['lastname'] = this.lastname?.trim();
-    data['birthDate'] = this.birthDate?.trim();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email?.trim();
+    data['password'] = password?.trim();
+    data['phonenum'] = phonenum?.trim();
+    data['firstname'] = firstname?.trim();
+    data['lastname'] = lastname?.trim();
+    data['birthDate'] = birthDate?.trim();
     return data;
   }
 }

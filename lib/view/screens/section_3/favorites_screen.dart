@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../controller/favorites_controller.dart';
 import '../../../controller/location_controller.dart';
+import '../../../model/favorite_model/favorite_model.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../../widgets/foods/food_cart2_widget.dart';
 import '../section_4/delete_cart_screen.dart';
@@ -22,14 +23,15 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  int selectedIndex3 = 0;
+  int selectedIndex3 = 1; // Set to 1 to select Favorites tab
 
   @override
   void initState() {
     super.initState();
-    // Load favorites when the screen initializes
+    // Refresh favorites data when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<FavoritesController>(context, listen: false).loadFavorites();
+      final favoritesController = Provider.of<FavoritesController>(context, listen: false);
+      favoritesController.loadFavorites();
     });
   }
 
@@ -58,7 +60,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ClientLocationScreen(),
+                    builder: (context) => const ClientLocationScreen(),
                   ),
                 );
               },
@@ -68,7 +70,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 size: 31,
               ),
             ),
-            SizedBox(width: 5),
+            const SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,7 +104,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 color: isDarkMode ? Colors.white : Colors.black,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Icon(
                 Icons.notifications_none,
@@ -112,7 +114,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen()),
+                  MaterialPageRoute(builder: (context) => const NotificationScreen()),
                 );
               },
             ),
@@ -120,14 +122,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
               decoration: InputDecoration(
-                hintText:
-                AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
+                hintText: AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
                 prefixIcon: Icon(
                   Icons.search,
                   color: isDarkMode ? Colors.white : Colors.black,
@@ -136,7 +137,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FilterScreen()),
+                      MaterialPageRoute(builder: (context) => const FilterScreen()),
                     );
                   },
                   icon: Icon(
@@ -152,86 +153,188 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 filled: true,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              AppLocalizations.of(context)!.favorite,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: Consumer<FavoritesController>(
-                builder: (context, favoritesController, child) {
-                  if (favoritesController.isLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.favorite,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+                Consumer<FavoritesController>(
+                  builder: (context, controller, child) {
+                    if (controller.isLoading) {
+                      return const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.green,
+                        ),
+                      );
+                    }
 
-                  if (favoritesController.error.isNotEmpty) {
-                    return Center(
+                    return TextButton(
+                      onPressed: () {
+                        controller.loadFavorites();
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.refresh,
+                        style: const TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Consumer<FavoritesController>(
+              builder: (context, favoritesController, child) {
+                // Show error if there is one
+                if (favoritesController.error.isNotEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.red[400],
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
                           Text(
-                            'Error loading favorites',
+                            AppLocalizations.of(context)!.error_loading_favorites,
                             style: TextStyle(
-                              color: isDarkMode ? Colors.white70 : Colors.black54,
                               fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: isDarkMode ? Colors.white : Colors.black,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 8),
+                          Text(
+                            favoritesController.error,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: isDarkMode ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: () {
                               favoritesController.loadFavorites();
                             },
-                            child: Text('Retry'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                             ),
+                            child: Text(AppLocalizations.of(context)!.try_again),
                           ),
                         ],
                       ),
-                    );
-                  }
-
-                  final favorites = favoritesController.favorites;
-
-                  if (favorites.isEmpty) {
-                    return Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.no_favorites_yet,
-                        style: TextStyle(
-                          color: isDarkMode ? Colors.white70 : Colors.black54,
-                          fontSize: 16,
-                        ),
-                      ),
-                    );
-                  }
-
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    childAspectRatio: screenWidth / (screenWidth * 1.3),
-                    children: favorites.map((item) {
-                      // Get the itemId from the controller
-                      int itemId = favoritesController.getItemIdByTitle(item.title);
-
-                      return FoodCard2Widget(
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        imagePath: item.imagePath,
-                        rating: item.rating,
-                        isRed: true,
-                        itemId: itemId,
-                      );
-                    }).toList(),
+                    ),
                   );
-                },
-              ),
+                }
+
+                // Show loading indicator
+                if (favoritesController.isLoading) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.green,
+                      ),
+                    ),
+                  );
+                }
+
+                // Show empty state if no favorites
+                if (favoritesController.favorites.isEmpty) {
+                  return Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            size: 80,
+                            color: isDarkMode ? Colors.white54 : Colors.grey[400],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            AppLocalizations.of(context)!.no_favorites_yet,
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white70 : Colors.black54,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            AppLocalizations.of(context)!.browse_items_and_mark_favorites,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white60 : Colors.black45,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
+                            ),
+                            child: Text(AppLocalizations.of(context)!.browse_items),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                // Show favorites grid
+                return Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () => favoritesController.loadFavorites(),
+                    color: Colors.green,
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: screenWidth / (screenWidth * 1.3),
+                      children: favoritesController.favorites.map((item) {
+                        return FoodCard2Widget(
+                          title: item.title,
+                          description: item.description,
+                          price: item.price,
+                          imagePath: item.imagePath,
+                          rating: item.rating,
+                          isRed: true,
+                          itemId: item.itemId,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -248,50 +351,47 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               BottomNavItemWidget(
                 icon: Icons.home,
                 label: AppLocalizations.of(context)!.home,
-                isSelected: selectedIndex3 == 1,
+                isSelected: selectedIndex3 == 0,
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
                   );
-                  onItemTapped3(1);
+                  onItemTapped3(0);
                 },
               ),
               BottomNavItemWidget(
                 icon: Icons.favorite,
                 label: AppLocalizations.of(context)!.favorite,
-                isSelected: selectedIndex3 == 0,
+                isSelected: selectedIndex3 == 1,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FavoritesScreen()),
-                  );
-                  onItemTapped3(0);
+                  // Already on favorites screen
+                  onItemTapped3(1);
                 },
               ),
               const SizedBox(width: 40), // space for FAB
               BottomNavItemWidget(
                 icon: Icons.history,
                 label: AppLocalizations.of(context)!.history,
-                isSelected: selectedIndex3 == 3,
+                isSelected: selectedIndex3 == 2,
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HistoryScreen()),
+                    MaterialPageRoute(builder: (context) => const HistoryScreen()),
                   );
-                  onItemTapped3(3);
+                  onItemTapped3(2);
                 },
               ),
               BottomNavItemWidget(
                 icon: Icons.person,
                 label: AppLocalizations.of(context)!.profile,
-                isSelected: selectedIndex3 == 4,
+                isSelected: selectedIndex3 == 3,
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
                   );
-                  onItemTapped3(4);
+                  onItemTapped3(3);
                 },
               ),
             ],
@@ -303,10 +403,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+            MaterialPageRoute(builder: (context) => const DeleteCartScreen()),
           );
         },
-        child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+        child: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

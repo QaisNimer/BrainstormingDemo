@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foodtek/view/screens/section_3/burger_home_screen.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../../widgets/category_button_widget.dart';
@@ -11,12 +9,12 @@ import '../section_4/delete_cart_screen.dart';
 import '../section_4/history_screen.dart';
 import '../section_5/client_location_screen.dart';
 import '../section_6/profile_screen.dart';
+import 'burger_home_screen.dart';
 import 'favorites_screen.dart';
 import 'filter_screen.dart';
 import 'home_screen.dart';
 import 'hotdog_home_screen.dart';
 import 'notification_screen.dart';
-import 'order_details_screen.dart';
 
 class PizzaScreen extends StatefulWidget {
   const PizzaScreen({super.key});
@@ -76,7 +74,6 @@ class _PizzaScreenState extends State<PizzaScreen> {
                     color: theme.textTheme.bodyMedium!.color,
                   ),
                 ),
-                // عرض العنوان من LocationController
                 Text(
                   locationController.address, // العنوان من LocationController
                   style: TextStyle(
@@ -116,7 +113,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
             TextFormField(
               decoration: InputDecoration(
                 hintText:
-                    AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
+                AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
                 hintStyle: TextStyle(
                   color: isDark ? Colors.white60 : Colors.black45,
                 ),
@@ -179,13 +176,10 @@ class _PizzaScreenState extends State<PizzaScreen> {
                     title: '🌭 ${AppLocalizations.of(context)!.sandwich}',
                     isSelected: false,
                     onPressed: () {
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HotdogHomeScreen()),
                       );
-
-
                     },
                   ),
                 ],
@@ -202,32 +196,29 @@ class _PizzaScreenState extends State<PizzaScreen> {
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.pepperoni_pizza,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.pepperoni_pizza_margarita_pizza_margherita_italian_cuisine_tomato,
+                    AppLocalizations.of(context)!.pepperoni_pizza_margarita_pizza_margherita_italian_cuisine_tomato,
                     price: "29.00",
                     imagePath: "assets/images/pizza (1).png",
                     rating: 4.5,
+                    itemId: 1,
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.pizza_cheese,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.food_pizza_dish_cuisine_junk_food_fast_food_flatbread_ingredient,
+                    AppLocalizations.of(context)!.food_pizza_dish_cuisine_junk_food_fast_food_flatbread_ingredient,
                     price: "23.00",
                     imagePath: "assets/images/pizza1.png",
                     rating: 4.3,
+                    itemId: 2,
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.peppy_paneer,
                     description:
-                        AppLocalizations.of(
-                          context,
-                        )!.chunky_paneer_with_crisp_capsicum_and_spicy_red_pepper,
+                    AppLocalizations.of(context)!.chunky_paneer_with_crisp_capsicum_and_spicy_red_pepper,
                     price: "13.00",
                     imagePath: "assets/images/pizza2.png",
                     rating: 4.2,
+                    itemId: 3,
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.mexican_green_wave,
@@ -235,6 +226,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                     price: "23.00",
                     imagePath: "assets/images/pizza3.png",
                     rating: 4.7,
+                    itemId: 4,
                   ),
                 ],
               ),

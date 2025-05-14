@@ -13,7 +13,7 @@ class FoodCard2Widget extends StatefulWidget {
   final String imagePath;
   final double rating;
   final bool isRed;
-  final int? itemId; // Added itemId parameter
+  final int itemId; // Made this required, not optional
 
   const FoodCard2Widget({
     super.key,
@@ -23,7 +23,7 @@ class FoodCard2Widget extends StatefulWidget {
     required this.imagePath,
     required this.rating,
     this.isRed = false,
-    this.itemId,
+    required this.itemId, // Required parameter
   });
 
   @override
@@ -76,6 +76,24 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                       width: imageWidth,
                       height: imageHeight,
                       fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback to network image if asset fails
+                        return Image.network(
+                          widget.imagePath,
+                          width: imageWidth,
+                          height: imageHeight,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            // If both fail, show placeholder
+                            return Container(
+                              width: imageWidth,
+                              height: imageHeight,
+                              color: Colors.grey[300],
+                              child: Icon(Icons.image_not_supported),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                   Positioned(
@@ -83,22 +101,26 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                     right: 0,
                     child: GestureDetector(
                       onTap: () async {
-                        // Get the item ID from the widget or from the controller
-                        int itemId = widget.itemId ??
-                            favoritesController.getItemIdByTitle(widget.title);
-
                         if (widget.isRed) {
-                          // Navigate to confirmation page
+                          // For favorites screen - set current item and navigate to confirmation page
+                          final favoriteItem = FavoriteItem(
+                            title: widget.title,
+                            description: widget.description,
+                            price: widget.price,
+                            imagePath: widget.imagePath,
+                            rating: widget.rating,
+                            itemId: widget.itemId,
+                          );
+
+                          favoritesController.setCurrentItem(favoriteItem);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => RemoveFavouritePage(
-                                title: widget.title,
-                                itemId: itemId,
-                              ),
+                              builder: (context) => RemoveFavouritePage(),
                             ),
                           );
                         } else {
+                          // For regular screens - toggle favorite status directly
                           setState(() {
                             isFavorited = !isFavorited;
                           });
@@ -109,14 +131,28 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                             price: widget.price,
                             imagePath: widget.imagePath,
                             rating: widget.rating,
+                            itemId: widget.itemId,
                           );
 
+                          bool success;
                           if (isFavorited) {
-                            // Call add with itemId
-                            await favoritesController.add(item, itemId);
+                            // Add to favorites
+                            success = await favoritesController.add(item, widget.itemId);
+                            if (!success) {
+                              // Revert UI state if operation failed
+                              setState(() {
+                                isFavorited = false;
+                              });
+                            }
                           } else {
-                            // Call remove with itemId
-                            await favoritesController.remove(widget.title, itemId);
+                            // Remove from favorites
+                            success = await favoritesController.remove(widget.title, widget.itemId);
+                            if (!success) {
+                              // Revert UI state if operation failed
+                              setState(() {
+                                isFavorited = true;
+                              });
+                            }
                           }
                         }
                       },

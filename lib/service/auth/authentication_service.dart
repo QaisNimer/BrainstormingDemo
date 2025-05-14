@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
 import '../../core/const_values.dart';
-import '../../model/auth_model/signup_model.dart';
 import '../../model/auth_model/reset_password_model.dart';
+import '../../model/auth_model/signup_model.dart';
 
 class AuthenticationService extends ChangeNotifier {
   final String baseUrl = '${ConstValue.baseUrl}api';
@@ -37,38 +38,126 @@ class AuthenticationService extends ChangeNotifier {
   // Sign Up Function
   Future<bool> signUp(SignUpModel user) async {
     setLoading(true);
+    setErrorMessage(null); // Clear previous error messages
+
     try {
+      // Ensure all required fields are present
+      if (!_validateRequiredFields(user)) {
+        setErrorMessage('Please fill in all required fields.');
+        setLoading(false);
+        return false;
+      }
+
+      // Ensure birthDate is in the correct format for .NET backend (yyyy-MM-dd)
+      if (user.birthDate != null && user.birthDate!.isNotEmpty) {
+        try {
+          // Parse the date to ensure it's valid, then format it correctly for .NET
+          final parsedDate = DateFormat('yyyy-MM-dd').parse(user.birthDate!);
+          // Format the date as ISO 8601 without time component, which is typically what .NET expects
+          user.birthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+        } catch (e) {
+          setErrorMessage('Invalid birth date format. Please use YYYY-MM-DD format.');
+          setLoading(false);
+          return false;
+        }
+      } else {
+        setErrorMessage('Birth date is required.');
+        setLoading(false);
+        return false;
+      }
+
       final client = createHttpClient();
+      final url = Uri.parse('$baseUrl/Auth/signup');
+
+      // Create a clean JSON without null values
+      final Map<String, dynamic> userJson = {};
+
+      if (user.email != null && user.email!.isNotEmpty) userJson['email'] = user.email!.trim();
+      if (user.password != null && user.password!.isNotEmpty) userJson['password'] = user.password!.trim();
+      if (user.phonenum != null && user.phonenum!.isNotEmpty) userJson['phonenum'] = user.phonenum!.trim();
+      if (user.firstname != null && user.firstname!.isNotEmpty) userJson['firstname'] = user.firstname!.trim();
+      if (user.lastname != null && user.lastname!.isNotEmpty) userJson['lastname'] = user.lastname!.trim();
+      if (user.birthDate != null && user.birthDate!.isNotEmpty) userJson['birthDate'] = user.birthDate!.trim();
+
+      // Print debugging information
+      debugPrint('Sending sign up request to: $url');
+      debugPrint('Request body: ${jsonEncode(userJson)}');
+
       final response = await client.post(
-        Uri.parse('$baseUrl/Auth/signup'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(user.toJson()),
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(userJson),
       );
 
+      // Print server response for debugging
+      debugPrint('Response status code: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
+
       setLoading(false);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
-        final errorResponse = jsonDecode(response.body);
-        setErrorMessage(errorResponse['message'] ?? 'Registration failed.');
+        try {
+          // Try to parse error message from response
+          final errorResponse = jsonDecode(response.body);
+          final errorMsg = errorResponse['message'] ??
+              errorResponse['error'] ??
+              'Registration failed. Code: ${response.statusCode}';
+          setErrorMessage(errorMsg);
+        } catch (e) {
+          // If response cannot be parsed as JSON
+          setErrorMessage('Registration failed: ${response.body}');
+        }
         return false;
       }
     } catch (e) {
-      setErrorMessage('Unexpected error: $e');
+      debugPrint('Error during sign up: $e');
+      setErrorMessage('Unexpected error occurred: $e');
       setLoading(false);
       return false;
     }
   }
 
+  // Validate required fields
+  bool _validateRequiredFields(SignUpModel user) {
+    // Check all required fields based on your model
+    if (user.email == null || user.email!.isEmpty ||
+        user.password == null || user.password!.isEmpty ||
+        user.firstname == null || user.firstname!.isEmpty ||
+        user.lastname == null || user.lastname!.isEmpty ||
+        user.birthDate == null || user.birthDate!.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   // Reset Password Function
   Future<bool> resetPassword(ResetPasswordModel resetData) async {
     setLoading(true);
+    setErrorMessage(null);
+
     try {
+      final emailParam = resetData.email.trim();
+      debugPrint("Resetting password for email: $emailParam");
+
       final client = createHttpClient();
+      final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword').replace(
+          queryParameters: {'email': emailParam}
+      );
+
+      debugPrint("Request URI: $uri");
+
       final response = await client.post(
-        Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(resetData.toJson()),
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: '',
       );
 
       debugPrint("Response Status: ${response.statusCode}");
@@ -78,10 +167,19 @@ class AuthenticationService extends ChangeNotifier {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
-        setErrorMessage('Password reset failed: ${response.body}');
+        try {
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage = errorResponse['message'] ??
+              errorResponse['error'] ??
+              'Password reset failed: ${response.statusCode}';
+          setErrorMessage(errorMessage);
+        } catch (e) {
+          setErrorMessage('Password reset failed: ${response.body}');
+        }
         return false;
       }
     } catch (e) {
+      debugPrint("Error in resetPassword: $e");
       setErrorMessage('Unexpected error: $e');
       setLoading(false);
       return false;
