@@ -48,12 +48,9 @@ class AuthenticationService extends ChangeNotifier {
         return false;
       }
 
-      // Ensure birthDate is in the correct format for .NET backend (yyyy-MM-dd)
       if (user.birthDate != null && user.birthDate!.isNotEmpty) {
         try {
-          // Parse the date to ensure it's valid, then format it correctly for .NET
           final parsedDate = DateFormat('yyyy-MM-dd').parse(user.birthDate!);
-          // Format the date as ISO 8601 without time component, which is typically what .NET expects
           user.birthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         } catch (e) {
           setErrorMessage('Invalid birth date format. Please use YYYY-MM-DD format.');

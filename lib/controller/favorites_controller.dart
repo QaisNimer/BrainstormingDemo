@@ -7,9 +7,8 @@ class FavoritesController with ChangeNotifier {
   final List<FavoriteItem> _favorites = [];
   bool _isLoading = false;
   String _error = '';
-  FavoriteItem? _currentSelectedItem; // Track current item for removal dialog
+  FavoriteItem? _currentSelectedItem;
 
-  // Mock client ID - in a real app, this would come from authentication
   final int _clientId = 1;
 
   List<FavoriteItem> get favorites => _favorites;
@@ -19,7 +18,6 @@ class FavoritesController with ChangeNotifier {
 
   // Constructor
   FavoritesController() {
-    // Initialize by loading favorites
     loadFavorites();
   }
 
@@ -169,10 +167,8 @@ class FavoritesController with ChangeNotifier {
     return _favorites.any((element) => element.title == title);
   }
 
-  // Get item ID by title (this would normally use a mapping from your API)
-  // This is a placeholder method since we don't have the actual mapping
+
   int getItemIdByTitle(String title) {
-    // First check if we have this item already in our favorites
     final existingItem = _favorites.firstWhere(
           (element) => element.title == title,
       orElse: () => FavoriteItem(
@@ -181,16 +177,15 @@ class FavoritesController with ChangeNotifier {
           price: '',
           imagePath: '',
           rating: 0.0,
-          itemId: -1
+          itemId: 1
       ),
     );
 
-    if (existingItem.itemId != -1) {
+    if (existingItem.itemId != 1) {
       return existingItem.itemId;
     }
 
-    // In a real application, you would have a mapping or fetch this from the API
-    // For now, we'll use a simple hash of the title as a mock
+
     return title.hashCode.abs() % 1000;
   }
 }

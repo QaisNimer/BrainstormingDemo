@@ -84,7 +84,6 @@ class FavoriteModel {
   }
 }
 
-// Keep the existing FavoriteItem class as it's used in the UI, but add itemId for removal
 class FavoriteItem {
   final String title;
   final String description;

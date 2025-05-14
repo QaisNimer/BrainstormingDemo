@@ -34,7 +34,6 @@ class SignUpController extends ChangeNotifier {
   Future<bool> registerUser(SignUpModel user) async {
     setLoading(true);
     try {
-      // استخدام العميل المخصص الذي يتجاوز أخطاء SSL
       final client = createHttpClient();
       final response = await client.post(
         Uri.parse('${ConstValue.baseUrl}api/Auth/signup'),
