@@ -15,6 +15,8 @@ import 'package:foodtek/core/theme/theme_provider.dart';
 import 'package:foodtek/view/screens/section_1/splash_screen.dart';
 import 'dart:io';
 
+import 'controller/category_controller.dart';
+
 // إضافة فئة MyHttpOverrides لتجاوز شهادات SSL
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -45,6 +47,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => LangController()),
         ChangeNotifierProvider(create: (_) => LocationController()),
         ChangeNotifierProvider(create: (_) => FavoritesController()),
+        ChangeNotifierProvider(create: (_) => CategoryController()),
       ],
       child: const MyApp(),
     ),
