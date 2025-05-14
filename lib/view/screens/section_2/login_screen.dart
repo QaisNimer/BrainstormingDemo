@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodtek/controller/login_controller.dart';
 import 'package:foodtek/view/screens/section_2/rest_password_screen.dart';
 import 'package:foodtek/view/screens/section_2/signup_screen.dart';
 import 'package:foodtek/view/screens/section_3/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../model/sign_model.dart';
 import '../../../service/auth/authentication_service.dart';
@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passTextEditingController = TextEditingController();
   bool rememberMe = false;
 
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
   @override
   void initState() {
     super.initState();
@@ -30,25 +32,26 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _checkAutoLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool savedRememberMe = prefs.getBool('rememberMe') ?? false;
-    String? userId = prefs.getString('userId');
+    String? savedRemember = await secureStorage.read(key: 'rememberMe');
+    String? userId = await secureStorage.read(key: 'userId');
 
-    if (savedRememberMe && userId != null) {
-      Navigator.pushReplacementNamed(context, '/home');
+    if (savedRemember == 'true' && userId != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
     }
   }
 
   Future<void> _saveCredentials(String email, String userId) async {
-    final prefs = await SharedPreferences.getInstance();
     if (rememberMe) {
-      await prefs.setString('userId', userId);
-      await prefs.setString('email', email);
-      await prefs.setBool('rememberMe', true);
+      await secureStorage.write(key: 'rememberMe', value: 'true');
+      await secureStorage.write(key: 'userId', value: userId);
+      await secureStorage.write(key: 'email', value: email);
     } else {
-      await prefs.remove('userId');
-      await prefs.remove('email');
-      await prefs.setBool('rememberMe', false);
+      await secureStorage.delete(key: 'rememberMe');
+      await secureStorage.delete(key: 'userId');
+      await secureStorage.delete(key: 'email');
     }
   }
 
@@ -149,16 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           filled: true,
                           fillColor: isDark ? Colors.grey[800] : Colors.white,
                           labelText: AppLocalizations.of(context)!.password,
-                          labelStyle: TextStyle(
-                            color: isDark ? Colors.white : null,
-                          ),
+                          labelStyle: TextStyle(color: isDark ? Colors.white : null),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                           suffixIcon: IconButton(
-                            onPressed: () {
-                              loginController.changeObscureTextPassword();
-                            },
+                            onPressed: () => loginController.changeObscureTextPassword(),
                             icon: Icon(
                               loginController.obscureTextPassword
                                   ? Icons.visibility
@@ -167,9 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
+                        style: TextStyle(color: isDark ? Colors.white : Colors.black),
                       ),
                       const SizedBox(height: 15),
                       Row(
@@ -277,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                       SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.facebook, color: Colors.blue),

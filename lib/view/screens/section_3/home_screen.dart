@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foodtek/service/item/top_rated_service.dart';
+import 'package:foodtek/service/item/top_recommended_service.dart';
 import 'package:foodtek/view/screens/section_3/burger_home_screen.dart';
 import 'package:foodtek/view/screens/section_3/pizza_home_screen.dart';
 import 'package:foodtek/view/widgets/bottom_nav_Item_widget.dart';
@@ -13,7 +14,7 @@ import 'package:provider/provider.dart';
 import '../../../controller/location_controller.dart';
 import '../../../core/const_values.dart';
 import '../../../model/items/top_rated_model.dart';
-import '../../../service/item/top_rated_service.dart';
+import '../../../model/items/top_recommended_model.dart';
 import '../section_4/delete_cart_screen.dart';
 import '../section_4/history_screen.dart';
 import '../section_5/client_location_screen.dart';
@@ -85,10 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.current_location,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 15, color: textColor),
                   ),
                   Consumer<LocationController>(
                     builder: (context, locationController, child) {
@@ -99,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
-                          color: isDark ? Colors.white : Colors.black,
+                          color: textColor,
                         ),
                         overflow: TextOverflow.ellipsis,
                       );
@@ -113,9 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotificationScreen(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const NotificationScreen()),
                 );
               },
             ),
@@ -136,13 +132,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       )!.search_menu_restaurant_or_etc,
                   prefixIcon: Icon(Icons.search),
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => FilterScreen()),
-                      );
-                    },
                     icon: Icon(Icons.tune),
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => FilterScreen()),
+                        ),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -166,42 +161,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: '🍔 ${AppLocalizations.of(context)!.burger}',
                       isSelected: selectedIndex == 1,
                       onPressed: () {
+                        onItemTapped(1);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => BurgerHomeScreen(),
-                          ),
+                          MaterialPageRoute(builder: (_) => BurgerHomeScreen()),
                         );
-                        onItemTapped(1);
                       },
                     ),
                     CategoryButtonWidget(
-                      title: '🍕  ${AppLocalizations.of(context)!.pizza}',
+                      title: '🍕 ${AppLocalizations.of(context)!.pizza}',
                       isSelected: selectedIndex == 2,
                       onPressed: () {
+                        onItemTapped(2);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => PizzaScreen(),
-                          ),
+                          MaterialPageRoute(builder: (_) => PizzaScreen()),
                         );
-                        onItemTapped(2);
                       },
                     ),
                     CategoryButtonWidget(
                       title: '🌭 ${AppLocalizations.of(context)!.sandwich}',
                       isSelected: selectedIndex == 3,
-                      onPressed:
-                          () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HotdogHomeScreen(),
-                              ),
-                            ),
-
-                            onItemTapped(3),
-                          },
+                      onPressed: () {
+                        onItemTapped(3);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => HotdogHomeScreen()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -215,14 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: PageView(
                   controller: pageController,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      currentPage = page;
-                    });
-                  },
+                  onPageChanged: (page) => setState(() => currentPage = page),
                   children: List.generate(
                     5,
-                    (index) => Image.asset(
+                    (_) => Image.asset(
                       "assets/images/offer.pizza.png",
                       fit: BoxFit.fill,
                     ),
@@ -259,40 +242,33 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 5),
               SizedBox(
-                height: screenHeight * 0.55 / 2,
+                height: screenHeight * 0.275,
                 child: FutureBuilder<List<Top_Rated_Model>>(
                   future: fetchTopRatedItems(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                    if (snapshot.connectionState == ConnectionState.waiting)
                       return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
+                    if (snapshot.hasError)
                       return Center(child: Text("Error loading items"));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    if (!snapshot.hasData || snapshot.data!.isEmpty)
                       return Center(child: Text("No top-rated items found."));
-                    }
-
                     final items = snapshot.data!;
-
-
                     final List<String> localImages = [
                       "assets/images/piperonal_pizza.png",
                       "assets/images/cocacola.png",
                       "assets/images/cheeseBruger.png",
-                      //"assets/images/cheeseBruger.png",
                     ];
-
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: items.length,
                       itemBuilder: (context, index) {
                         final item = items[index];
-
-                        final imagePath = (item.image != null && item.image!.isNotEmpty)
-                            ? "${ConstValue.baseUrl}${item.image}"
-                            : (index < localImages.length
-                            ? localImages[index]
-                            : "assets/images/default_food.png");
-
+                        final imagePath =
+                            (item.image != null && item.image!.isNotEmpty)
+                                ? "${ConstValue.baseUrl}${item.image}"
+                                : (index < localImages.length
+                                    ? localImages[index]
+                                    : "assets/images/default_food.png");
                         return FoodCardWidget(
                           title: item.englishName ?? 'N/A',
                           description: item.englishDescription ?? '',
@@ -302,7 +278,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => OrderDetailsScreen()),
+                              MaterialPageRoute(
+                                builder: (_) => OrderDetailsScreen(),
+                              ),
                             );
                           },
                         );
@@ -311,8 +289,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-
-
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -336,28 +312,44 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(
                 height: screenHeight * 0.15,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    RecommendedCardWidget(
-                      imagePath: "assets/images/suchi.png",
-                      price: "\$103.0",
-                    ),
-                    RecommendedCardWidget(
-                      imagePath: "assets/images/rice.png",
-                      price: "\$50.0",
-                    ),
-                    RecommendedCardWidget(
-                      imagePath: "assets/images/pasta.png",
-                      price: "\$12.99",
-                    ),
-                    RecommendedCardWidget(
-                      imagePath: "assets/images/cake.png",
-                      price: "\$8.20",
-                    ),
-                  ],
+                child: FutureBuilder<List<Top_Recommended_Model>>(
+                  future: TopRecommendedService().fetchTopRecommendedItems(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting)
+                      return Center(child: CircularProgressIndicator());
+                    if (snapshot.hasError)
+                      return Center(child: Text("Error loading recommended items"));
+                    if (!snapshot.hasData || snapshot.data!.isEmpty)
+                      return Center(child: Text("No recommended items."));
+
+                    final items = snapshot.data!;
+                    final fallbackImages = [
+                      "assets/images/suchi.png",
+                      "assets/images/rice.png",
+                      "assets/images/pasta.png",
+                      "assets/images/cake.png",
+                    ];
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: items.length < 4 ? items.length : 4,
+                      itemBuilder: (context, index) {
+                        final item = items[index];
+
+                        final imagePath = (item.image != null && item.image.toString().isNotEmpty)
+                            ? "${ConstValue.baseUrl}${item.image}"
+                            : fallbackImages[index % fallbackImages.length]; // Rotate if less
+
+                        return RecommendedCardWidget(
+                          imagePath: imagePath,
+                          price: "\$${item.price?.toStringAsFixed(2) ?? '0.00'}",
+                        );
+                      },
+                    );
+                  },
                 ),
-              ),
+              )
+
             ],
           ),
         ),
@@ -384,12 +376,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavoritesScreen()),
+                    MaterialPageRoute(builder: (_) => FavoritesScreen()),
                   );
                   onItemTapped2(1);
                 },
               ),
-              const SizedBox(width: 40), // FAB space
+              const SizedBox(width: 40),
               BottomNavItemWidget(
                 icon: Icons.history,
                 label: AppLocalizations.of(context)!.history,
@@ -397,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HistoryScreen()),
+                    MaterialPageRoute(builder: (_) => HistoryScreen()),
                   );
                   onItemTapped2(3);
                 },
@@ -409,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    MaterialPageRoute(builder: (_) => ProfileScreen()),
                   );
                   onItemTapped2(4);
                 },
@@ -423,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+            MaterialPageRoute(builder: (_) => DeleteCartScreen()),
           );
           onItemTapped2(2);
         },

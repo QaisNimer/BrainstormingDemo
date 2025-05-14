@@ -1,4 +1,3 @@
-
 class NotificationModel {
   final String title;
   final String message;
