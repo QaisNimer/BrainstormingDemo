@@ -19,13 +19,16 @@ import 'notification_screen.dart';
 import 'order_details_screen.dart';
 
 class PizzaScreen extends StatefulWidget {
-  const PizzaScreen({super.key});
+  final int itemId;
+
+  const PizzaScreen({required this.itemId, super.key});
 
   @override
   State<PizzaScreen> createState() => _PizzaScreenState();
 }
 
 class _PizzaScreenState extends State<PizzaScreen> {
+ 
   int selectedIndex = 0;
   final int selectedCategoryIndex = 2;
   bool isFavoriteSelected = false;
@@ -44,6 +47,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final locationController = Provider.of<LocationController>(context);
+    print("🟢 PizzaScreen loaded with itemId: ${widget.itemId}"); // You can use the ID now
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -160,7 +164,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BurgerHomeScreen(),
+                          builder: (context) => BurgerHomeScreen(itemId: 1,),
                         ),
                       );
                     },
@@ -171,7 +175,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PizzaScreen()),
+                        MaterialPageRoute(builder: (context) => PizzaScreen(itemId: 2,)),
                       );
                     },
                   ),
@@ -182,7 +186,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HotdogHomeScreen()),
+                        MaterialPageRoute(builder: (context) => HotdogHomeScreen(itemId: 3,)),
                       );
 
 

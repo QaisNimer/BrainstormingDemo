@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,6 +15,7 @@ import 'package:foodtek/controller/lang_controller.dart';
 import 'controller/location_controller.dart';
 import 'core/app_theme.dart';
 import 'core/theme_provider.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +23,7 @@ void main() async {
   final themeProvider = ThemeProvider();
   await themeProvider.loadTheme();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiProvider(
       providers: [
@@ -37,8 +41,24 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+  }
+
+  getToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("token = $token ");
+  }
 
   @override
   Widget build(BuildContext context) {

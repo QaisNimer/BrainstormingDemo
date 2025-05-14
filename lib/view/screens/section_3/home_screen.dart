@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onItemTapped(1);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => BurgerHomeScreen()),
+                          MaterialPageRoute(builder: (_) => BurgerHomeScreen(itemId: 1,)),
                         );
                       },
                     ),
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onItemTapped(2);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => PizzaScreen()),
+                          MaterialPageRoute(builder: (_) => PizzaScreen(itemId: 2,)),
                         );
                       },
                     ),
@@ -186,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onItemTapped(3);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => HotdogHomeScreen()),
+                          MaterialPageRoute(builder: (_) => HotdogHomeScreen(itemId: 3,)),
                         );
                       },
                     ),
@@ -252,23 +252,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(child: Text("Error loading items"));
                     if (!snapshot.hasData || snapshot.data!.isEmpty)
                       return Center(child: Text("No top-rated items found."));
+
                     final items = snapshot.data!;
                     final List<String> localImages = [
                       "assets/images/piperonal_pizza.png",
                       "assets/images/cocacola.png",
                       "assets/images/cheeseBruger.png",
                     ];
+
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: items.length,
                       itemBuilder: (context, index) {
                         final item = items[index];
-                        final imagePath =
-                            (item.image != null && item.image!.isNotEmpty)
-                                ? "${ConstValue.baseUrl}${item.image}"
-                                : (index < localImages.length
-                                    ? localImages[index]
-                                    : "assets/images/default_food.png");
+                        final imagePath = (item.image != null && item.image!.isNotEmpty)
+                            ? "${ConstValue.baseUrl}${item.image}"
+                            : (index < localImages.length
+                            ? localImages[index]
+                            : "assets/images/default_food.png");
+
                         return FoodCardWidget(
                           title: item.englishName ?? 'N/A',
                           description: item.englishDescription ?? '',
@@ -276,12 +278,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           imagePath: imagePath,
                           rating: item.rate?.toDouble() ?? 0.0,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => OrderDetailsScreen(),
-                              ),
-                            );
+                            print('Selected item ID: ${item.id}'); // ✅ Show ID for database
+
+                            // ✅ Navigate to different screens based on index
+                            if (index == 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => PizzaScreen(itemId: item.id),
+                                ),
+                              );
+                            } else if (index == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => HotdogHomeScreen(itemId: item.id),
+                                ),
+                              );
+                            } else if (index == 2) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BurgerHomeScreen(itemId: item.id),
+                                ),
+                              );
+                            } else {
+                              // default fallback for other items
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BurgerHomeScreen(itemId: item.id),
+                                ),
+                              );
+                            }
                           },
                         );
                       },
@@ -289,6 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
+
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
