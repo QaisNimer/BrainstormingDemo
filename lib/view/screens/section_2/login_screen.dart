@@ -32,10 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _checkAutoLogin() async {
-    String? savedRemember = await secureStorage.read(key: 'rememberMe');
+    String? remember = await secureStorage.read(key: 'rememberMe');
     String? userId = await secureStorage.read(key: 'userId');
+    String? loginCountStr = await secureStorage.read(key: 'rememberLoginCount');
+    int loginCount = int.tryParse(loginCountStr ?? '0') ?? 0;
 
-    if (savedRemember == 'true' && userId != null) {
+    if (remember == 'true' && userId != null && loginCount < 2) {
+      await secureStorage.write(key: 'rememberLoginCount', value: '${loginCount + 1}');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -48,10 +51,12 @@ class _LoginScreenState extends State<LoginScreen> {
       await secureStorage.write(key: 'rememberMe', value: 'true');
       await secureStorage.write(key: 'userId', value: userId);
       await secureStorage.write(key: 'email', value: email);
+      await secureStorage.write(key: 'rememberLoginCount', value: '0');
     } else {
       await secureStorage.delete(key: 'rememberMe');
       await secureStorage.delete(key: 'userId');
       await secureStorage.delete(key: 'email');
+      await secureStorage.delete(key: 'rememberLoginCount');
     }
   }
 
@@ -139,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             label: AppLocalizations.of(context)!.email,
                             hintText: "Loisbakit@gmail.com",
                             errorText: loginController.showErrorEmail
-                                ? AppLocalizations.of(context)!.enter_a_valid_email
+                                ? loginController.errorEmailMessage
                                 : null,
                           );
                         },
@@ -217,6 +222,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () async {
+                          if (emailTextEditingController.text.isEmpty || passTextEditingController.text.isEmpty) {
+                            loginController.showCustomEmailError("Please enter both email and password");
+                            return;
+                          }
+
                           loginController.checkEmail(email: emailTextEditingController.text);
                           loginController.checkPassword(password: passTextEditingController.text);
 
@@ -235,9 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               MaterialPageRoute(builder: (context) => HomeScreen()),
                             );
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Login failed. Please check your credentials.")),
-                            );
+                            loginController.showCustomEmailError("Login failed. Please check your credentials.");
                           }
                         },
                         style: ElevatedButton.styleFrom(

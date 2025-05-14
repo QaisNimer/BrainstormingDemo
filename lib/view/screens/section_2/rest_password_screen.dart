@@ -104,7 +104,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => OTPScreen()),
+                          MaterialPageRoute(builder: (context) => OTPScreen(email: 'user@example.com', isSignup: true),),
                         );
                       },
                       child: Text(
