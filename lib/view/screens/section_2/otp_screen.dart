@@ -5,12 +5,10 @@ import '../../../service/auth/authentication_service.dart';
 import 'forgot_password_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class OTPScreen extends StatefulWidget {
   final String email;
-  final bool isSignup;
 
-  OTPScreen({required this.email, required this.isSignup});
+  OTPScreen({required this.email}); // ❌ removed isSignup
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -24,8 +22,8 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(4, (_) => TextEditingController());
-    _focusNodes = List.generate(4, (_) => FocusNode());
+    _controllers = List.generate(5, (_) => TextEditingController());
+    _focusNodes = List.generate(5, (_) => FocusNode());
   }
 
   @override
@@ -38,9 +36,9 @@ class _OTPScreenState extends State<OTPScreen> {
   Future<void> _verifyOtp() async {
     String otpCode = _controllers.map((c) => c.text).join();
 
-    if (otpCode.length != 4) {
+    if (otpCode.length != 5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter the complete 4-digit code.')),
+        SnackBar(content: Text('Please enter the complete 5-digit code.')),
       );
       return;
     }
@@ -50,10 +48,10 @@ class _OTPScreenState extends State<OTPScreen> {
     final model = Verfication_Model(
       email: widget.email,
       otpCode: otpCode,
-      isSignup: widget.isSignup,
+      isSignup: true, // ✅ hardcoded to true as you requested
     );
 
-    final success = await AuthService().verifyOtp(model);
+    final success = await AuthenticationService().verifyOtp(model);
 
     setState(() => isLoading = false);
 
@@ -108,15 +106,17 @@ class _OTPScreenState extends State<OTPScreen> {
                     SizedBox(height: 15),
                     Text(
                       AppLocalizations.of(context)!
-                          .a_4_digit_code_has_been_sent_to_your_email_please_enter_it_to_verify,
+                          .a_4_digit_code_has_been_sent_to_your_email_please_enter_it_to_verify
+                          .replaceAll('4-digit', '5-digit'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: isDark ? Colors.white70 : Colors.black54),
+                        color: isDark ? Colors.white70 : Colors.black54,
+                      ),
                     ),
                     SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(4, (index) => otpBox(index)),
+                      children: List.generate(5, (index) => otpBox(index)),
                     ),
                     SizedBox(height: 30),
                     SizedBox(
@@ -163,7 +163,7 @@ class _OTPScreenState extends State<OTPScreen> {
         maxLength: 1,
         decoration: InputDecoration(counterText: "", border: InputBorder.none),
         onChanged: (value) {
-          if (value.length == 1 && index < 3) {
+          if (value.length == 1 && index < 4) {
             FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
           } else if (value.isEmpty && index > 0) {
             FocusScope.of(context).requestFocus(_focusNodes[index - 1]);

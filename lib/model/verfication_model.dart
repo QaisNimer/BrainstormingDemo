@@ -12,10 +12,10 @@ class Verfication_Model {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['otpCode'] = this.otpCode;
-    data['isSignup'] = this.isSignup;
-    return data;
+    return {
+      'email': email,
+      'otpCode': otpCode,
+      'isSignup': isSignup,
+    };
   }
 }

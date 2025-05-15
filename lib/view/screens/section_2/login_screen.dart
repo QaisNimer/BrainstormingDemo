@@ -235,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             password: passTextEditingController.text,
                           );
 
-                          final authService = AuthService();
+                          final authService = AuthenticationService();
                           bool success = await authService.login(signModel);
 
                           if (success) {

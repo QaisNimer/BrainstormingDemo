@@ -1,50 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
+
 import '../../core/const_values.dart';
 import '../../model/sign_model.dart';
 import '../../model/verfication_model.dart';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:http/io_client.dart';
-import 'package:intl/intl.dart';
 import '../../model/auth_model/reset_password_model.dart';
 import '../../model/auth_model/signup_model.dart';
-class AuthService {
-  Future<bool> login(Sign_Model input) async {
-    final response = await http.post(
-      Uri.parse('${ConstValue.baseUrl}api/Auth/signin'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(input.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print("Login successful: $data");
-      return true;
-    } else {
-      print("Login failed: ${response.body}");
-      return false;
-    }
-  }
-
-  Future<bool> verifyOtp(Verfication_Model input) async {
-    final response = await http.post(
-      Uri.parse('${ConstValue.baseUrl}api/Auth/verify-otp'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(input.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print("OTP verification successful: $data");
-      return true;
-    } else {
-      print("OTP verification failed: ${response.body}");
-      return false;
-    }
-  }
-}
-
 
 class AuthenticationService extends ChangeNotifier {
   final String baseUrl = '${ConstValue.baseUrl}api';
@@ -54,32 +19,120 @@ class AuthenticationService extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  // Set Loading State
   void setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  // Set Error Message
   void setErrorMessage(String? message) {
     _errorMessage = message;
     notifyListeners();
   }
 
-  // HTTP Client (ignoring SSL errors)
   http.Client createHttpClient() {
     final httpClient = HttpClient()
       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
     return IOClient(httpClient);
   }
 
-  // Sign Up Function
-  Future<bool> signUp(SignUpModel user) async {
+  Future<bool> login(Sign_Model input) async {
     setLoading(true);
-    setErrorMessage(null); // Clear previous error messages
+    setErrorMessage(null);
 
     try {
-      // Ensure all required fields are present
+      final client = createHttpClient();
+      final response = await client.post(
+        Uri.parse('$baseUrl/Auth/signin'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(input.toJson()),
+      );
+
+      setLoading(false);
+      debugPrint("Login Status: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData.containsKey("token") && responseData["token"] is String) {
+          final token = responseData["token"];
+          debugPrint("Login successful. Token: $token");
+          return true;
+        } else {
+          debugPrint("Login succeeded but no valid token found.");
+          setErrorMessage("Login succeeded but no token returned.");
+          return false;
+        }
+      } else {
+        setErrorMessage('Login failed: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      setLoading(false);
+      setErrorMessage("Login error: $e");
+      return false;
+    }
+  }
+
+  Future<bool> verifyOtp(Verfication_Model input) async {
+    setLoading(true);
+    setErrorMessage(null);
+
+    try {
+      final client = createHttpClient();
+
+      // Always force isSignup to true
+      final fixedPayload = jsonEncode({
+        'email': input.email,
+        'otpCode': input.otpCode,
+        'isSignup': true,
+      });
+
+      final uri = Uri.parse('${ConstValue.baseUrl.replaceAll(RegExp(r'/+$'), '')}/api/Auth/verification');
+      debugPrint("🔍 Verifying OTP to: $uri");
+      debugPrint("📦 Payload: $fixedPayload");
+
+      final response = await client.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: fixedPayload,
+      );
+
+      debugPrint("🧾 OTP Verify Response: ${response.statusCode} - ${response.body}");
+      setLoading(false);
+
+      if (response.statusCode == 200) {
+        try {
+          final responseData = jsonDecode(response.body);
+          debugPrint("✅ OTP verified successfully: $responseData");
+        } catch (_) {
+          debugPrint("✅ OTP verified, but response body not in JSON format.");
+        }
+        return true;
+      } else {
+        try {
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage = errorResponse['message'] ?? errorResponse['error'] ?? 'OTP verification failed.';
+          setErrorMessage(errorMessage);
+        } catch (_) {
+          setErrorMessage('OTP verification failed: ${response.body}');
+        }
+        return false;
+      }
+    } catch (e) {
+      setLoading(false);
+      setErrorMessage("OTP verification error: $e");
+      return false;
+    }
+  }
+
+  Future<bool> signUp(SignUpModel user) async {
+    setLoading(true);
+    setErrorMessage(null);
+
+    try {
       if (!_validateRequiredFields(user)) {
         setErrorMessage('Please fill in all required fields.');
         setLoading(false);
@@ -103,18 +156,15 @@ class AuthenticationService extends ChangeNotifier {
 
       final client = createHttpClient();
       final url = Uri.parse('$baseUrl/Auth/signup');
-
-      // Create a clean JSON without null values
       final Map<String, dynamic> userJson = {};
 
-      if (user.email != null && user.email!.isNotEmpty) userJson['email'] = user.email!.trim();
-      if (user.password != null && user.password!.isNotEmpty) userJson['password'] = user.password!.trim();
-      if (user.phonenum != null && user.phonenum!.isNotEmpty) userJson['phonenum'] = user.phonenum!.trim();
-      if (user.firstname != null && user.firstname!.isNotEmpty) userJson['firstname'] = user.firstname!.trim();
-      if (user.lastname != null && user.lastname!.isNotEmpty) userJson['lastname'] = user.lastname!.trim();
-      if (user.birthDate != null && user.birthDate!.isNotEmpty) userJson['birthDate'] = user.birthDate!.trim();
+      if (user.email?.isNotEmpty ?? false) userJson['email'] = user.email!.trim();
+      if (user.password?.isNotEmpty ?? false) userJson['password'] = user.password!.trim();
+      if (user.phonenum?.isNotEmpty ?? false) userJson['phonenum'] = user.phonenum!.trim();
+      if (user.firstname?.isNotEmpty ?? false) userJson['firstname'] = user.firstname!.trim();
+      if (user.lastname?.isNotEmpty ?? false) userJson['lastname'] = user.lastname!.trim();
+      if (user.birthDate?.isNotEmpty ?? false) userJson['birthDate'] = user.birthDate!.trim();
 
-      // Print debugging information
       debugPrint('Sending sign up request to: $url');
       debugPrint('Request body: ${jsonEncode(userJson)}');
 
@@ -127,50 +177,37 @@ class AuthenticationService extends ChangeNotifier {
         body: jsonEncode(userJson),
       );
 
-      // Print server response for debugging
       debugPrint('Response status code: ${response.statusCode}');
       debugPrint('Response body: ${response.body}');
-
       setLoading(false);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
         try {
-          // Try to parse error message from response
           final errorResponse = jsonDecode(response.body);
-          final errorMsg = errorResponse['message'] ??
-              errorResponse['error'] ??
-              'Registration failed. Code: ${response.statusCode}';
+          final errorMsg = errorResponse['message'] ?? errorResponse['error'] ?? 'Registration failed.';
           setErrorMessage(errorMsg);
-        } catch (e) {
-          // If response cannot be parsed as JSON
+        } catch (_) {
           setErrorMessage('Registration failed: ${response.body}');
         }
         return false;
       }
     } catch (e) {
-      debugPrint('Error during sign up: $e');
-      setErrorMessage('Unexpected error occurred: $e');
       setLoading(false);
+      setErrorMessage('Unexpected error occurred: $e');
       return false;
     }
   }
 
-  // Validate required fields
   bool _validateRequiredFields(SignUpModel user) {
-    // Check all required fields based on your model
-    if (user.email == null || user.email!.isEmpty ||
-        user.password == null || user.password!.isEmpty ||
-        user.firstname == null || user.firstname!.isEmpty ||
-        user.lastname == null || user.lastname!.isEmpty ||
-        user.birthDate == null || user.birthDate!.isEmpty) {
-      return false;
-    }
-    return true;
+    return user.email?.isNotEmpty == true &&
+        user.password?.isNotEmpty == true &&
+        user.firstname?.isNotEmpty == true &&
+        user.lastname?.isNotEmpty == true &&
+        user.birthDate?.isNotEmpty == true;
   }
 
-  // Reset Password Function
   Future<bool> resetPassword(ResetPasswordModel resetData) async {
     setLoading(true);
     setErrorMessage(null);
@@ -180,45 +217,35 @@ class AuthenticationService extends ChangeNotifier {
       debugPrint("Resetting password for email: $emailParam");
 
       final client = createHttpClient();
-      final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword').replace(
-          queryParameters: {'email': emailParam}
-      );
-
+      final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword')
+          .replace(queryParameters: {'email': emailParam});
       debugPrint("Request URI: $uri");
 
-      final response = await client.post(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: '',
-      );
+      final response = await client.post(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }, body: '');
 
       debugPrint("Response Status: ${response.statusCode}");
       debugPrint("Response Body: ${response.body}");
-
       setLoading(false);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
         try {
           final errorResponse = jsonDecode(response.body);
-          final errorMessage = errorResponse['message'] ??
-              errorResponse['error'] ??
-              'Password reset failed: ${response.statusCode}';
+          final errorMessage = errorResponse['message'] ?? errorResponse['error'] ?? 'Password reset failed.';
           setErrorMessage(errorMessage);
-        } catch (e) {
+        } catch (_) {
           setErrorMessage('Password reset failed: ${response.body}');
         }
         return false;
       }
     } catch (e) {
-      debugPrint("Error in resetPassword: $e");
-      setErrorMessage('Unexpected error: $e');
       setLoading(false);
+      setErrorMessage('Unexpected error: $e');
       return false;
     }
   }
 }
-
