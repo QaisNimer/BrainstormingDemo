@@ -1,10 +1,14 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import '../../core/const_values.dart';
 import '../../model/sign_model.dart';
 import '../../model/verfication_model.dart';
-
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
+import '../../model/auth_model/reset_password_model.dart';
+import '../../model/auth_model/signup_model.dart';
 class AuthService {
   Future<bool> login(Sign_Model input) async {
     final response = await http.post(
@@ -41,14 +45,6 @@ class AuthService {
   }
 }
 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'package:intl/intl.dart';
-import '../../core/const_values.dart';
-import '../../model/auth_model/reset_password_model.dart';
-import '../../model/auth_model/signup_model.dart';
 
 class AuthenticationService extends ChangeNotifier {
   final String baseUrl = '${ConstValue.baseUrl}api';

@@ -13,8 +13,7 @@ import 'package:foodtek/controller/login_controller.dart';
 import 'package:foodtek/controller/lang_controller.dart';
 
 import 'controller/location_controller.dart';
-import 'core/app_theme.dart';
-import 'core/theme_provider.dart';
+
 import 'firebase_options.dart';
 
 import 'package:foodtek/controller/location_controller.dart';

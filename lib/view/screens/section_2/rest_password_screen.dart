@@ -111,16 +111,16 @@ class ResetPasswordScreen extends StatelessWidget {
                               : Colors.black54,
                         ),
                       ),
-
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => OTPScreen(email: 'user@example.com', isSignup: true),),
-                        );
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.btn_send,
-                        style: TextStyle(color: Colors.white),
+                      //
+                      // onPressed: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => OTPScreen(email: 'user@example.com', isSignup: true),),
+                      //   );
+                      // },
+                      // child: Text(
+                      //   AppLocalizations.of(context)!.btn_send,
+                      //   style: TextStyle(color: Colors.white),
 
                       const SizedBox(height: 20),
                       // Email input field
@@ -170,10 +170,10 @@ class ResetPasswordScreen extends StatelessWidget {
 
                             if (success) {
                               // Navigate to OTP screen if successful
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => OTPScreen()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              // //  MaterialPageRoute(builder: (context) => OTPScreen()),
+                              // );
                             } else {
                               // Show error message if failed
                               ScaffoldMessenger.of(context).showSnackBar(
