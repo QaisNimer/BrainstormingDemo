@@ -50,17 +50,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         builder:
             (_) => AlertDialog(
-          title: const Text('Error'),
-          content: Text(signUpController.errorMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
+              title: const Text('Error'),
+              content: Text(signUpController.errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     }
   }
@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: CustomTextField(
                               controller: _firstNameController,
                               labelText:
-                              AppLocalizations.of(context)!.first_name,
+                                  AppLocalizations.of(context)!.first_name,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -139,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: CustomTextField(
                               controller: _lastNameController,
                               labelText:
-                              AppLocalizations.of(context)!.last_name,
+                                  AppLocalizations.of(context)!.last_name,
                             ),
                           ),
                         ],
@@ -208,16 +208,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       signUpController.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          minimumSize: const Size(double.infinity, 50),
-                        ),
-                        onPressed: () => _registerUser(context),
-                        child: Text(
-                          AppLocalizations.of(context)!.register,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              minimumSize: const Size(double.infinity, 50),
+                            ),
+                            onPressed: () => _registerUser(context),
+                            child: Text(
+                              AppLocalizations.of(context)!.register,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                     ],
                   ),
                 ),

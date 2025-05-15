@@ -27,7 +27,7 @@ class SignUpModel {
     firstname = json['firstname'];
     lastname = json['lastname'];
     birthDate =
-    json['birthDate'] != null ? _formatBirthDate(json['birthDate']) : null;
+        json['birthDate'] != null ? _formatBirthDate(json['birthDate']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +38,7 @@ class SignUpModel {
     data['firstname'] = firstname?.trim();
     data['lastname'] = lastname?.trim();
     data['birthDate'] =
-    birthDate?.isNotEmpty == true ? _formatBirthDate(birthDate!) : null;
+        birthDate?.isNotEmpty == true ? _formatBirthDate(birthDate!) : null;
     return data;
   }
 

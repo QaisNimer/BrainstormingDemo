@@ -66,9 +66,9 @@ class AuthenticationService extends ChangeNotifier {
 
   http.Client createHttpClient() {
     final httpClient =
-    HttpClient()
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+        HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
     return IOClient(httpClient);
   }
 
@@ -176,8 +176,8 @@ class AuthenticationService extends ChangeNotifier {
         final errorResponse = jsonDecode(response.body);
         final errorMessage =
             errorResponse['message'] ??
-                errorResponse['error'] ??
-                'Password reset failed.';
+            errorResponse['error'] ??
+            'Password reset failed.';
         setErrorMessage(errorMessage);
         return false;
       }

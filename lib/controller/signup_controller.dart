@@ -27,9 +27,9 @@ class SignUpController extends ChangeNotifier {
 
   http.Client createHttpClient() {
     final httpClient =
-    HttpClient()
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+        HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
     return IOClient(httpClient);
   }
 
