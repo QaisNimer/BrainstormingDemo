@@ -205,7 +205,7 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                     title: AppLocalizations.of(context)!.chicken_burger,
                     description: AppLocalizations.of(context)!.key_100_gr_chicken,
                     price: "20.00",
-                    imagePath: "assets/images/burger1.png",
+                    imagePath: "assets/images/burger2.png",
                     rating: 3.8,
                     itemId: 1, // Example itemId, adjust accordingly
                   ),
@@ -213,7 +213,7 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                     title: AppLocalizations.of(context)!.cheese_burger,
                     description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
                     price: "15.00",
-                    imagePath: "assets/images/burger2.png",
+                    imagePath: "assets/images/Burger 2.png",
                     rating: 4.5,
                     itemId: 2, // Example itemId, adjust accordingly
                   ),
