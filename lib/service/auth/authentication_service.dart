@@ -9,6 +9,7 @@ import '../../core/const_values.dart';
 import '../../model/sign_model.dart';
 import '../../model/verfication_model.dart';
 import '../../model/auth_model/reset_password_model.dart';
+import '../../model/auth_model/forget_password_model.dart';
 import '../../model/auth_model/signup_model.dart';
 
 class AuthenticationService extends ChangeNotifier {
@@ -80,7 +81,6 @@ class AuthenticationService extends ChangeNotifier {
     try {
       final client = createHttpClient();
 
-      // Always force isSignup to true
       final fixedPayload = jsonEncode({
         'email': input.email,
         'otpCode': input.otpCode,
@@ -245,6 +245,47 @@ class AuthenticationService extends ChangeNotifier {
     } catch (e) {
       setLoading(false);
       setErrorMessage('Unexpected error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> confirmResetPassword(ForgetPasswordModel model) async {
+    setLoading(true);
+    setErrorMessage(null);
+
+    try {
+      final client = createHttpClient();
+      final uri = Uri.parse('$baseUrl/Auth/reset-password');
+
+      final response = await client.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(model.toJson()),
+      );
+
+      debugPrint("🔐 Reset Confirm Status: ${response.statusCode}");
+      debugPrint("🔐 Reset Confirm Body: ${response.body}");
+
+      setLoading(false);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        try {
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage = errorResponse['message'] ?? errorResponse['error'] ?? 'Reset failed.';
+          setErrorMessage(errorMessage);
+        } catch (_) {
+          setErrorMessage('Reset failed: ${response.body}');
+        }
+        return false;
+      }
+    } catch (e) {
+      setLoading(false);
+      setErrorMessage("Reset password error: $e");
       return false;
     }
   }
