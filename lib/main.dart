@@ -37,7 +37,6 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // إضافة تجاوز شهادات SSL
   HttpOverrides.global = MyHttpOverrides();
 
   final themeProvider = ThemeProvider();

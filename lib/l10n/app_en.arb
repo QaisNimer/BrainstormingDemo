@@ -16,6 +16,8 @@
   "password": "Password",
   "remember_me": "Remember Me",
   "forgot_password": "Forgot Password?",
+  "added_to_cart_successfully": "Item added to cart successfully",
+  "failed_to_add_to_cart": "Failed to add item to cart",
   "or": "or",
   "continue_with_google": "Continue with Google",
   "continue_with_facebook": "Continue with Facebook",

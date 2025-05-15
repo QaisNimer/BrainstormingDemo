@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../controller/location_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
 import '../section_3/favorites_screen.dart';
+import '../section_3/home_screen.dart';
 import '../section_3/notification_screen.dart';
 import '../section_5/client_location_screen.dart';
 import '../section_6/profile_screen.dart';
@@ -206,7 +207,13 @@ class _CartEmptyScreenState extends State<CartEmptyScreen> {
                 icon: Icons.home,
                 label: AppLocalizations.of(context)!.home,
                 isSelected: selectedIndex == 3,
-                onTap: () => onItemTapped(3),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                  onItemTapped(3);
+                },
               ),
               BottomNavItemWidget(
                 icon: Icons.favorite,
