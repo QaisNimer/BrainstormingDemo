@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-
+import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../controller/signup_controller.dart';
+import '../../../model/auth_model/signup_model.dart';
 import '../../widgets/signup_widgets.dart';
-import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,16 +14,53 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  Future<void> _registerUser(BuildContext context) async {
+    final signUpController = Provider.of<SignUpController>(context, listen: false);
+    final SignUpModel user = SignUpModel(
+      email: _emailController.text,
+      password: _passwordController.text,
+      phonenum: _phoneController.text,
+      firstname: _firstNameController.text,
+      lastname: _lastNameController.text,
+      birthDate: _dateController.text,
+    );
+
+    final success = await signUpController.registerUser(user);
+
+    if (success) {
+      // تسجيل ناجح، قم بتوجيه المستخدم إلى صفحة أخرى
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      // إظهار رسالة الخطأ
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(signUpController.errorMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final signUpController = Provider.of<SignUpController>(context);
 
     return Scaffold(
       body: Stack(
@@ -44,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.grey[900] : Colors.white,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
@@ -52,35 +90,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.sign_up,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.already_have_an_account,
-                            style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                            ),
+                            AppLocalizations.of(context)!.already_have_an_account,
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
+                              Navigator.pushReplacementNamed(context, '/login');
                             },
                             child: Text(
                               AppLocalizations.of(context)!.login,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green,
                               ),
@@ -89,10 +116,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      CustomTextField(
-                        controller: _nameController,
-                        labelText: AppLocalizations.of(context)!.full_name,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextField(
+                              controller: _firstNameController,
+                              labelText: AppLocalizations.of(context)!.first_name,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: CustomTextField(
+                              controller: _lastNameController,
+                              labelText: AppLocalizations.of(context)!.last_name,
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 10),
                       CustomTextField(
                         controller: _emailController,
                         labelText: AppLocalizations.of(context)!.email,
@@ -101,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       CustomTextField(
                         controller: _dateController,
-                        labelText: AppLocalizations.of(context)!.birth_of_date,
+                        labelText: AppLocalizations.of(context)!.birth_date,
                         readOnly: true,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.calendar_today),
@@ -114,15 +155,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                             if (pickedDate != null) {
                               setState(() {
-                                _dateController.text = DateFormat(
-                                  'dd/MM/yyyy',
-                                ).format(pickedDate);
+                                _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
                               });
                             }
                           },
                         ),
                       ),
-                      // بدون تعديل على خانة مفتاح الدولة
                       PhoneInputField(controller: _phoneController),
                       CustomTextField(
                         controller: _passwordController,
@@ -133,7 +171,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             _isPasswordVisible
                                 ? Icons.visibility
                                 : Icons.visibility_off,
-                            color: isDark ? Colors.white : null,
                           ),
                           onPressed: () {
                             setState(() {
@@ -143,22 +180,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton(
+                      signUpController.isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           minimumSize: const Size(double.infinity, 50),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ),
-                          );
-                        },
+                        onPressed: () => _registerUser(context),
                         child: Text(
                           AppLocalizations.of(context)!.register,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],

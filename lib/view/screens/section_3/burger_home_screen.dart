@@ -20,7 +20,9 @@ import 'notification_screen.dart';
 import 'order_details_screen.dart';
 
 class BurgerHomeScreen extends StatefulWidget {
-  const BurgerHomeScreen({super.key});
+  final int itemId;
+
+  const BurgerHomeScreen({required this.itemId, super.key});
 
   @override
   State<BurgerHomeScreen> createState() => _BurgerHomeScreenState();
@@ -161,7 +163,7 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BurgerHomeScreen(),
+                          builder: (context) => BurgerHomeScreen(itemId: 1,),
                         ),
                       );
                     },
@@ -172,7 +174,7 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PizzaScreen()),
+                        MaterialPageRoute(builder: (context) => PizzaScreen(itemId: 2,)),
                       );
                     },
                   ),
@@ -184,7 +186,7 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HotdogHomeScreen()),
+                        MaterialPageRoute(builder: (context) => HotdogHomeScreen(itemId: 3,)),
                       );
                     },
                   ),
@@ -201,48 +203,38 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                 children: [
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chicken_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_chicken,
+                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
                     price: "20.00",
                     imagePath: "assets/images/burger1.png",
                     rating: 3.8,
-    //                 onPressed: () {
-    //                   Navigator.push(
-    //                     context,
-    //                     MaterialPageRoute(
-    //                       builder: (context) => OrderDetailsScreen(),
-    // ),
-    //                   );
-    //                 },
+                    itemId: 1, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.cheese_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_meat_onion,
+                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
                     price: "15.00",
                     imagePath: "assets/images/burger2.png",
                     rating: 4.5,
-                   // onPressed: () {},
+                    itemId: 2, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chicken_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_chicken,
+                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
                     price: "20.00",
                     imagePath: "assets/images/burger1.png",
                     rating: 3.8,
-                   // onPressed: () {},
+                    itemId: 3, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.cheese_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_meat_onion,
+                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
                     price: "20.00",
                     imagePath: "assets/images/burger2.png",
                     rating: 3.8,
-                   // onPressed: () {},
+                    itemId: 4, // Example itemId, adjust accordingly
                   ),
                 ],
+
               ),
             ),
           ],
