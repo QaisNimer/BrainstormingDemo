@@ -48,7 +48,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
                           );
                         },
                         child: Row(
@@ -69,12 +69,12 @@ class ResetPasswordScreen extends StatelessWidget {
                                       : Colors.black54,
                                 ),
                                 children: <TextSpan>[
-                                  TextSpan(text: " "),
+                                  const TextSpan(text: " "),
                                   TextSpan(
                                     text: AppLocalizations.of(context)!.login,
                                     style: const TextStyle(color: Colors.green),
                                   ),
-                                  TextSpan(text: " "),
+                                  const TextSpan(text: " "),
                                   TextSpan(
                                     text: AppLocalizations.of(context)!.page,
                                     style: TextStyle(
@@ -111,17 +111,6 @@ class ResetPasswordScreen extends StatelessWidget {
                               : Colors.black54,
                         ),
                       ),
-                      //
-                      // onPressed: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => OTPScreen(email: 'user@example.com', isSignup: true),),
-                      //   );
-                      // },
-                      // child: Text(
-                      //   AppLocalizations.of(context)!.btn_send,
-                      //   style: TextStyle(color: Colors.white),
-
                       const SizedBox(height: 20),
                       // Email input field
                       TextField(
@@ -133,7 +122,6 @@ class ResetPasswordScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-
                       ),
                       const SizedBox(height: 20),
                       // Send button
@@ -150,7 +138,6 @@ class ResetPasswordScreen extends StatelessWidget {
                             final email = emailController.text.trim();
                             debugPrint("Email entered: $email");
 
-                            // Check if email is empty
                             if (email.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -161,21 +148,20 @@ class ResetPasswordScreen extends StatelessWidget {
                               return;
                             }
 
-                            // Create ResetPasswordModel and print JSON for debugging
                             final resetData = ResetPasswordModel(email: email);
                             debugPrint("Sending JSON: ${jsonEncode(resetData.toJson())}");
 
-                            // Call the reset password function
                             final success = await authService.resetPassword(resetData);
 
                             if (success) {
                               // Navigate to OTP screen if successful
-                              // Navigator.push(
-                              //   context,
-                              // //  MaterialPageRoute(builder: (context) => OTPScreen()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OTPScreen(email: email,),
+                                ),
+                              );
                             } else {
-                              // Show error message if failed
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(authService.errorMessage ?? 'Error occurred'),

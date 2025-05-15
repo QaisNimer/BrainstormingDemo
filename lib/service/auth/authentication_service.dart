@@ -1,15 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
+
 import '../../core/const_values.dart';
 import '../../model/sign_model.dart';
 import '../../model/verfication_model.dart';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:http/io_client.dart';
-import 'package:intl/intl.dart';
 import '../../model/auth_model/reset_password_model.dart';
 import '../../model/auth_model/signup_model.dart';
-
 
 class AuthenticationService extends ChangeNotifier {
   final String baseUrl = '${ConstValue.baseUrl}api';
@@ -47,11 +47,21 @@ class AuthenticationService extends ChangeNotifier {
         body: jsonEncode(input.toJson()),
       );
 
-      debugPrint("Login Response: ${response.statusCode} - ${response.body}");
       setLoading(false);
+      debugPrint("Login Status: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        return true;
+        final responseData = jsonDecode(response.body);
+
+        if (responseData.containsKey("token") && responseData["token"] is String) {
+          final token = responseData["token"];
+          debugPrint("Login successful. Token: $token");
+          return true;
+        } else {
+          debugPrint("Login succeeded but no valid token found.");
+          setErrorMessage("Login succeeded but no token returned.");
+          return false;
+        }
       } else {
         setErrorMessage('Login failed: ${response.body}');
         return false;
@@ -69,19 +79,46 @@ class AuthenticationService extends ChangeNotifier {
 
     try {
       final client = createHttpClient();
+
+      // Always force isSignup to true
+      final fixedPayload = jsonEncode({
+        'email': input.email,
+        'otpCode': input.otpCode,
+        'isSignup': true,
+      });
+
+      final uri = Uri.parse('${ConstValue.baseUrl.replaceAll(RegExp(r'/+$'), '')}/api/Auth/verification');
+      debugPrint("🔍 Verifying OTP to: $uri");
+      debugPrint("📦 Payload: $fixedPayload");
+
       final response = await client.post(
-        Uri.parse('$baseUrl/Auth/verify-otp'),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(input.toJson()),
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: fixedPayload,
       );
 
-      debugPrint("OTP Verify Response: ${response.statusCode} - ${response.body}");
+      debugPrint("🧾 OTP Verify Response: ${response.statusCode} - ${response.body}");
       setLoading(false);
 
       if (response.statusCode == 200) {
+        try {
+          final responseData = jsonDecode(response.body);
+          debugPrint("✅ OTP verified successfully: $responseData");
+        } catch (_) {
+          debugPrint("✅ OTP verified, but response body not in JSON format.");
+        }
         return true;
       } else {
-        setErrorMessage('OTP verification failed: ${response.body}');
+        try {
+          final errorResponse = jsonDecode(response.body);
+          final errorMessage = errorResponse['message'] ?? errorResponse['error'] ?? 'OTP verification failed.';
+          setErrorMessage(errorMessage);
+        } catch (_) {
+          setErrorMessage('OTP verification failed: ${response.body}');
+        }
         return false;
       }
     } catch (e) {
@@ -180,7 +217,8 @@ class AuthenticationService extends ChangeNotifier {
       debugPrint("Resetting password for email: $emailParam");
 
       final client = createHttpClient();
-      final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword').replace(queryParameters: {'email': emailParam});
+      final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword')
+          .replace(queryParameters: {'email': emailParam});
       debugPrint("Request URI: $uri");
 
       final response = await client.post(uri, headers: {
@@ -210,9 +248,4 @@ class AuthenticationService extends ChangeNotifier {
       return false;
     }
   }
-
-
-
-
-  ////resetpass/////
 }

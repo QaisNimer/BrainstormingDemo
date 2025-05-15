@@ -1,31 +1,28 @@
 class NotificationModel {
-  final String title;
-  final String message;
-  final String time;
-  final bool unread;
+  int? id;
+  String? title;
+  String? content;
+  String? date;
+  bool? isRead;
 
-  NotificationModel({
-    required this.title,
-    required this.message,
-    required this.time,
-    required this.unread,
-  });
+  NotificationModel(
+      {this.id, this.title, this.content, this.date, this.isRead});
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    return NotificationModel(
-      title: json['title'],
-      message: json['message'],
-      time: json['time'],
-      unread: json['unread'] == "true",
-    );
+  NotificationModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    content = json['content'];
+    date = json['date'];
+    isRead = json['isRead'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'message': message,
-      'time': time,
-      'unread': unread.toString(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['content'] = this.content;
+    data['date'] = this.date;
+    data['isRead'] = this.isRead;
+    return data;
   }
 }
