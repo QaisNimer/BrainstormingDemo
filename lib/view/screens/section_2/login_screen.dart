@@ -150,28 +150,35 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 15),
-                      TextFormField(
-                        controller: passTextEditingController,
-                        obscureText: loginController.obscureTextPassword,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: isDark ? Colors.grey[800] : Colors.white,
-                          labelText: AppLocalizations.of(context)!.password,
-                          labelStyle: TextStyle(color: isDark ? Colors.white : null),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () => loginController.changeObscureTextPassword(),
-                            icon: Icon(
-                              loginController.obscureTextPassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: isDark ? Colors.white : null,
+                      Consumer<LoginController>(
+                        builder: (context, loginController, child) {
+                          return TextFormField(
+                            controller: passTextEditingController,
+                            obscureText: loginController.obscureTextPassword,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: isDark ? Colors.grey[800] : Colors.white,
+                              labelText: AppLocalizations.of(context)!.password,
+                              labelStyle: TextStyle(color: isDark ? Colors.white : null),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () => loginController.changeObscureTextPassword(),
+                                icon: Icon(
+                                  loginController.obscureTextPassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: isDark ? Colors.white : null,
+                                ),
+                              ),
+                              errorText: loginController.showErrorPassword
+                                  ? loginController.errorPasswordMessage
+                                  : null,
                             ),
-                          ),
-                        ),
-                        style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                            style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                          );
+                        },
                       ),
                       const SizedBox(height: 15),
                       Row(
@@ -228,7 +235,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
 
                           loginController.checkEmail(email: emailTextEditingController.text);
-                          loginController.checkPassword(password: passTextEditingController.text);
+                          loginController.checkPassword(
+                            password: passTextEditingController.text,
+                            email: emailTextEditingController.text,
+                          );
+
+                          if (loginController.showErrorEmail || loginController.showErrorPassword) return;
 
                           Sign_Model signModel = Sign_Model(
                             email: emailTextEditingController.text,
@@ -240,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           if (success) {
                             await _saveCredentials(emailTextEditingController.text, "user_id_123");
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => HomeScreen()),
                             );

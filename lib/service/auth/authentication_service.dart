@@ -48,14 +48,22 @@ class AuthenticationService extends ChangeNotifier {
       );
 
       setLoading(false);
-      debugPrint("Login Status: ${response.statusCode}");
+      debugPrint("Login Status: \${response.statusCode}");
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
         if (responseData.containsKey("token") && responseData["token"] is String) {
           final token = responseData["token"];
-          debugPrint("Login successful. Token: $token");
+          debugPrint("Login Token: \$token");
+
+          // ✅ Block access if token indicates failure
+          if (token.toLowerCase().contains("no user") || token.trim().isEmpty) {
+            setErrorMessage("Invalid email or password.");
+            return false;
+          }
+
+          debugPrint("Login successful. Token: \$token");
           return true;
         } else {
           debugPrint("Login succeeded but no valid token found.");
@@ -63,12 +71,12 @@ class AuthenticationService extends ChangeNotifier {
           return false;
         }
       } else {
-        setErrorMessage('Login failed: ${response.body}');
+        setErrorMessage('Login failed: \${response.body}');
         return false;
       }
     } catch (e) {
       setLoading(false);
-      setErrorMessage("Login error: $e");
+      setErrorMessage("Login error: \$e");
       return false;
     }
   }

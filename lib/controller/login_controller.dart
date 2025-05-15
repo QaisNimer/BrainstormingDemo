@@ -8,6 +8,7 @@ class LoginController extends ChangeNotifier {
   String errorEmailMessage = '';
   String errorPasswordMessage = '';
 
+  // 📧 Email Validation
   void checkEmail({required String email}) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -27,10 +28,30 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void checkPassword({required String password}) {
+  // 🔐 Password Validation
+  void checkPassword({required String password, required String email}) {
+    String upperCasePattern = r'[A-Z]';
+    String numberPattern = r'[0-9]';
+    String specialCharPattern = r'[!@#\$&*~]';
+
     if (password.isEmpty) {
       showErrorPassword = true;
       errorPasswordMessage = "Password cannot be empty.";
+    } else if (password.length < 8) {
+      showErrorPassword = true;
+      errorPasswordMessage = "Password must be at least 8 characters.";
+    } else if (!RegExp(upperCasePattern).hasMatch(password)) {
+      showErrorPassword = true;
+      errorPasswordMessage = "Password must contain at least one uppercase letter.";
+    } else if (!RegExp(numberPattern).hasMatch(password)) {
+      showErrorPassword = true;
+      errorPasswordMessage = "Password must contain at least one number.";
+    } else if (!RegExp(specialCharPattern).hasMatch(password)) {
+      showErrorPassword = true;
+      errorPasswordMessage = "Password must contain at least one special character (!@#\$&*~).";
+    } else if (password == email) {
+      showErrorPassword = true;
+      errorPasswordMessage = "Password cannot be the same as email.";
     } else {
       showErrorPassword = false;
       errorPasswordMessage = '';
@@ -39,14 +60,25 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Custom Error
   void showCustomEmailError(String message) {
     showErrorEmail = true;
     errorEmailMessage = message;
     notifyListeners();
   }
 
+  // Toggle Password Visibility
   void changeObscureTextPassword() {
     obscureTextPassword = !obscureTextPassword;
+    notifyListeners();
+  }
+
+  // Optional Backend Error
+  void showBackendError(String message) {
+    showErrorEmail = true;
+    showErrorPassword = true;
+    errorEmailMessage = message;
+    errorPasswordMessage = message;
     notifyListeners();
   }
 }

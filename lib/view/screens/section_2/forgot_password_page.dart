@@ -14,10 +14,8 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController newPassTextEditingController =
-      TextEditingController();
-  final TextEditingController confirmPassTextEditingController =
-      TextEditingController();
+  final TextEditingController newPassTextEditingController = TextEditingController();
+  final TextEditingController confirmPassTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +32,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
             ),
           ),
-
           Center(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
               width: MediaQuery.of(context).size.width * 0.80,
               height: MediaQuery.of(context).size.height * 0.51,
               decoration: BoxDecoration(
-                color:
-                    Theme.of(context).brightness == Brightness.dark
-                        ? Colors.grey[900]
-                        : Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[900]
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -66,7 +62,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ],
                   ),
-
                   Row(
                     children: [
                       Text(
@@ -74,27 +69,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
                     ],
                   ),
-
                   Row(
                     children: [
                       Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.want_to_try_with_my_current_password,
+                        AppLocalizations.of(context)!.want_to_try_with_my_current_password,
                         style: TextStyle(
                           fontSize: 10,
-                          color:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white70
-                                  : Colors.black54,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white70
+                              : Colors.black54,
                         ),
                       ),
                       TextButton(
@@ -117,47 +107,57 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ],
                   ),
-
                   TextFormField(
                     controller: newPassTextEditingController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       label: Text(AppLocalizations.of(context)!.new_password),
-                      fillColor:
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.grey[850]
-                              : Colors.white,
+                      fillColor: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.white,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
                     ),
                   ),
                   SizedBox(height: 10),
-
                   TextFormField(
                     controller: confirmPassTextEditingController,
-                    obscureText: loginController.obscureTextPassword,
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor:
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.grey[850]
-                              : Colors.white,
-                      labelText:
-                          AppLocalizations.of(context)!.confirm_new_password,
+                      fillColor: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[850]
+                          : Colors.white,
+                      labelText: AppLocalizations.of(context)!.confirm_new_password,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
                     ),
                   ),
                   SizedBox(height: 20),
-
                   TextButton(
                     onPressed: () {
                       loginController.checkPassword(
                         password: newPassTextEditingController.text,
+                        email: "placeholder@email.com",
                       );
+
+                      if (newPassTextEditingController.text != confirmPassTextEditingController.text) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Passwords do not match")),
+                        );
+                        return;
+                      }
+
+                      if (loginController.showErrorPassword) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(loginController.errorPasswordMessage)),
+                        );
+                        return;
+                      }
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => CongraScreen()),
