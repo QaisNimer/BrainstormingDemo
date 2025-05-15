@@ -204,48 +204,38 @@ class _HotdogHomeScreenState extends State<HotdogHomeScreen> {
                 children: [
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.classic_american_hotdog,
-                    description:
-                    AppLocalizations.of(context)!.classic_american_hotdog_desc,
+                    description: AppLocalizations.of(context)!.classic_american_hotdog_desc,
                     price: "20.00",
                     imagePath: "assets/images/hotdog1.jpeg",
                     rating: 3.8,
-                    //                 onPressed: () {
-                    //                   Navigator.push(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                       builder: (context) => OrderDetailsScreen(),
-                    // ),
-                    //                   );
-                    //                 },
+                    itemId: 1, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chicago_style_hotdog,
-                    description:
-                    AppLocalizations.of(context)!.chicago_style_hotdog_desc,
+                    description: AppLocalizations.of(context)!.chicago_style_hotdog_desc,
                     price: "15.00",
                     imagePath: "assets/images/hotdog2.jpeg",
                     rating: 4.5,
-                    // onPressed: () {},
+                    itemId: 2, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chili_cheese_dog,
-                    description:
-                    AppLocalizations.of(context)!.chili_cheese_dog_desc,
+                    description: AppLocalizations.of(context)!.chili_cheese_dog_desc,
                     price: "20.00",
                     imagePath: "assets/images/hotdog3.jpeg",
                     rating: 3.8,
-                    // onPressed: () {},
+                    itemId: 3, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.bacon_wrapped_hotdog,
-                    description:
-                    AppLocalizations.of(context)!.bacon_wrapped_hotdog_desc,
+                    description: AppLocalizations.of(context)!.bacon_wrapped_hotdog_desc,
                     price: "20.00",
                     imagePath: "assets/images/hotdog4.jpeg",
                     rating: 3.8,
-                    // onPressed: () {},
+                    itemId: 4, // Example itemId, adjust accordingly
                   ),
                 ],
+
               ),
             ),
           ],

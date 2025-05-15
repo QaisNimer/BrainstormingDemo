@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/favorites_controller.dart';
+import '../../../model/favorite_model/favorite_model.dart';
+import '../../screens/section_3/remove_favourite_screen.dart';
 
 class FoodCard2Widget extends StatefulWidget {
   final String title;
@@ -11,6 +13,7 @@ class FoodCard2Widget extends StatefulWidget {
   final String imagePath;
   final double rating;
   final bool isRed;
+  final int itemId; // Made this required, not optional
 
   const FoodCard2Widget({
     super.key,
@@ -20,6 +23,7 @@ class FoodCard2Widget extends StatefulWidget {
     required this.imagePath,
     required this.rating,
     this.isRed = false,
+    required this.itemId, // Required parameter
   });
 
   @override
@@ -72,6 +76,24 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                       width: imageWidth,
                       height: imageHeight,
                       fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback to network image if asset fails
+                        return Image.network(
+                          widget.imagePath,
+                          width: imageWidth,
+                          height: imageHeight,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            // If both fail, show placeholder
+                            return Container(
+                              width: imageWidth,
+                              height: imageHeight,
+                              color: Colors.grey[300],
+                              child: Icon(Icons.image_not_supported),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                   Positioned(
@@ -80,70 +102,25 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                     child: GestureDetector(
                       onTap: () async {
                         if (widget.isRed) {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder:
-                                (context) => Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 24.0,
-                                      horizontal: 20,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!.are_you_sure_you_want_to_remove_it_from_favorites,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 24),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: 45,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.green,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                            ),
-                                            onPressed:
-                                                () => Navigator.pop(
-                                                  context,
-                                                  true,
-                                                ),
-                                            child: Text(
-                                              AppLocalizations.of(context)!.yes,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                          // For favorites screen - set current item and navigate to confirmation page
+                          final favoriteItem = FavoriteItem(
+                            title: widget.title,
+                            description: widget.description,
+                            price: widget.price,
+                            imagePath: widget.imagePath,
+                            rating: widget.rating,
+                            itemId: widget.itemId,
                           );
 
-                          if (confirm == true) {
-                            favoritesController.remove(widget.title);
-                            setState(() {
-                              isFavorited = false;
-                            });
-                          }
+                          favoritesController.setCurrentItem(favoriteItem);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RemoveFavouritePage(),
+                            ),
+                          );
                         } else {
+                          // For regular screens - toggle favorite status directly
                           setState(() {
                             isFavorited = !isFavorited;
                           });
@@ -154,12 +131,28 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                             price: widget.price,
                             imagePath: widget.imagePath,
                             rating: widget.rating,
+                            itemId: widget.itemId,
                           );
 
+                          bool success;
                           if (isFavorited) {
-                            favoritesController.add(item);
+                            // Add to favorites
+                            success = await favoritesController.add(item, widget.itemId);
+                            if (!success) {
+                              // Revert UI state if operation failed
+                              setState(() {
+                                isFavorited = false;
+                              });
+                            }
                           } else {
-                            favoritesController.remove(widget.title);
+                            // Remove from favorites
+                            success = await favoritesController.remove(widget.title, widget.itemId);
+                            if (!success) {
+                              // Revert UI state if operation failed
+                              setState(() {
+                                isFavorited = true;
+                              });
+                            }
                           }
                         }
                       },
@@ -177,9 +170,9 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color:
-                              (widget.isRed || isFavorited)
-                                  ? Colors.red
-                                  : Colors.green,
+                          (widget.isRed || isFavorited)
+                              ? Colors.red
+                              : Colors.green,
                           size: 20,
                         ),
                       ),

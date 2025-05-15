@@ -203,48 +203,38 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                 children: [
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chicken_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_chicken,
+                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
                     price: "20.00",
                     imagePath: "assets/images/burger1.png",
                     rating: 3.8,
-    //                 onPressed: () {
-    //                   Navigator.push(
-    //                     context,
-    //                     MaterialPageRoute(
-    //                       builder: (context) => OrderDetailsScreen(),
-    // ),
-    //                   );
-    //                 },
+                    itemId: 1, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.cheese_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_meat_onion,
+                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
                     price: "15.00",
                     imagePath: "assets/images/burger2.png",
                     rating: 4.5,
-                   // onPressed: () {},
+                    itemId: 2, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.chicken_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_chicken,
+                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
                     price: "20.00",
                     imagePath: "assets/images/burger1.png",
                     rating: 3.8,
-                   // onPressed: () {},
+                    itemId: 3, // Example itemId, adjust accordingly
                   ),
                   FoodCard2Widget(
                     title: AppLocalizations.of(context)!.cheese_burger,
-                    description:
-                    AppLocalizations.of(context)!.key_100_gr_meat_onion,
+                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
                     price: "20.00",
                     imagePath: "assets/images/burger2.png",
                     rating: 3.8,
-                   // onPressed: () {},
+                    itemId: 4, // Example itemId, adjust accordingly
                   ),
                 ],
+
               ),
             ),
           ],
