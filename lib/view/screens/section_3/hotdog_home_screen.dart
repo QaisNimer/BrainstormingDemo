@@ -20,7 +20,9 @@ import 'notification_screen.dart';
 import 'order_details_screen.dart';
 
 class HotdogHomeScreen extends StatefulWidget {
-  const HotdogHomeScreen({super.key});
+  final int itemId;
+
+  const HotdogHomeScreen({required this.itemId, super.key});
 
   @override
   State<HotdogHomeScreen> createState() => _HotdogHomeScreenState();
@@ -161,7 +163,7 @@ class _HotdogHomeScreenState extends State<HotdogHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BurgerHomeScreen(),
+                          builder: (context) => BurgerHomeScreen(itemId: 1,),
                         ),
                       );
                     },
@@ -172,7 +174,7 @@ class _HotdogHomeScreenState extends State<HotdogHomeScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PizzaScreen()),
+                        MaterialPageRoute(builder: (context) => PizzaScreen(itemId: 2,)),
                       );
                     },
                   ),
@@ -183,7 +185,7 @@ class _HotdogHomeScreenState extends State<HotdogHomeScreen> {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HotdogHomeScreen()),
+                        MaterialPageRoute(builder: (context) => HotdogHomeScreen(itemId: 3,)),
                       );
 
 

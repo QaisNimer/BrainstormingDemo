@@ -1,9 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../../model/verfication_model.dart';
+import '../../../service/auth/authentication_service.dart';
 import 'forgot_password_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class OTPScreen extends StatefulWidget {
+  final String email;
+  final bool isSignup;
+
+  OTPScreen({required this.email, required this.isSignup});
+
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -11,23 +19,57 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   late List<TextEditingController> _controllers;
   late List<FocusNode> _focusNodes;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(4, (index) => TextEditingController());
-    _focusNodes = List.generate(4, (index) => FocusNode());
+    _controllers = List.generate(4, (_) => TextEditingController());
+    _focusNodes = List.generate(4, (_) => FocusNode());
   }
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
+    _controllers.forEach((c) => c.dispose());
+    _focusNodes.forEach((f) => f.dispose());
     super.dispose();
+  }
+
+  Future<void> _verifyOtp() async {
+    String otpCode = _controllers.map((c) => c.text).join();
+
+    if (otpCode.length != 4) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter the complete 4-digit code.')),
+      );
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    final model = Verfication_Model(
+      email: widget.email,
+      otpCode: otpCode,
+      isSignup: widget.isSignup,
+    );
+
+    final success = await AuthService().verifyOtp(model);
+
+    setState(() => isLoading = false);
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('OTP verified successfully!')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => ForgotPasswordPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Verification failed. Please try again.')),
+      );
+    }
   }
 
   @override
@@ -46,9 +88,7 @@ class _OTPScreenState extends State<OTPScreen> {
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.black.withOpacity(0.3),
-              ),
+              child: Container(color: Colors.black.withOpacity(0.3)),
             ),
           ),
           SafeArea(
@@ -64,15 +104,14 @@ class _OTPScreenState extends State<OTPScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 20),
-                    Image.asset(
-                      'assets/images/otp.png',
-                      height: 80,
-                    ),
+                    Image.asset('assets/images/otp.png', height: 80),
                     SizedBox(height: 15),
                     Text(
-                      AppLocalizations.of(context)!.a_4_digit_code_has_been_sent_to_your_email_please_enter_it_to_verify,
+                      AppLocalizations.of(context)!
+                          .a_4_digit_code_has_been_sent_to_your_email_please_enter_it_to_verify,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
+                      style: TextStyle(
+                          color: isDark ? Colors.white70 : Colors.black54),
                     ),
                     SizedBox(height: 30),
                     Row(
@@ -80,7 +119,6 @@ class _OTPScreenState extends State<OTPScreen> {
                       children: List.generate(4, (index) => otpBox(index)),
                     ),
                     SizedBox(height: 30),
-
                     SizedBox(
                       width: double.infinity,
                       height: 45,
@@ -88,13 +126,10 @@ class _OTPScreenState extends State<OTPScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
-                          );
-                        },
-                        child: Text(
+                        onPressed: isLoading ? null : _verifyOtp,
+                        child: isLoading
+                            ? CircularProgressIndicator(color: Colors.white)
+                            : Text(
                           AppLocalizations.of(context)!.verify,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -126,10 +161,7 @@ class _OTPScreenState extends State<OTPScreen> {
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         maxLength: 1,
-        decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-        ),
+        decoration: InputDecoration(counterText: "", border: InputBorder.none),
         onChanged: (value) {
           if (value.length == 1 && index < 3) {
             FocusScope.of(context).requestFocus(_focusNodes[index + 1]);

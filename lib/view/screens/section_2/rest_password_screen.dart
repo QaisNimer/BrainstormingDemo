@@ -111,6 +111,17 @@ class ResetPasswordScreen extends StatelessWidget {
                               : Colors.black54,
                         ),
                       ),
+
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OTPScreen(email: 'user@example.com', isSignup: true),),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.btn_send,
+                        style: TextStyle(color: Colors.white),
+
                       const SizedBox(height: 20),
                       // Email input field
                       TextField(
@@ -122,6 +133,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
+
                       ),
                       const SizedBox(height: 20),
                       // Send button
