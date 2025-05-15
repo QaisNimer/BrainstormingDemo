@@ -20,7 +20,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   bool _isPasswordVisible = false;
+  String? _backendFormattedDate;
 
   Future<void> _registerUser(BuildContext context) async {
     final signUpController = Provider.of<SignUpController>(context, listen: false);
@@ -30,16 +32,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       phonenum: _phoneController.text,
       firstname: _firstNameController.text,
       lastname: _lastNameController.text,
-      birthDate: _dateController.text,
+      birthDate: _backendFormattedDate,
     );
 
     final success = await signUpController.registerUser(user);
 
     if (success) {
-      // تسجيل ناجح، قم بتوجيه المستخدم إلى صفحة أخرى
       Navigator.pushReplacementNamed(context, '/login');
     } else {
-      // إظهار رسالة الخطأ
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -98,9 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.already_have_an_account,
-                          ),
+                          Text(AppLocalizations.of(context)!.already_have_an_account),
                           TextButton(
                             onPressed: () {
                               Navigator.pushReplacementNamed(context, '/login');
@@ -155,7 +153,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                             if (pickedDate != null) {
                               setState(() {
-                                _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+                                _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate); // للمستخدم
+                                _backendFormattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // للـ backend
                               });
                             }
                           },

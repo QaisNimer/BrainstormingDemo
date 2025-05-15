@@ -1,7 +1,12 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
 import '../../core/const_values.dart';
+import '../../model/auth_model/signup_model.dart';
+import '../../model/auth_model/reset_password_model.dart';
 import '../../model/sign_model.dart';
 import '../../model/verfication_model.dart';
 
@@ -41,15 +46,6 @@ class AuthService {
   }
 }
 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'package:intl/intl.dart';
-import '../../core/const_values.dart';
-import '../../model/auth_model/reset_password_model.dart';
-import '../../model/auth_model/signup_model.dart';
-
 class AuthenticationService extends ChangeNotifier {
   final String baseUrl = '${ConstValue.baseUrl}api';
   bool _isLoading = false;
@@ -58,32 +54,27 @@ class AuthenticationService extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  // Set Loading State
   void setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  // Set Error Message
   void setErrorMessage(String? message) {
     _errorMessage = message;
     notifyListeners();
   }
 
-  // HTTP Client (ignoring SSL errors)
   http.Client createHttpClient() {
     final httpClient = HttpClient()
       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
     return IOClient(httpClient);
   }
 
-  // Sign Up Function
   Future<bool> signUp(SignUpModel user) async {
     setLoading(true);
-    setErrorMessage(null); // Clear previous error messages
+    setErrorMessage(null);
 
     try {
-      // Ensure all required fields are present
       if (!_validateRequiredFields(user)) {
         setErrorMessage('Please fill in all required fields.');
         setLoading(false);
@@ -91,14 +82,13 @@ class AuthenticationService extends ChangeNotifier {
       }
 
       if (user.birthDate != null && user.birthDate!.isNotEmpty) {
-        try {
-          final parsedDate = DateFormat('yyyy-MM-dd').parse(user.birthDate!);
-          user.birthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-        } catch (e) {
+        final parsedDate = DateTime.tryParse(user.birthDate!);
+        if (parsedDate == null) {
           setErrorMessage('Invalid birth date format. Please use YYYY-MM-DD format.');
           setLoading(false);
           return false;
         }
+        user.birthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
       } else {
         setErrorMessage('Birth date is required.');
         setLoading(false);
@@ -107,50 +97,32 @@ class AuthenticationService extends ChangeNotifier {
 
       final client = createHttpClient();
       final url = Uri.parse('$baseUrl/Auth/signup');
+      final Map<String, dynamic> userJson = {
+        'email': user.email?.trim(),
+        'password': user.password?.trim(),
+        'phonenum': user.phonenum?.trim(),
+        'firstname': user.firstname?.trim(),
+        'lastname': user.lastname?.trim(),
+        'birthDate': user.birthDate?.trim(),
+      };
 
-      // Create a clean JSON without null values
-      final Map<String, dynamic> userJson = {};
-
-      if (user.email != null && user.email!.isNotEmpty) userJson['email'] = user.email!.trim();
-      if (user.password != null && user.password!.isNotEmpty) userJson['password'] = user.password!.trim();
-      if (user.phonenum != null && user.phonenum!.isNotEmpty) userJson['phonenum'] = user.phonenum!.trim();
-      if (user.firstname != null && user.firstname!.isNotEmpty) userJson['firstname'] = user.firstname!.trim();
-      if (user.lastname != null && user.lastname!.isNotEmpty) userJson['lastname'] = user.lastname!.trim();
-      if (user.birthDate != null && user.birthDate!.isNotEmpty) userJson['birthDate'] = user.birthDate!.trim();
-
-      // Print debugging information
       debugPrint('Sending sign up request to: $url');
       debugPrint('Request body: ${jsonEncode(userJson)}');
 
       final response = await client.post(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
         body: jsonEncode(userJson),
       );
-
-      // Print server response for debugging
-      debugPrint('Response status code: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
 
       setLoading(false);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
-        try {
-          // Try to parse error message from response
-          final errorResponse = jsonDecode(response.body);
-          final errorMsg = errorResponse['message'] ??
-              errorResponse['error'] ??
-              'Registration failed. Code: ${response.statusCode}';
-          setErrorMessage(errorMsg);
-        } catch (e) {
-          // If response cannot be parsed as JSON
-          setErrorMessage('Registration failed: ${response.body}');
-        }
+        final errorResponse = jsonDecode(response.body);
+        final errorMsg = errorResponse['message'] ?? errorResponse['error'] ?? 'Registration failed.';
+        setErrorMessage(errorMsg);
         return false;
       }
     } catch (e) {
@@ -161,20 +133,14 @@ class AuthenticationService extends ChangeNotifier {
     }
   }
 
-  // Validate required fields
   bool _validateRequiredFields(SignUpModel user) {
-    // Check all required fields based on your model
-    if (user.email == null || user.email!.isEmpty ||
-        user.password == null || user.password!.isEmpty ||
-        user.firstname == null || user.firstname!.isEmpty ||
-        user.lastname == null || user.lastname!.isEmpty ||
-        user.birthDate == null || user.birthDate!.isEmpty) {
-      return false;
-    }
-    return true;
+    return user.email?.isNotEmpty == true &&
+        user.password?.isNotEmpty == true &&
+        user.firstname?.isNotEmpty == true &&
+        user.lastname?.isNotEmpty == true &&
+        user.birthDate?.isNotEmpty == true;
   }
 
-  // Reset Password Function
   Future<bool> resetPassword(ResetPasswordModel resetData) async {
     setLoading(true);
     setErrorMessage(null);
@@ -185,36 +151,25 @@ class AuthenticationService extends ChangeNotifier {
 
       final client = createHttpClient();
       final uri = Uri.parse('$baseUrl/Auth/SendOTP-To-ResetPassword').replace(
-          queryParameters: {'email': emailParam}
+        queryParameters: {'email': emailParam},
       );
 
       debugPrint("Request URI: $uri");
 
       final response = await client.post(
         uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
         body: '',
       );
 
-      debugPrint("Response Status: ${response.statusCode}");
-      debugPrint("Response Body: ${response.body}");
-
       setLoading(false);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
-        try {
-          final errorResponse = jsonDecode(response.body);
-          final errorMessage = errorResponse['message'] ??
-              errorResponse['error'] ??
-              'Password reset failed: ${response.statusCode}';
-          setErrorMessage(errorMessage);
-        } catch (e) {
-          setErrorMessage('Password reset failed: ${response.body}');
-        }
+        final errorResponse = jsonDecode(response.body);
+        final errorMessage = errorResponse['message'] ?? errorResponse['error'] ?? 'Password reset failed.';
+        setErrorMessage(errorMessage);
         return false;
       }
     } catch (e) {
@@ -225,4 +180,3 @@ class AuthenticationService extends ChangeNotifier {
     }
   }
 }
-

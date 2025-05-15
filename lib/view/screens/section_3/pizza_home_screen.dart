@@ -45,7 +45,7 @@ class _PizzaScreenState extends State<PizzaScreen> {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final locationController = Provider.of<LocationController>(context);
-    print("🟢 PizzaScreen loaded with itemId: ${widget.itemId}"); // You can use the ID now
+    print("PizzaScreen loaded with itemId: ${widget.itemId}"); // You can use the ID now
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
