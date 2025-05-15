@@ -13,8 +13,10 @@ import 'package:provider/provider.dart';
 
 import '../../../controller/location_controller.dart';
 import '../../../core/const_values.dart';
+import '../../../model/discount_model.dart';
 import '../../../model/items/top_rated_model.dart';
 import '../../../model/items/top_recommended_model.dart';
+import '../../../service/discount_service.dart';
 import '../section_4/delete_cart_screen.dart';
 import '../section_4/history_screen.dart';
 import '../section_5/client_location_screen.dart';
@@ -194,25 +196,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(height: 10),
-              Container(
-                height: screenHeight * 0.2,
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: PageView(
-                  controller: pageController,
-                  onPageChanged: (page) => setState(() => currentPage = page),
-                  children: List.generate(
-                    5,
-                    (_) => Image.asset(
-                      "assets/images/offer.pizza.png",
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
+
+    Container(
+      height: screenHeight * 0.2,
+      decoration: BoxDecoration(
+        color: Colors.green.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: FutureBuilder<List<DiscountModel>>(
+        future: DiscountService().fetchDiscounts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No discounts available.'));
+          }
+
+          final discounts = snapshot.data!;
+
+          return PageView.builder(
+            controller: pageController,
+            onPageChanged: (page) => setState(() => currentPage = page),
+            itemCount: discounts.length,
+            itemBuilder: (context, index) {
+              final discount = discounts[index];
+              final hasImage = discount.image != null && discount.image!.isNotEmpty;
+
+              final imageWidget = hasImage
+                  ? Image.network(
+                '${ConstValue.baseUrl}${discount.image}',
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) =>
+                    Image.asset("assets/images/offer.pizza.png", fit: BoxFit.fill),
+              )
+                  : Image.asset("assets/images/offer.pizza.png", fit: BoxFit.fill);
+
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: imageWidget,
+              );
+            },
+          );
+        },
+      ),
+    ),
+
+    SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -299,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => BurgerHomeScreen(itemId: item.id),
+                                  builder: (_) => OrderDetailsScreen(),
                                 ),
                               );
                             } else {

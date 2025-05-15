@@ -11,7 +11,7 @@ class DiscountModel {
 
   factory DiscountModel.fromJson(Map<String, dynamic> json) {
     return DiscountModel(
-      id: json['id'],
+      id: json['id'] is int ? json['id'] : int.tryParse(json['id'].toString()) ?? 0,
       titleEnglish: json['titleEnglish'] ?? '',
       image: json['image'],
     );

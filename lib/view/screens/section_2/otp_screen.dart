@@ -53,7 +53,7 @@ class _OTPScreenState extends State<OTPScreen> {
       isSignup: widget.isSignup,
     );
 
-    final success = await AuthService().verifyOtp(model);
+    final success = await AuthenticationService().verifyOtp(model);
 
     setState(() => isLoading = false);
 

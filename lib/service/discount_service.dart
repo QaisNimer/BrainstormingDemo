@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../core/const_value.dart';
+import '../core/const_values.dart';
 import '../model/discount_model.dart';
 
 class DiscountService {
