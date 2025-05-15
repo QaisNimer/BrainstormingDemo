@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../../controller/signup_controller.dart';
 import '../../../model/auth_model/signup_model.dart';
 import '../../widgets/signup_widgets.dart';
@@ -25,7 +28,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _backendFormattedDate;
 
   Future<void> _registerUser(BuildContext context) async {
-    final signUpController = Provider.of<SignUpController>(context, listen: false);
+    final signUpController = Provider.of<SignUpController>(
+      context,
+      listen: false,
+    );
     final SignUpModel user = SignUpModel(
       email: _emailController.text,
       password: _passwordController.text,
@@ -42,7 +48,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else {
       showDialog(
         context: context,
-        builder: (_) => AlertDialog(
+        builder:
+            (_) => AlertDialog(
           title: const Text('Error'),
           content: Text(signUpController.errorMessage),
           actions: <Widget>[
@@ -98,7 +105,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(AppLocalizations.of(context)!.already_have_an_account),
+                          Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.already_have_an_account,
+                          ),
                           TextButton(
                             onPressed: () {
                               Navigator.pushReplacementNamed(context, '/login');
@@ -119,14 +130,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Expanded(
                             child: CustomTextField(
                               controller: _firstNameController,
-                              labelText: AppLocalizations.of(context)!.first_name,
+                              labelText:
+                              AppLocalizations.of(context)!.first_name,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: CustomTextField(
                               controller: _lastNameController,
-                              labelText: AppLocalizations.of(context)!.last_name,
+                              labelText:
+                              AppLocalizations.of(context)!.last_name,
                             ),
                           ),
                         ],
@@ -151,12 +164,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               firstDate: DateTime(1900),
                               lastDate: DateTime(2100),
                             );
-                            if (pickedDate != null) {
-                              setState(() {
-                                _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate); // للمستخدم
-                                _backendFormattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // للـ backend
-                              });
-                            }
+
+                            log(
+                              DateFormat(
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                              ).format(pickedDate!.toUtc()),
+                            );
+
+                            //2025-05-14T21:00:00.000Z
+                            //2025-05-15T13:34:18.192Z
+
+                            setState(() {
+                              _dateController.text = DateFormat(
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                              ).format(pickedDate.toUtc()); // للمستخدم
+
+                              _backendFormattedDate = DateFormat(
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                              ).format(pickedDate.toUtc()); // للـ backend
+                            });
                           },
                         ),
                       ),

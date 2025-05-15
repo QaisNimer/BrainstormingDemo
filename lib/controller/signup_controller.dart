@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:intl/intl.dart';
+
 import '../../model/auth_model/signup_model.dart';
 import '../core/const_values.dart';
 
@@ -25,7 +26,8 @@ class SignUpController extends ChangeNotifier {
   }
 
   http.Client createHttpClient() {
-    final httpClient = HttpClient()
+    final httpClient =
+    HttpClient()
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
     return IOClient(httpClient);
@@ -40,11 +42,11 @@ class SignUpController extends ChangeNotifier {
       final Uri url = Uri.parse('${ConstValue.baseUrl}api/Auth/signup');
 
       // Format birthDate from dd/MM/yyyy to yyyy-MM-dd
-      String? formattedBirthDate;
+      // String? formattedBirthDate;
       if (user.birthDate != null && user.birthDate!.isNotEmpty) {
         try {
-          final parsedDate = DateFormat('dd/MM/yyyy').parse(user.birthDate!);
-          formattedBirthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+          // final parsedDate = DateFormat('dd/MM/yyyy').parse(user.birthDate!);
+          // formattedBirthDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         } catch (e) {
           setErrorMessage('Invalid birth date format');
           setLoading(false);
@@ -58,13 +60,13 @@ class SignUpController extends ChangeNotifier {
         "phone_number": user.phonenum?.trim(),
         "first_name": user.firstname?.trim(),
         "last_name": user.lastname?.trim(),
-        "birth_date": formattedBirthDate,
+        "birth_date": user.birthDate?.trim(),
       });
 
       final response = await client.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: body,
+        body: jsonEncode(user.toJson()),
       );
 
       setLoading(false);
