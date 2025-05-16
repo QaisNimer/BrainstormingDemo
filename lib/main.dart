@@ -21,7 +21,7 @@ import 'dart:io';
 
 import 'controller/category_controller.dart';
 
-// إضافة فئة MyHttpOverrides لتجاوز شهادات SSL
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -53,7 +53,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => LangController()),
         ChangeNotifierProvider(create: (_) => LocationController()),
         ChangeNotifierProvider(create: (_) => FavoritesController()),
-        ChangeNotifierProvider(create: (_) => CategoryController()),
+    ChangeNotifierProvider(
+        create: (_) => CategoryController()..fetchCategories(),),
       ],
       child: const MyApp(),
     ),

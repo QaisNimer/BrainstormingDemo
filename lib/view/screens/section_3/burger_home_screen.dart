@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foodtek/view/screens/section_3/pizza_home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/location_controller.dart';
+import '../../../controller/category_controller.dart';
 import '../../widgets/bottom_nav_Item_widget.dart';
-import '../../widgets/category_button_widget.dart';
-import '../../widgets/foods/food_card_widget.dart';
 import '../../widgets/foods/food_cart2_widget.dart';
 import '../section_4/delete_cart_screen.dart';
 import '../section_4/history_screen.dart';
@@ -15,9 +13,7 @@ import '../section_6/profile_screen.dart';
 import 'favorites_screen.dart';
 import 'filter_screen.dart';
 import 'home_screen.dart';
-import 'hotdog_home_screen.dart';
 import 'notification_screen.dart';
-import 'order_details_screen.dart';
 
 class BurgerHomeScreen extends StatefulWidget {
   final int itemId;
@@ -30,8 +26,15 @@ class BurgerHomeScreen extends StatefulWidget {
 
 class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
   int selectedIndex = 0;
-  final int selectedCategoryIndex = 2;
-  bool isFavoriteSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CategoryController>(context, listen: false)
+          .fetchCategoryItems('Burger');
+    });
+  }
 
   void onItemTapped(int index) {
     setState(() {
@@ -43,13 +46,11 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     final locationController = Provider.of<LocationController>(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -60,47 +61,39 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
             IconButton(
               onPressed: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ClientLocationScreen(),
-                  ),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClientLocationScreen()));
               },
-              icon: Icon(Icons.location_on, color: Colors.green, size: 31),
+              icon: const Icon(Icons.location_on, color: Colors.green, size: 31),
             ),
-            SizedBox(width: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.current_location,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: theme.textTheme.bodyMedium!.color,
+            const SizedBox(width: 5),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.current_location,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: theme.textTheme.bodyMedium!.color,
+                    ),
                   ),
-                ),
-                // عرض العنوان من LocationController
-                Text(
-                  locationController.address, // العنوان من LocationController
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: theme.textTheme.bodyLarge!.color,
+                  Text(
+                    locationController.address,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: theme.textTheme.bodyLarge!.color,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.arrow_drop_down, color: theme.iconTheme.color),
-            ),
-            Spacer(),
-            IconButton(
-              icon: Icon(
-                Icons.notifications_none,
-                color: theme.iconTheme.color,
-                size: 31,
+                ],
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications_none,
+                  color: theme.iconTheme.color, size: 31),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -112,129 +105,71 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
               decoration: InputDecoration(
-                hintText:
-                AppLocalizations.of(context)!.search_menu_restaurant_or_etc,
-                hintStyle: TextStyle(
-                  color: isDark ? Colors.white60 : Colors.black45,
-                ),
+                hintText: AppLocalizations.of(context)!
+                    .search_menu_restaurant_or_etc,
                 prefixIcon: Icon(Icons.search, color: theme.iconTheme.color),
                 suffixIcon: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FilterScreen()),
-                    );
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => FilterScreen()));
                   },
                   icon: Icon(Icons.tune, color: theme.iconTheme.color),
                 ),
+                fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
-                fillColor: isDark ? Colors.grey[800] : Colors.grey[200],
-                filled: true,
               ),
             ),
-            SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  CategoryButtonWidget(
-                    title: AppLocalizations.of(context)!.all,
-                    isSelected: false,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: '🍔 ${AppLocalizations.of(context)!.burger}',
-                    isSelected: true,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BurgerHomeScreen(itemId: 1,),
-                        ),
-                      );
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: '🍕  ${AppLocalizations.of(context)!.pizza}',
-                    isSelected: false,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PizzaScreen(itemId: 2,)),
-                      );
-                    },
-                  ),
-                  CategoryButtonWidget(
-                    title: '🌭 ${AppLocalizations.of(context)!.sandwich}',
-                    isSelected: false,
-                    onPressed: () {
-
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HotdogHomeScreen(itemId: 3,)),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: screenWidth / (screenWidth * 1.3),
-                children: [
-                  FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.chicken_burger,
-                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
-                    price: "20.00",
-                    imagePath: "assets/images/burger1.png",
-                    rating: 3.8,
-                    itemId: 1, // Example itemId, adjust accordingly
-                  ),
-                  FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.cheese_burger,
-                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
-                    price: "15.00",
-                    imagePath: "assets/images/burger2.png",
-                    rating: 4.5,
-                    itemId: 2, // Example itemId, adjust accordingly
-                  ),
-                  FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.chicken_burger,
-                    description: AppLocalizations.of(context)!.key_100_gr_chicken,
-                    price: "20.00",
-                    imagePath: "assets/images/burger1.png",
-                    rating: 3.8,
-                    itemId: 3, // Example itemId, adjust accordingly
-                  ),
-                  FoodCard2Widget(
-                    title: AppLocalizations.of(context)!.cheese_burger,
-                    description: AppLocalizations.of(context)!.key_100_gr_meat_onion,
-                    price: "20.00",
-                    imagePath: "assets/images/burger2.png",
-                    rating: 3.8,
-                    itemId: 4, // Example itemId, adjust accordingly
-                  ),
-                ],
+              child: Consumer<CategoryController>(
+                builder: (context, categoryController, _) {
+                  if (categoryController.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
+                  if (categoryController.errorMessage != null) {
+                    return Center(
+                        child: Text(categoryController.errorMessage!));
+                  }
+
+                  final categoryItems = categoryController.categoryItems;
+                  if (categoryItems.isEmpty) {
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!.no_items_available),
+                    );
+                  }
+
+                  return GridView.builder(
+                    itemCount: categoryItems.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: screenWidth / (screenWidth * 1.3),
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = categoryItems[index];
+                      return FoodCard2Widget(
+                        title: item.englishName,
+                        description: item.arabicName,
+                        price: "15.00", // Replace with item price if available
+                        imagePath: item.imagePath ?? 'assets/images/default.png',
+                        rating: 4.5, // Replace with item rating if available
+                        itemId: widget.itemId,
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
@@ -253,66 +188,39 @@ class _BurgerHomeScreenState extends State<BurgerHomeScreen> {
                 icon: Icons.home,
                 label: AppLocalizations.of(context)!.home,
                 isSelected: selectedIndex == 0,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  );
-                  onItemTapped(0);
-                },
+                onTap: () => Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => HomeScreen())),
               ),
               BottomNavItemWidget(
                 icon: Icons.favorite,
                 label: AppLocalizations.of(context)!.favorite,
                 isSelected: selectedIndex == 1,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FavoritesScreen()),
-                  );
-                  onItemTapped(1);
-                },
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => FavoritesScreen())),
               ),
-              const SizedBox(width: 40), // space for FAB
-              BottomNavItemWidget(
-                icon: Icons.history,
-                label: AppLocalizations.of(context)!.history,
-                isSelected: selectedIndex == 3,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HistoryScreen()),
-                  );
-                  onItemTapped(3);
-                },
-              ),
+              const SizedBox(width: 40),
               BottomNavItemWidget(
                 icon: Icons.person,
                 label: AppLocalizations.of(context)!.profile,
                 isSelected: selectedIndex == 4,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                  onItemTapped(4);
-                },
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => ProfileScreen())),
               ),
             ],
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DeleteCartScreen()),
+            MaterialPageRoute(builder: (context) => const DeleteCartScreen()),
           );
         },
-        child: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+        child: const Icon(Icons.shopping_cart),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

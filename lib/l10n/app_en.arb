@@ -12,6 +12,13 @@
   "login": "Login",
   "dont_have_an_account": "Don't have an account?",
   "sign_up": "Sign Up",
+  "error": "Error",
+  "ok": "OK",
+  "all_fields_required": "All fields are required",
+  "invalid_email": "Please enter a valid email address",
+  "error_removing_favorite": "Error removing from favorites. Please try again.",
+  "no_items_available": "No items available",
+
   "email": "Email",
   "password": "Password",
   "remember_me": "Remember Me",

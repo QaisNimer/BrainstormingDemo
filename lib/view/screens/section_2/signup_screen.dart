@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../controller/signup_controller.dart';
 import '../../../model/auth_model/signup_model.dart';
 import '../../widgets/signup_widgets.dart';
+import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -28,6 +29,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _backendFormattedDate;
 
   Future<void> _registerUser(BuildContext context) async {
+    // Check for empty fields
+    if (_firstNameController.text.isEmpty ||
+        _lastNameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _dateController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
+        _passwordController.text.isEmpty) {
+      _showErrorDialog(context, 'Please fill in all required fields');
+      return;
+    }
+
     final signUpController = Provider.of<SignUpController>(
       context,
       listen: false,
@@ -38,31 +50,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
       phonenum: _phoneController.text,
       firstname: _firstNameController.text,
       lastname: _lastNameController.text,
-      birthDate: _backendFormattedDate,
+      birthDate: _backendFormattedDate, // Already in ISO format
     );
 
+    log('Sending user data with birthDate: ${user.birthDate}');
     final success = await signUpController.registerUser(user);
 
     if (success) {
-      Navigator.pushReplacementNamed(context, '/login');
-    } else {
-      showDialog(
-        context: context,
-        builder:
-            (_) => AlertDialog(
-              title: const Text('Error'),
-              content: Text(signUpController.errorMessage),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()), //  LoginScreen
       );
+    } else {
+      _showErrorDialog(context, signUpController.errorMessage);
     }
+  }
+
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -131,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: CustomTextField(
                               controller: _firstNameController,
                               labelText:
-                                  AppLocalizations.of(context)!.first_name,
+                              AppLocalizations.of(context)!.first_name,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -139,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: CustomTextField(
                               controller: _lastNameController,
                               labelText:
-                                  AppLocalizations.of(context)!.last_name,
+                              AppLocalizations.of(context)!.last_name,
                             ),
                           ),
                         ],
@@ -165,24 +185,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               lastDate: DateTime(2100),
                             );
 
-                            log(
-                              DateFormat(
+                            if (pickedDate != null) {
+                              // Format date in the exact format required by the API
+                              final formattedDate = DateFormat(
                                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                              ).format(pickedDate!.toUtc()),
-                            );
+                              ).format(pickedDate.toUtc());
 
-                            //2025-05-14T21:00:00.000Z
-                            //2025-05-15T13:34:18.192Z
+                              log('Selected date formatted: $formattedDate');
 
-                            setState(() {
-                              _dateController.text = DateFormat(
-                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                              ).format(pickedDate.toUtc()); // للمستخدم
+                              setState(() {
+                                // Display a user-friendly format in the UI
+                                _dateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
 
-                              _backendFormattedDate = DateFormat(
-                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                              ).format(pickedDate.toUtc()); // للـ backend
-                            });
+                                // Store the ISO format for API
+                                _backendFormattedDate = formattedDate;
+                              });
+                            }
                           },
                         ),
                       ),
@@ -208,16 +226,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       signUpController.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              minimumSize: const Size(double.infinity, 50),
-                            ),
-                            onPressed: () => _registerUser(context),
-                            child: Text(
-                              AppLocalizations.of(context)!.register,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        onPressed: () => _registerUser(context),
+                        child: Text(
+                          AppLocalizations.of(context)!.register,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ],
                   ),
                 ),

@@ -33,62 +33,44 @@ class FavoritesController with ChangeNotifier {
     notifyListeners();
   }
 
-  // Load favorites from API with improved error handling
+  // Load favorites from API
   Future<void> loadFavorites() async {
     try {
       _isLoading = true;
       _error = '';
       notifyListeners();
 
-      if (kDebugMode) {
-        print("Fetching favorites for client: $_clientId");
-      }
-
-      // Debug API connection first
-      if (kDebugMode) {
-        await _favoriteService.debugApiConnection();
-      }
-
       final favoritesList = await _favoriteService.getFavorites(_clientId);
-
-      if (kDebugMode) {
-        print("Received ${favoritesList.length} favorites from API");
-      }
-
-      _favorites.clear();
-      for (var favorite in favoritesList) {
-        // Convert FavoriteModel to FavoriteItem using the method we added
-        _favorites.add(favorite.toFavoriteItem());
-      }
+      _favorites
+        ..clear()
+        ..addAll(favoritesList.map((favorite) => favorite.toFavoriteItem()));
 
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      if (kDebugMode) {
-        print("Error in loadFavorites: $e");
-      }
       _isLoading = false;
       _error = 'Error loading favorites: ${e.toString()}';
       notifyListeners();
     }
   }
 
-  // Add to favorites both locally and on the server
-  Future<bool> add(FavoriteItem item, int itemId) async {
+  // Add to favorites
+  Future<bool> add(FavoriteItem item) async {
     try {
-      // Check if it's already a favorite
-      if (isFavorite(item.title)) return true;
+      if (item.itemId <= 0) {
+        _error = 'Invalid item ID - must be greater than zero';
+        notifyListeners();
+        return false;
+      }
 
-      // Add locally first for responsive UI
+      if (isFavorite(item.itemId)) return true;
+
       _favorites.add(item);
       notifyListeners();
 
-      // Add to server
-      final success = await _favoriteService.addToFavorite(itemId, _clientId);
-
+      final success = await _favoriteService.addToFavorite(item.itemId, _clientId);
       if (!success) {
-        // If server operation failed, remove from local list
-        _favorites.removeWhere((element) => element.title == item.title);
+        _favorites.removeWhere((element) => element.itemId == item.itemId);
         _error = 'Failed to add to favorites';
         notifyListeners();
         return false;
@@ -96,39 +78,35 @@ class FavoritesController with ChangeNotifier {
 
       return true;
     } catch (e) {
-      if (kDebugMode) {
-        print("Error adding to favorites: $e");
-      }
-
-      // If there was an error, revert the local change
-      _favorites.removeWhere((element) => element.title == item.title);
-      _error = e.toString();
+      _error = 'Error adding to favorites: ${e.toString()}';
       notifyListeners();
       return false;
     }
   }
 
-  // Remove from favorites both locally and on the server
-  Future<bool> remove(String title, int itemId) async {
+  // Remove from favorites
+  Future<bool> remove(int itemId) async {
     try {
-      // Store the item in case we need to restore it
-      final item = _favorites.firstWhere((element) => element.title == title);
-      final index = _favorites.indexOf(item);
+      if (itemId <= 0) {
+        _error = 'Invalid item ID';
+        notifyListeners();
+        return false;
+      }
 
-      // Remove locally first for responsive UI
-      _favorites.removeWhere((element) => element.title == title);
+      final existingIndex =
+      _favorites.indexWhere((item) => item.itemId == itemId);
+      if (existingIndex == -1) {
+        _error = 'Item not found in favorites';
+        notifyListeners();
+        return false;
+      }
+
+      final removedItem = _favorites.removeAt(existingIndex);
       notifyListeners();
 
-      // Remove on server
       final success = await _favoriteService.removeFromFavorite(itemId);
-
       if (!success) {
-        // If server operation failed, restore the local item
-        if (index >= 0 && index <= _favorites.length) {
-          _favorites.insert(index, item);
-        } else {
-          _favorites.add(item);
-        }
+        _favorites.insert(existingIndex, removedItem);
         _error = 'Failed to remove from favorites';
         notifyListeners();
         return false;
@@ -136,56 +114,34 @@ class FavoritesController with ChangeNotifier {
 
       return true;
     } catch (e) {
-      if (kDebugMode) {
-        print("Error removing from favorites: $e");
-      }
-      _error = e.toString();
-      loadFavorites(); // Reload to ensure consistency
+      _error = 'Error removing from favorites: ${e.toString()}';
+      notifyListeners();
       return false;
     }
   }
 
-  // Remove current selected item using the dialog
+  // Remove current selected item
   Future<bool> removeCurrentItem() async {
-    if (_currentSelectedItem == null) {
-      return false;
-    }
+    if (_currentSelectedItem == null) return false;
+    bool success = await remove(_currentSelectedItem!.itemId);
+    if (success) clearCurrentItem();
+    return success;
+  }
 
+  // Check if item is already a favorite by ID
+  bool isFavorite(int itemId) {
+    return _favorites.any((element) => element.itemId == itemId);
+  }
+
+  // Get item ID by title (optional)
+  int getItemIdByTitle(String title) {
     try {
-      bool success = await remove(_currentSelectedItem!.title, _currentSelectedItem!.itemId);
-      clearCurrentItem();
-      return success;
+      return _favorites.firstWhere((item) => item.title == title).itemId;
     } catch (e) {
       if (kDebugMode) {
-        print("Error removing current item: $e");
+        print("Item not found in favorites: $title");
       }
-      return false;
+      return -1;
     }
-  }
-
-  bool isFavorite(String title) {
-    return _favorites.any((element) => element.title == title);
-  }
-
-
-  int getItemIdByTitle(String title) {
-    final existingItem = _favorites.firstWhere(
-          (element) => element.title == title,
-      orElse: () => FavoriteItem(
-          title: '',
-          description: '',
-          price: '',
-          imagePath: '',
-          rating: 0.0,
-          itemId: 1
-      ),
-    );
-
-    if (existingItem.itemId != 1) {
-      return existingItem.itemId;
-    }
-
-
-    return title.hashCode.abs() % 1000;
   }
 }

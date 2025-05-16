@@ -13,7 +13,7 @@ class FoodCard2Widget extends StatefulWidget {
   final String imagePath;
   final double rating;
   final bool isRed;
-  final int itemId; // Made this required, not optional
+  final int itemId; // Required
 
   const FoodCard2Widget({
     super.key,
@@ -23,7 +23,7 @@ class FoodCard2Widget extends StatefulWidget {
     required this.imagePath,
     required this.rating,
     this.isRed = false,
-    required this.itemId, // Required parameter
+    required this.itemId,
   });
 
   @override
@@ -32,6 +32,7 @@ class FoodCard2Widget extends StatefulWidget {
 
 class _FoodCard2WidgetState extends State<FoodCard2Widget> {
   late bool isFavorited;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -40,16 +41,11 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
       context,
       listen: false,
     );
-    isFavorited = favoritesController.isFavorite(widget.title);
+    isFavorited = favoritesController.isFavorite(widget.itemId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final favoritesController = Provider.of<FavoritesController>(
-      context,
-      listen: false,
-    );
-
     return LayoutBuilder(
       builder: (context, constraints) {
         double imageWidth = constraints.maxWidth * 0.6;
@@ -63,7 +59,6 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Stack(
@@ -71,27 +66,17 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
+                    child: Image.network(
                       widget.imagePath,
                       width: imageWidth,
                       height: imageHeight,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
-                        // Fallback to network image if asset fails
-                        return Image.network(
-                          widget.imagePath,
+                        return Container(
                           width: imageWidth,
                           height: imageHeight,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            // If both fail, show placeholder
-                            return Container(
-                              width: imageWidth,
-                              height: imageHeight,
-                              color: Colors.grey[300],
-                              child: Icon(Icons.image_not_supported),
-                            );
-                          },
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.image_not_supported),
                         );
                       },
                     ),
@@ -100,67 +85,12 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                     top: 0,
                     right: 0,
                     child: GestureDetector(
-                      onTap: () async {
-                        if (widget.isRed) {
-                          // For favorites screen - set current item and navigate to confirmation page
-                          final favoriteItem = FavoriteItem(
-                            title: widget.title,
-                            description: widget.description,
-                            price: widget.price,
-                            imagePath: widget.imagePath,
-                            rating: widget.rating,
-                            itemId: widget.itemId,
-                          );
-
-                          favoritesController.setCurrentItem(favoriteItem);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RemoveFavouritePage(),
-                            ),
-                          );
-                        } else {
-                          // For regular screens - toggle favorite status directly
-                          setState(() {
-                            isFavorited = !isFavorited;
-                          });
-
-                          final item = FavoriteItem(
-                            title: widget.title,
-                            description: widget.description,
-                            price: widget.price,
-                            imagePath: widget.imagePath,
-                            rating: widget.rating,
-                            itemId: widget.itemId,
-                          );
-
-                          bool success;
-                          if (isFavorited) {
-                            // Add to favorites
-                            success = await favoritesController.add(item, widget.itemId);
-                            if (!success) {
-                              // Revert UI state if operation failed
-                              setState(() {
-                                isFavorited = false;
-                              });
-                            }
-                          } else {
-                            // Remove from favorites
-                            success = await favoritesController.remove(widget.title, widget.itemId);
-                            if (!success) {
-                              // Revert UI state if operation failed
-                              setState(() {
-                                isFavorited = true;
-                              });
-                            }
-                          }
-                        }
-                      },
+                      onTap: isLoading ? null : () => handleFavoriteTap(),
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.7),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(10),
                             topRight: Radius.circular(15),
                           ),
@@ -169,10 +99,9 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                           (widget.isRed || isFavorited)
                               ? Icons.favorite
                               : Icons.favorite_border,
-                          color:
-                          (widget.isRed || isFavorited)
+                          color: (widget.isRed || isFavorited)
                               ? Colors.red
-                              : Colors.green,
+                              : Colors.grey,
                           size: 20,
                         ),
                       ),
@@ -188,14 +117,14 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                     Text(
                       widget.title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       widget.description,
                       textAlign: TextAlign.center,
@@ -207,14 +136,10 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   "\$${widget.price}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -222,10 +147,7 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: SizedBox(
                   width: double.infinity,
                   height: 30,
@@ -236,11 +158,10 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 0),
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.order_now,
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                   ),
                 ),
@@ -250,5 +171,53 @@ class _FoodCard2WidgetState extends State<FoodCard2Widget> {
         );
       },
     );
+  }
+
+  void handleFavoriteTap() async {
+    final favoritesController =
+    Provider.of<FavoritesController>(context, listen: false);
+
+    if (widget.isRed) {
+      favoritesController.setCurrentItem(
+        FavoriteItem(
+          title: widget.title,
+          description: widget.description,
+          price: widget.price,
+          imagePath: widget.imagePath,
+          rating: widget.rating,
+          itemId: widget.itemId,
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RemoveFavouritePage(),
+        ),
+      );
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    final favoriteItem = FavoriteItem(
+      title: widget.title,
+      description: widget.description,
+      price: widget.price,
+      imagePath: widget.imagePath,
+      rating: widget.rating,
+      itemId: widget.itemId,
+    );
+
+    final success = isFavorited
+        ? await favoritesController.remove(widget.itemId)
+        : await favoritesController.add(favoriteItem);
+
+    if (success) {
+      setState(() {
+        isFavorited = !isFavorited;
+      });
+    }
+
+    setState(() => isLoading = false);
   }
 }

@@ -12,6 +12,13 @@
   "login": "تسجيل الدخول",
   "dont_have_an_account": "ليس لديك حساب؟",
   "sign_up": "إنشاء حساب",
+  "error": "خطأ",
+  "ok": "موافق",
+  "all_fields_required": "جميع الحقول مطلوبة",
+  "invalid_email": "يرجى إدخال بريد إلكتروني صحيح",
+  "error_removing_favorite": "حدث خطأ أثناء إزالة العنصر من المفضلة. يرجى المحاولة مرة أخرى.",
+  "no_items_available": "لا توجد عناصر متاحة",
+
   "email": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "remember_me": "تذكرني",
