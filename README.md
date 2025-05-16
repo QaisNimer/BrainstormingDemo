@@ -1,12 +1,12 @@
 # 🚀 Flutter Project – Team Setup Guide (RandFoodtek)
 
-Welcome to the `randfoodtek_branch` organized branch! This guide will help each team member connect their local project to GitHub **without losing any local work**, and contribute properly using individual branches.
+Welcome to the `rand-new_branch` organized branch! This guide will help each team member connect their local project to GitHub **without losing any local work**, and contribute properly using individual branches.
 
 ---
 
 ## 🔹 General Notes
 
-- 🚫 **DO NOT** push directly to the `main` or `randfoodtek_branch` branch.
+- 🚫 **DO NOT** push directly to the `main` or `rand-new_branch` branch.
 - 👤 Each developer must work on their **own branch**.
 - ✅ All changes will be merged after review via **Pull Requests**.
 
@@ -66,7 +66,7 @@ Welcome to the `randfoodtek_branch` organized branch! This guide will help each 
 
 - Work only in **your own branch**
 - Commit and push frequently
-- When done, open a **Pull Request** to `randfoodtek_branch` for review
+- When done, open a **Pull Request** to `rand-new_branch` for review
 
 ---
 
@@ -94,7 +94,7 @@ git pull origin duha-branch
 
 5. Click **Create pull request**
 
-6. After approval, your branch will be merged into `randfoodtek_branch`
+6. After approval, your branch will be merged into `rand-new_branch`
 
 ---
 
